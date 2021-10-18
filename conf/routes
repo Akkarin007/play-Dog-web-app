@@ -6,5 +6,15 @@
 # An example controller showing a sample home page
 GET     /                           controllers.HomeController.index()
 
+
+GET     /house                     controllers.HomeController.house()
+GET     /load                      controllers.HomeController.load()
+GET     /save                      controllers.HomeController.save()
+GET     /redo                      controllers.HomeController.redoCommand()
+GET     /undo                      controllers.HomeController.undoCommand()
+GET     /doStep                      controllers.HomeController.doStep()
+GET     /createNewBoard/:size      controllers.HomeController.createNewBoard(size:Int)
+GET     /playerhands                controllers.HomeController.playerhands()
+
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
