@@ -14,6 +14,9 @@ GET     /redo                       controllers.HomeController.redoCommand()
 GET     /undo                       controllers.HomeController.undoCommand()
 GET     /playerhands                controllers.HomeController.playerhands()
 
+GET     /selectCard/:cardNum/:cardOption                controllers.HomeController.selectCard(cardNum: Int, cardOption:Int)
+GET     /createPlayers/:name1/:name2/:name3/:name4/:amountPieces/:amountCards  controllers.HomeController.createPlayers(name1: String, name2: String, name3: String, name4: String, amountPieces: Int, amountCards: Int)
+
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

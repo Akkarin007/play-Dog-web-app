@@ -4,7 +4,7 @@ import javax.inject._
 import play.api._
 import play.api.mvc._
 import dog._
-
+import dog.controller.StateComponent.InputCardMaster
 /**
  * This controller creates an `Action` to handle HTTP requests to the
  * application's home page.
@@ -27,6 +27,15 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
     Ok(views.html.index())
   }
 
+  def selectCard(cardNum: Int, cardOption: Int) = Action {
+    gameController.manageRound(InputCardMaster.UpdateCardInput()
+              .withCardNum((cardNum, cardOption))
+              .withSelectedCard(gameController.actualPlayedCard(cardNum))
+              .buildCardInput())
+      Ok(printDog())
+    }
+
+  
   def printBoard() = Action {
     Ok(printDog())
   }
@@ -53,5 +62,9 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
 
   def playerhands() = Action {
     Ok("playerhands" + gameController.toStringPlayerHands)
+  }
+
+  def createPlayers(name1: String, name2: String, name3: String, name4: String, amountPieces: Int, amountCards: Int) = Action {
+    Ok("createNewBoard" + gameController.createPlayers(List(name1,name2,name3,name4), amountPieces, amountCards))
   }
 }
