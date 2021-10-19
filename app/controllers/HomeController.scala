@@ -13,6 +13,8 @@ import dog._
 class HomeController @Inject()(val controllerComponents: ControllerComponents) extends BaseController {
 
   var gameController = Dog.controller
+  
+  def printDog() = gameController.toStringBoard + "/n" + gameController.toStringGarage + "/n" + gameController.toStringPlayerHands + "/n" + gameController.lastMessage
 
   /**
    * Create an Action to render an HTML page.
@@ -25,30 +27,30 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
     Ok(views.html.index())
   }
 
-   def house() = Action {
-    Ok("house" + gameController.toStringHouse)
+  def printBoard() = Action {
+    Ok(printDog())
   }
+
   def load() = Action {
-    Ok("load" + gameController.load)
+    gameController.load
+    Ok("load /n" + printDog())
   }
+
   def save() = Action {
-    Ok("save" + gameController.save())
+    gameController.save()
+    Ok("load /n" + printDog())
   }
+
   def undoCommand() = Action {
-    Ok("undo" + gameController.undoCommand())
+    gameController.undoCommand()
+    Ok("undo /n" + printDog())
   }
 
   def redoCommand() = Action {
-    Ok("redo" + gameController.redoCommand())
+    gameController.redoCommand()
+    Ok("redo /n" + printDog())
   }
 
-  def doStep() = Action {
-    Ok("doStep" + gameController.doStep())
-  }
-
-  def createNewBoard(size: Int) = Action {
-    Ok("createNewBoard" + gameController.createNewBoard(size))
-  }
   def playerhands() = Action {
     Ok("playerhands" + gameController.toStringPlayerHands)
   }
