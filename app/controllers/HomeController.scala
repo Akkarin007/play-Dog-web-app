@@ -27,7 +27,7 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
     Ok(views.html.index())
   }
 
-  def selectCard(cardNum: Int, cardOption: Int) = Action {
+  def selectCardWithOption(cardNum: Int, cardOption: Int) = Action {
     gameController.manageRound(InputCardMaster.UpdateCardInput()
               .withCardNum((cardNum, cardOption))
               .withSelectedCard(gameController.actualPlayedCard(cardNum))
@@ -35,7 +35,38 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
       Ok(printDog())
     }
 
+  def selectSwap(cardNum: Int, otherPlayer: Int, pieceNum1: Int, pieceNum2: Int) = Action {
+    val fieldPosOwn = gameController.gameState.actualPlayer.piece(pieceNum1).pos
+            val fieldPosOther = gameController.gameState.players._1(otherPlayer).piece(pieceNum2).pos
+            gameController.selectedField(fieldPosOwn)
+            gameController.selectedField(fieldPosOther)
+            gameController.manageRound(InputCardMaster.UpdateCardInput()
+              .withOtherPlayer(otherPlayer)
+              .withCardNum((cardNum, 0))
+              .withSelectedCard(gameController.actualPlayedCard(cardNum))
+              .buildCardInput())
+
+      Ok(printDog())
+    }
+    
+  def selectCard(cardNum: Int) = Action {
+    gameController.manageRound(InputCardMaster.UpdateCardInput()
+              .withCardNum((cardNum, 0))
+              .withSelectedCard(gameController.actualPlayedCard(cardNum))
+              .buildCardInput())
+      Ok(printDog())
+    }
   
+  def selectCardAndPiece(cardNum: Int, cardOption: Int, pieceNum: Int) = Action {
+    val fieldPos = gameController.gameState.actualPlayer.piece(pieceNum).pos
+            gameController.selectedField(fieldPos)
+            gameController.manageRound(InputCardMaster.UpdateCardInput()
+              .withCardNum((cardNum, cardOption))
+              .withSelectedCard(gameController.actualPlayedCard(cardNum))
+              .buildCardInput())
+      Ok(printDog())
+    }
+
   def printBoard() = Action {
     Ok(printDog())
   }
