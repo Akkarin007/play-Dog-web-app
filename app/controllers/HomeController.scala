@@ -13,6 +13,9 @@ import dog.controller.StateComponent.InputCardMaster
 class HomeController @Inject()(val controllerComponents: ControllerComponents) extends BaseController {
 
   var gameController = Dog.controller
+
+  var playerNames = List("Player1","Player2","Player3","Player4")
+    gameController.initGame(playerNames, 4, 6, 20)
   
   def printDog() = gameController.toStringBoard + "/n" + gameController.toStringGarage + "/n" + gameController.toStringPlayerHands + "/n" + gameController.lastMessage
 
@@ -35,13 +38,18 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
     Ok(views.html.initGame(gameController))
   }
 
+  def newGame(amountPieces: Int, amountCards: Int, sizeBoard: Int) = Action {
+    var playerNames = List("P1","P2","P3","P4")
+    gameController.initGame(playerNames, amountPieces, amountCards, sizeBoard)
+    Ok(views.html.initGame(gameController))
+  }
 
   def selectCardWithOption(cardNum: Int, cardOption: Int) = Action {
     gameController.manageRound(InputCardMaster.UpdateCardInput()
               .withCardNum((cardNum, cardOption))
               .withSelectedCard(gameController.actualPlayedCard(cardNum))
               .buildCardInput())
-      Ok(printDog())
+    Ok(views.html.initGame(gameController))
     }
 
   def selectSwap(cardNum: Int, otherPlayer: Int, pieceNum1: Int, pieceNum2: Int) = Action {
@@ -54,16 +62,15 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
               .withCardNum((cardNum, 0))
               .withSelectedCard(gameController.actualPlayedCard(cardNum))
               .buildCardInput())
-
-      Ok(printDog())
+    Ok(views.html.initGame(gameController))
     }
     
   def selectCard(cardNum: Int) = Action {
     gameController.manageRound(InputCardMaster.UpdateCardInput()
-              .withCardNum((cardNum, 0))
+              .withCardNum((cardNum, 2))
               .withSelectedCard(gameController.actualPlayedCard(cardNum))
               .buildCardInput())
-      Ok(printDog())
+    Ok(views.html.initGame(gameController))
     }
   
   def selectCardAndPiece(cardNum: Int, cardOption: Int, pieceNum: Int) = Action {
@@ -73,7 +80,7 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
               .withCardNum((cardNum, cardOption))
               .withSelectedCard(gameController.actualPlayedCard(cardNum))
               .buildCardInput())
-      Ok(printDog())
+    Ok(views.html.initGame(gameController))
     }
 
   def printBoard() = Action {
@@ -90,14 +97,14 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
     Ok("load /n" + printDog())
   }
 
-  def undoCommand() = Action {
+  def undo() = Action {
     gameController.undoCommand()
-    Ok("undo /n" + printDog())
+    Ok(views.html.initGame(gameController))
   }
 
-  def redoCommand() = Action {
+  def redo() = Action {
     gameController.redoCommand()
-    Ok("redo /n" + printDog())
+    Ok(views.html.initGame(gameController))
   }
 
   def playerhands() = Action {
