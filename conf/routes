@@ -7,6 +7,8 @@
 GET     /                           controllers.HomeController.index()
 
          
+GET     /about                      controllers.HomeController.about
+GET     /initGame                   controllers.HomeController.initGame
 GET     /Board                      controllers.HomeController.printBoard()
 GET     /load                       controllers.HomeController.load()
 GET     /save                       controllers.HomeController.save()

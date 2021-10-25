@@ -9,7 +9,10 @@ target
 /RUNNING_PID
 # Mac
 .DS_Store
+/null/**
 
+/.bloop/**
+/.metals/**
 # Eclipse
 bin/
 .settings/

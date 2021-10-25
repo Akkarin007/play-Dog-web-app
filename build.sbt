@@ -5,7 +5,7 @@ version := "1.0-SNAPSHOT"
 
 scalaVersion := "2.12.7"
 
-lazy val branch = "master"
+lazy val branch = "W02-play"
 lazy val dog = RootProject(uri("git://github.com/Akkarin007/Dog.git#%s".format(branch)))
 
 lazy val root = Project("play-dog", file("."))

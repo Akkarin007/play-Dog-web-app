@@ -1,0 +1,33 @@
+@(controller: dog.controller.ControllerComponent.ControllerTrait)
+
+@main("Dog") {
+    <center>
+    <h1>Welcome to Stratego </h1>
+        <form action=/>
+        <button>New Game</button>
+        </form>
+    <h2>Enter the figures </h2>
+    <table class="unstyledTable">
+        <thead>
+        <tr>
+        <th>PlayerName</th>
+        <th>inHouse</th>
+        </tr>
+        </thead>
+
+        <tbody>
+            @for(i <- 0 until controller.gameState.players._1.indices.size) {
+                <tr>
+                    <td>@controller.gameState.players._1(i).nameAndIdx._1</td>
+                    <td>@controller.gameState.players._1(i).inHouse.size</td>
+                </tr>
+            }
+        </tbody>
+        </table>
+    <ul>
+
+        
+
+    </ul>
+    </center>
+}
