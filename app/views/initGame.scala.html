@@ -2,11 +2,12 @@
 
 @main("Dog") {
     <center>
-    <h1>Welcome to Stratego </h1>
+    <h1>Welcome to Dog </h1>
         <form action=/>
         <button>New Game</button>
         </form>
-    <h2>Enter the figures </h2>
+    
+    <h2>Player List with Houses</h2>
     <table class="unstyledTable">
         <thead>
         <tr>
@@ -14,7 +15,6 @@
         <th>inHouse</th>
         </tr>
         </thead>
-
         <tbody>
             @for(i <- 0 until controller.gameState.players._1.indices.size) {
                 <tr>
@@ -24,10 +24,21 @@
             }
         </tbody>
         </table>
-    <ul>
-
         
-
-    </ul>
+    <h2>CurrentPlayer: @controller.gameState.actualPlayer.nameAndIdx._1</h2>
+    <table class="unstyledTable">
+        <thead>
+        <tr>
+            @for(i <- 0 until controller.gameState.board.size) {
+                <th>_</th>
+            }
+        </tr>
+        </thead>
+        <tbody>
+            @for(i <- 0 until controller.gameState.board.size) {
+                <td>@controller.gameState.board.cell(i).toString</td>
+            }
+        </tbody>
+        </table>
     </center>
 }
