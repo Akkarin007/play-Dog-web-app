@@ -2,19 +2,11 @@
 
 @main("Dog") {
     <center>
-    <h1>Welcome to Dog </h1>
-        <form action=/newGame>
-            <label>AmountPieces</label>
-            <input type="text" id="amountPieces" name="amountPieces" value="4">
-                <br>
-            <label>amountCards</label>
-            <input type="text"  id="amountCards" name="amountCards" value="6">
-            <br>
-            <br>
-            <label>sizeBoard</label>
-            <input type="text" id="sizeBoard" name="sizeBoard" value="20">
-            <button>New Game</button>
-        </form>
+    <h1>Active Game</h1>
+    <form action=/>
+        <label>quit_game</label>
+        <button>Quit Game</button>
+    </form>
     
     <h2>Player List with Houses</h2>
     <form action=/undo>
@@ -50,29 +42,29 @@
         <thead>
         <tr>
             @for(i <- 0 until controller.gameState.board.size) {
-                <th>_</th>
+                <th> 
+                    field @i
+                </th>
+
             }
         </tr>
         </thead>
         <tbody>
             @for(i <- 0 until controller.gameState.board.size) {
-                    @controller.gameState.board.cell(i).p match {
-                        case Some(p) => {
-                            
-                            <td>[@controller.gameState.board.cell(i).getColor(0)@p.getPieceNum(i)]</td>
-                        }
-                        case None => { 
-                            
-                            @for(j <- 0 until controller.gameState.players._1.indices.size) {
-                                
-                                @if(controller.gameState.players._1(j).homePosition == i){
-                                    <td>[@controller.gameState.players._1(j).color(0)H]</td>
-                                } else {
-                                    <td>[ ]</td>
-                                }
-                            }
+                <td>[
+                    @for(j <- 0 until controller.gameState.players._1.indices.size) {       
+                        @if(controller.gameState.players._1(j).homePosition == i){
+                            @controller.gameState.players._1(j).color(0)H
+                        } else {
+                         
                         }
                     }
+                    @controller.gameState.board.cell(i).p match {
+                        case Some(p) => { @controller.gameState.board.cell(i).getColor(0)@p.getPieceNum(i)}
+                        case None => { }
+                    }
+                ]
+                </td>
             }
         </tbody>
         </table>
