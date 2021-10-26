@@ -43,7 +43,7 @@
         <tr>
             @for(i <- 0 until controller.gameState.board.size) {
                 <th> 
-                    @i
+                     @i
                 </th>
 
             }
@@ -60,8 +60,8 @@
                         }
                     }
                     @controller.gameState.board.cell(i).p match {
-                        case Some(p) => { @controller.gameState.board.cell(i).getColor(0)@p.getPieceNum(i)}
-                        case None => { }
+                        case Some(p) => {_@controller.gameState.board.cell(i).getColor(0)@p.getPieceNum(i)}
+                        case None => {____}
                     }
                 ]
                 </td>
