@@ -1,5 +1,22 @@
 @()
 
-@main("Welcome to Play") {
-  <h1>Welcome to Play!</h1>
+@main("Dog") {
+  <center>
+    <h1>Welcome to Dog!</h1>
+
+    <h2>Start a new Game</h2>
+    <form action=/newGame>
+      <label>AmountPieces</label>
+      <input type="text" id="amountPieces" name="amountPieces" value="4">
+      <br> </br>
+      <label>amountCards</label>
+      <input type="text"  id="amountCards" name="amountCards" value="6">
+      <br> </br>
+      <label>sizeBoard</label>
+      <input type="text" id="sizeBoard" name="sizeBoard" value="20">
+      <br> </br>
+      <button>New Game</button>
+   </form>
+    <p><a href="/about" target="_blank">What is dog and how does it work</a></p>
+  </center>
 }

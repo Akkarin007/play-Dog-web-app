@@ -3,63 +3,68 @@
 @main("About Dog") {
 
     <head>
-        <title>Stratego - About the Game</title>
+        <title>Dog - About the Game</title>
         <meta charset="UTF-8">
         <link rel="shortcut icon" href="@routes.Assets.versioned("images/Dog_Game.png")"/>
     </head>
     <body>
-        <center>
+        
         <h1>Dog</h1>
         <h2>A Project for Web-Technology</h2>
         <div>
-            <img src="@routes.Assets.versioned("images/Dog_Game.png")" alt="Stratego Spielbrett" title="Spielbrett Stratego" width="669" height="500"/>
+            <img src="@routes.Assets.versioned("images/Dog_Game.png")" alt="Dog board" title="Board Dog" width="900" height=auto/>
         </div>
+
+        <div>
+            <h3>What is Dog?</h3>
+            <p>
+                Dog is a board game for 2 to 6 players. The game is like the classic German board game "Mensch ärgere dich nicht".
+                In order to win you must bring your 4 game pieces to safety. The main difference is that the pieces are not moved with dices.
+                They are moved with the help of cards.
+            </p>
+        </div>
+
         <div>
             <h3>Gameplay:</h3>
-            <p> Stratego is a strategy board game for two players. Each player has 40 pieces representing different characters.
-                We modified the game a little bit so you can walk with all characters (except flag and bomb) just one field up, down, to the right or to the left. You also can attack the oppenents with your figures. To win the game you have to find and attack the flag of your enemy.
-                <br>
-                <br>
-                The figures are ranked from highest to lowest as follows:</p>
-            <ul>
-                <li><b>1. Bomb</b></li>
-                <li><b>2. Marshal</b></li>
-                <li><b>3. General</b></li>
-                <li><b>4. Colonel</b></li>
-                <li><b>5. Major</b></li>
-                <li><b>6. Captain</b></li>
-                <li><b>7. Lieutenant</b></li>
-                <li><b>8. Sergeant</b></li>
-                <li><b>9. Miner</b></li>
-                <li><b>10. Scout</b></li>
-                <li><b>11. Spy</b></li>
-                <li><b>12. Flag</b></li>
-            </ul>
+            <p>
+                The game starts with the first player playing a card. Its effect is then executed. After playing a card the player does not get to draw a new card.
+                Then the next player plays a card and so forth. When a player can not get a game piece out of home, he is not able to play this round. If all cards are used the round ends. 
+            </p>
+            <p>
+                In the next round each player gets new cards and another round is played. This pattern repeats itself until a player has moved all his game pieces into the garage.
+            </p>
         </div>
+
         <div>
             <h3>Rules:</h3>
-            <ul>
-                <li>Flag is the most important figure</li>
-                <li>Miner and Bomb: only the miner can defuse the Bomb</li>
-                <li>Every other figure loses against the Bomb</li>
-                <li>Spy and Marshal: only Spy can beat the Marshal except the bomb</li>
-                <li>Flag and Bomb can’t be moved</li>
-            </ul>
+            <p>
+                <ol>
+                    <li>Before a round starts each player gets a set number of cards. </li>
+                    <li>Pieces are moved by the number on the card which is played. If a card with the value 5 is played the player can move a piece by 5 fields.
+                        While moving all game pieces can be skipped, but their fields are counted.</li>
+                    <li>There can only be one game piece on a field. When another game piece moves onto an occupied field, the occupying piece gets moved back to home.
+                        Furthermore, all game pieces which are overtaken with the card 7 also must be moved back to home. </li>
+                    <li>When a card is played you must move a piece by the provided number. When a player can move into the garage with a 5 but plays a 7, he must complete another round around the board.</li>
+                    <li>Game pieces which have reached the garage can only be moved forward. Game pieces cannot be overtaken in the garage.</li>
+                    <li>If a player has moved all his pieces into the garage, he has won the game.</li>
+                </ul>
+            </p>
         </div>
-        <br>
-        <br>
+
+        <!--
         <div>
             <h3>Screenshots:</h3>
-            <!-- <img src="@routes.Assets.versioned("images/media/start_screen.png")" alt="Startscreen" title = "Startscreen" width="513" height="500"/>
+            <img src="@routes.Assets.versioned("images/media/start_screen.png")" alt="Startscreen" title = "Startscreen" width="513" height="500"/>
             <img src="@routes.Assets.versioned("images/media/game_screen.png")"  alt="Playfield Stratego" title="Playfield Stratego" width = "669" height="500"/>
-            <img src="@routes.Assets.versioned("images/media/move_screen.png")"  alt="Stratego Action" title = "Stratego Action" width = "669" height="500"/> -->
+            <img src="@routes.Assets.versioned("images/media/move_screen.png")"  alt="Stratego Action" title = "Stratego Action" width = "669" height="500"/>
         </div>
+        -->
+        
         <div>
             <h3>You want to contribute to our project?</h3>
             <form action="https://github.com/Akkarin007/play-Dog-web-app" target="_blank">
-                <input type="submit" value="Our Github repository" />
+                <input type="submit" value="Checkout our Github repository" />
             </form>
         </div>
-        </center>
     </body>
 }
