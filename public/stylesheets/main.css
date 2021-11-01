@@ -2,3 +2,24 @@
     --bs-bg-opacity: 1;
     background-color: rgba(var(--bs-light-rgb),var(--bs-bg-opacity)) !important;
 }
+.playCards {
+
+}
+.playCards .col {
+    width: 15%;
+}
+
+.cards {
+    align-items: center;
+    border-radius: 20px !important;
+    max-width: 200px !important;
+}
+.card {
+    align-items: center;
+}
+
+.crads img {
+    
+    border-radius: 20px !important;
+}
+
