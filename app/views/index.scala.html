@@ -1,22 +1,32 @@
 @()
 
 @main("Dog") {
-  <center>
-    <h1>Welcome to Dog!</h1>
+  <h1>Welcome to Dog!</h1>
 
+  <div class="box_1">
     <h2>Start a new Game</h2>
-    <form action=/newGame>
-      <label>AmountPieces</label>
-      <input type="text" id="amountPieces" name="amountPieces" value="4">
-      <br> </br>
-      <label>amountCards</label>
-      <input type="text"  id="amountCards" name="amountCards" value="6">
-      <br> </br>
-      <label>sizeBoard</label>
-      <input type="text" id="sizeBoard" name="sizeBoard" value="20">
-      <br> </br>
-      <button>New Game</button>
-   </form>
-    <p><a href="/about" target="_blank">What is dog and how does it work</a></p>
-  </center>
+    <form id="box_1_form" action=/newGame>
+
+      <div class="box_1_line">
+        <label class="box_1_label">AmountPieces</label>
+        <input type="text" class="box_1_input" name="amountPieces" value="4">
+      </div>
+      <div class="box_1_line">
+        <label class="box_1_label">amountCards</label>
+        <input type="text" class="box_1_input" name="amountCards" value="6">
+      </div>
+
+      <div class="box_1_line">
+        <label class="box_1_label">sizeBoard</label>
+        <input type="text" class="box_1_input" name="sizeBoard" value="20">
+      </div>
+        <div class="box_1_line" id="box_1_button_line">
+        <button class="box_1_button">New Game</button>
+      </div>
+    </form>
+  </div>
+  <p id="text_about">
+    You have never heard about dog?
+  </p>
+  <p id="link_about"><a href="/about" target="_blank">Here is everything you need to know!</a></p>
 }

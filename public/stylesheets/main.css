@@ -2,11 +2,25 @@
 h1 {
     text-align: center;
     padding: 50px;
+    font-size: 45pt;
+    font-family: arial;
 }
 
 h2 {
     text-align: center;
     padding: 10px;
+    font-size: 20pt;
+    font-family: arial;
+}
+
+h3 {
+    text-align: left;
+    padding-top: 0px;
+    padding-bottom: 10px;
+    font-size: 25pt;
+    font-family: arial;
+    margin-bottom: 20px;
+    margin-top: 40px;
 }
 
 /* index.scal.css */
@@ -29,6 +43,8 @@ h2 {
 .box_1_label {
     float: left;
     min-width: 40%;
+    font-family: Arial;
+    font-size: 14pt;
 }
 
 .box_1_input {
@@ -36,14 +52,18 @@ h2 {
     min-width: 40%;
     max-width: 140px;
     text-align: center;
+    font-family: Arial;
+    font-size: 14pt;
 }
 
 .box_1_button {
     align-self: center;
     padding: 10px;
-    background: grey;
+    background: rgb(167, 167, 167);
     border: 1px solid black;
     border-radius: 5px;
+    font-family: Arial;
+    font-size: 14pt;
 }
 
 .box_1_button:hover {
@@ -63,11 +83,15 @@ h2 {
 #text_about {
     text-align: center;
     padding-top: 15px;
+    font-family: Arial;
+    font-size: 14pt;
 }
 
 #link_about {
     text-align: center;
     padding: 15px;
+    font-family: Arial;
+    font-size: 14pt;
 }
 
 /* main.scala.css */
@@ -77,5 +101,56 @@ h2 {
 }
 
 /* about.scala.css */
+
+#about_dog_picture {
+    padding-left: 10%;
+    padding-right: 10%;
+}
+
+.about_text {
+    padding-left: 10%;
+    padding-right: 10%;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    text-align: left;
+}
+
+.about_text_p {
+    padding-left: 10px;
+    padding-right: 10px;
+    font-family: Arial;
+}
+
+#about_link {
+    align-self: center;
+    padding: 10px;
+    background: rgb(167, 167, 167);
+    border: 1px solid black;
+    border-radius: 5px;
+    margin-bottom: 40px;
+}
+
+#about_link:hover {
+    border-radius: 5px;
+    background: lightblue;
+}
+
+#about_link:active {
+    border-radius: 5px;
+    background: rgb(101, 201, 235)
+}
+
+.about_list_1 {
+    padding-left: 40px;
+    padding-right: 20px;
+    font-family: Arial;
+}
+
+.about_list_2 {
+    padding-left: 40px;
+    padding-right: 20px;
+    font-family: Arial;
+    list-style: decimal;
+}
 
 /* initGame.scala.css */

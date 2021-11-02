@@ -9,36 +9,35 @@
     </head>
     <body>
         
-        <h1>Dog</h1>
-        <h2>A Web-Technology course project</h2>
-        <div>
-            <img src="@routes.Assets.versioned("images/Dog_Game.png")" alt="Dog board" title="Board Dog" width="900" height=auto/>
+        <h1>Dog - A Web-Technology course project</h1>
+        <div id="about_dog_picture">
+            <img src="@routes.Assets.versioned("images/Dog_Game.png")" alt="Dog board" title="Board Dog" heigth=100% width=100%/>
         </div>
 
-        <div>
+        <div class="about_text">
             <h3>What is Dog?</h3>
-            <p>
+            <p class="about_text_p"> 
                 Dog is a board game for 2 to 6 players. The game is like the classic German board game "Mensch ärgere dich nicht".
                 In order to win you must bring your 4 game pieces to safety. The main difference is that the pieces are not moved with dices.
                 They are moved with the help of cards.
             </p>
         </div>
 
-        <div>
+        <div class="about_text">
             <h3>Gameplay:</h3>
-            <p>
+            <p class="about_text_p">
                 The game starts with the first player playing a card. Its effect is then executed. After playing a card the player does not get to draw a new card.
                 Then the next player plays a card and so forth. When a player can not get a game piece out of home, he is not able to play this round. If all cards are used the round ends. 
             </p>
-            <p>
+            <p class="about_text_p">
                 In the next round each player gets new cards and another round is played. This pattern repeats itself until a player has moved all his game pieces into the garage.
             </p>
         </div>
         
-        <div>
+        <div class="about_text">
             <h3>Cards:</h3>
-            <p>
-                <ul>
+            <p class="about_text_p">
+                <ul class="about_list_1">
                     <li>The game is played with 15 different cards with the following effects:</li>
                     <li>The card play, 1, 11 and 13 can be used to get a game piece from home into the game. 1, 11 and 13 also move the piece 1 or 11 fields forward.</li>
                     <li>The card 4 can also be used to move backwards.</li>
@@ -48,10 +47,10 @@
             </p>
         </div>
 
-        <div>
+        <div class="about_text"> 
             <h3>Rules:</h3>
-            <p>
-                <ol>
+            <p class="about_text_p">
+                <ol class="about_list_2">
                     <li>Before a round starts each player gets a set number of cards. </li>
                     <li>Pieces are moved by the number on the card which is played. If a card with the value 5 is played the player can move a piece by 5 fields.
                         While moving all game pieces can be skipped, but their fields are counted.</li>
@@ -60,7 +59,7 @@
                     <li>When a card is played you must move a piece by the provided number. When a player can move into the garage with a 5 but plays a 7, he must complete another round around the board.</li>
                     <li>Game pieces which have reached the garage can only be moved forward. Game pieces cannot be overtaken in the garage.</li>
                     <li>If a player has moved all his pieces into the garage, he has won the game.</li>
-                </ul>
+                </ol>
             </p>
         </div>
 
@@ -71,11 +70,13 @@
         </div>
         -->
         
-        <div>
+        <div class="about_text">
             <h3>You want to contribute to our project?</h3>
-            <form action="https://github.com/Akkarin007/play-Dog-web-app" target="_blank">
-                <input type="submit" value="Checkout our Github repository" />
-            </form>
+            <div class="about_text_p">
+                <form action="https://github.com/Akkarin007/play-Dog-web-app" target="_blank">
+                    <input id="about_link" type="submit" value="Checkout our Github repository" />
+                </form>
+            </div>
         </div>
     </body>
 }
