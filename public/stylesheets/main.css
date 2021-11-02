@@ -123,6 +123,7 @@ h3 {
 
 #about_link {
     align-self: center;
+    width: auto;
     padding: 10px;
     background: rgb(167, 167, 167);
     border: 1px solid black;
