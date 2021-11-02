@@ -1,25 +1,67 @@
-.bg-light {
-    --bs-bg-opacity: 1;
-    background-color: rgba(var(--bs-light-rgb),var(--bs-bg-opacity)) !important;
-}
-.playCards {
 
-}
-.playCards .col {
-    width: 15%;
-}
-
-.cards {
-    align-items: center;
-    border-radius: 20px !important;
-    max-width: 200px !important;
-}
-.card {
-    align-items: center;
-}
-
-.crads img {
+@media only screen and (min-width: 100px) {
+    .bg-light {
+        --bs-bg-opacity: 1;
+        background-color: rgba(var(--bs-light-rgb),var(--bs-bg-opacity)) !important;
+    }
+    .playCards {
+        overflow: auto;
+    }
+    .playCards .col {
+        width: 15%;
+    }
     
-    border-radius: 20px !important;
+    .front {
+        font-size: 1px;
+    }
+
+    .cards {
+        align-items: center;
+        border-radius: 20px !important;
+        max-width: 200px !important;
+        overflow: auto;
+    }
+    .card {
+        align-items: center;
+    }
+    
+    .crads img {
+        
+        
+        overflow: auto;
+        border-radius: 20px !important;
+    }
 }
 
+
+
+@media only screen and (min-width: 1000px) {
+    .bg-light {
+        --bs-bg-opacity: 1;
+        background-color: rgba(var(--bs-light-rgb),var(--bs-bg-opacity)) !important;
+    }
+    .playCards {
+    
+    }
+    .playCards .col {
+        width: 15%;
+    }
+    
+    .cards {
+        align-items: center;
+        border-radius: 20px !important;
+        max-width: 200px !important;
+    }
+    .card {
+        align-items: center;
+    }
+
+    .front {
+        font-size: 1em;
+    }
+    
+    .crads img {
+        
+        border-radius: 20px !important;
+    }
+}

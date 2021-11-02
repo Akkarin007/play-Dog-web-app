@@ -82,7 +82,7 @@
                 <p class="lead mb-4">Choose Your Cards</p>
 
             </div>
-            <div class="overflow-hidden" style="max-height: 60vh;">
+            <div class="overflow" >
                 <div class="container px-5">
                     <div class="album py-5 bg-light">
                         <div class="container">
@@ -101,12 +101,12 @@
                 
                                                     <form action=/selectSwap>
                                                     <center>
-                                                        <input class="form-control" name="cardNum" value="@cardNum" style="display: none">
-                                                        <button class="btn btn-dark"> @controller.gameState.actualPlayer.cardList(cardNum).symbol</button>
+                                                        <input class="form-control front" name="cardNum" value="@cardNum" style="display: none">
+                                                        <button class="btn btn-dark front"> @controller.gameState.actualPlayer.cardList(cardNum).symbol</button>
                                                         </input>
-                                                        <input class="form-control" name="otherPlayer" value="otherPlayer">
-                                                        <input class="form-control" name="pieceNum1" value="pieceNum1">
-                                                        <input class="form-control" name="pieceNum2" value="pieceNum2">
+                                                        <input class="form-control front" name="otherPlayer" value="otherPlayer">
+                                                        <input class="form-control front" name="pieceNum1" value="pieceNum1">
+                                                        <input class="form-control front" name="pieceNum2" value="pieceNum2">
                                                     </center>
                                                     </form>
                                                 } else {
@@ -114,8 +114,8 @@
                                                         controller.gameState.actualPlayer.cardList(cardNum).symbol.split("\\s+").size) {
                                                         <form action=/selectCardAndPiece>
                                                             <center>
-                                                            <input class="form-control" name="cardNum" value="@cardNum" style="display: none">
-                                                                <button class="btn btn-dark" name="cardOption" value="@cardOption"> @controller.gameState.actualPlayer.cardList(cardNum).symbol.split("\\s+")(cardOption)</button>
+                                                            <input class="form-control front" name="cardNum" value="@cardNum" style="display: none">
+                                                                <button class="btn btn-dark front" name="cardOption" value="@cardOption"> @controller.gameState.actualPlayer.cardList(cardNum).symbol.split("\\s+")(cardOption)</button>
                                                                 <input class="form-control" name="pieceNum" value="0">
                                                             </input>
                                                         </center>
