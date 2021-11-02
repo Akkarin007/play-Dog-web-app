@@ -67,30 +67,38 @@
             </tbody>
             </table>
             <h2>CurrentPlayerCards: @controller.gameState.actualPlayer.nameAndIdx._1</h2>
-            @for(i <- 0 until controller.gameState.actualPlayer.cardList.size) {
+            <center>
+            <div class="cards">
+            @for(cardNum <- 0 until controller.gameState.actualPlayer.cardList.size) {
                     
-                <div class="card">
-                    @if(controller.gameState.actualPlayer.cardList(i).task.equals("swap")) {
+                <div class="playCard">
+                    @if(controller.gameState.actualPlayer.cardList(cardNum).task.equals("swap")) {
                         
                         <form action=/selectSwap>
-                            <input name="cardNum" value="@i" style="display: none">
-                                <button> @controller.gameState.actualPlayer.cardList(i).symbol</button>
-                            </input>
-                            <input name="otherPlayer" value="otherPlayer">
-                            <input name="pieceNum1" value="pieceNum1">
-                            <input name="pieceNum2" value="pieceNum2">
-                        </form>
+                            <center>
+                                <input class="form-control front" name="cardNum" value="@cardNum" style="display: none">
+                                <button class="btn btn-dark front"> @controller.gameState.actualPlayer.cardList(cardNum).symbol</button>
+                                </input>
+                                <input class="form-control front" name="otherPlayer" value="otherPlayer">
+                                <input class="form-control front" name="pieceNum1" value="pieceNum1">
+                                <input class="form-control front" name="pieceNum2" value="pieceNum2">
+                            </center>
+                            </form>
                     } else {
-                        @for(j <- 0 until controller.gameState.actualPlayer.cardList(i).symbol.split("\\s+").size) {
-                        <form action=/selectCardAndPiece>
-                        <input name="cardNum" value="@i" style="display: none">
-                            <button name="cardOption" value="@j"> @controller.gameState.actualPlayer.cardList(i).symbol.split("\\s+")(j)</button>
-                        </input>
-                        <input name="pieceNum" value="0">
-                        </form>
+                        @for(cardOption <- 0 until controller.gameState.actualPlayer.cardList(cardNum).symbol.split("\\s+").size) {
+                            <form action=/selectCardAndPiece>
+                                <center>
+                                <input class="form-control front" name="cardNum" value="@cardNum" style="display: none">
+                                    <button class="btn btn-dark front" name="cardOption" value="@cardOption"> @controller.gameState.actualPlayer.cardList(cardNum).symbol.split("\\s+")(cardOption)</button>
+                                    <input class="form-control" name="pieceNum" value="0">
+                                </input>
+                            </center>
+                                </form>
                         }
                     }
                 </div>
             }   
+        </div>
+        </center>
     </div>
 }
