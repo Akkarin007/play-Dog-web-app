@@ -77,9 +77,9 @@
                         <form action=/selectSwap>
                             <center>
                                 <input class="form-control front" name="cardNum" value="@cardNum" style="display: none">
-                                <button class="btn btn-dark front"> @controller.gameState.actualPlayer.cardList(cardNum).symbol</button>
+                                <button class="btn_btn-dark_front"> @controller.gameState.actualPlayer.cardList(cardNum).symbol</button>
                                 </input>
-                                <input class="form-control front" name="otherPlayer" value="otherPlayer">
+                                <input class="form-control_front" name="otherPlayer" value="otherPlayer">
                                 <input class="form-control front" name="pieceNum1" value="pieceNum1">
                                 <input class="form-control front" name="pieceNum2" value="pieceNum2">
                             </center>
@@ -89,8 +89,8 @@
                             <form action=/selectCardAndPiece>
                                 <center>
                                 <input class="form-control front" name="cardNum" value="@cardNum" style="display: none">
-                                    <button class="btn btn-dark front" name="cardOption" value="@cardOption"> @controller.gameState.actualPlayer.cardList(cardNum).symbol.split("\\s+")(cardOption)</button>
-                                    <input class="form-control" name="pieceNum" value="0">
+                                    <button class="btn_btn-dark_front" name="cardOption" value="@cardOption"> @controller.gameState.actualPlayer.cardList(cardNum).symbol.split("\\s+")(cardOption)</button>
+                                    <input class="form-control_front" name="pieceNum" value="0">
                                 </input>
                             </center>
                                 </form>

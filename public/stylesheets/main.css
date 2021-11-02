@@ -162,6 +162,8 @@ h3 {
     width: 23%;
     margin-left: 5%;
     margin-right: 5%;
+    margin-top: 0%;
+    margin-bottom: 0%;
 }
 
 .button_type_3 {
@@ -169,6 +171,8 @@ h3 {
     width: 23%;
     margin-left: 5%;
     margin-right: 5%;
+    margin-top: 0%;
+    margin-bottom: 0%;
 }
 
 .box_2 {
@@ -237,13 +241,9 @@ h3 {
 
 }
 
-.card ,input ,button{
+.card ,.form-control_front ,.btn_btn-dark_front{
     align-self: center;
     padding: 10px;
     margin: 1%;
     width: 100px;
-}
-
-.card_option {
-
 }
