@@ -25,6 +25,21 @@
         align-items: center;
     }
     
+    .board {
+        background-color: rgb(236, 236, 236);
+        padding-left: 10%;
+        padding-right: 10%;
+        padding-top: 2%;
+        padding-bottom: 2%;
+        margin-left: 10%;
+        margin-right: 10%;
+        margin-top: 2%;
+        margin-bottom: 5%;
+        border: 3px solid grey;
+        border-radius: 5px;
+        background-color: rgb(236, 236, 236);
+        padding: 20px;
+    }
     .crads img {
         
         
@@ -45,6 +60,24 @@
     }
     .playCards .col {
         width: 15%;
+    }
+    
+    .board {
+        background-color: rgb(236, 236, 236);
+        padding-left: 10%;
+        padding-right: 10%;
+        padding-top: 2%;
+        padding-bottom: 2%;
+        margin-left: 10%;
+        margin-right: 10%;
+        margin-top: 2%;
+        margin-bottom: 5%;
+        border: 3px solid grey;
+        border-radius: 5px;
+        background-color: rgb(236, 236, 236);
+        padding: 20px;
+
+
     }
     
     .cards {
