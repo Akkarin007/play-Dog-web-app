@@ -154,3 +154,83 @@ h3 {
 }
 
 /* initGame.scala.css */
+
+
+.button_type_2 {
+    float: left;
+    width: 23%;
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+.button_type_3 {
+    float: left;
+    width: 23%;
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+.box_2 {
+    margin-left: 10%;
+    margin-right: 10%;
+    min-width: 80%;
+    min-width: 320px;
+    min-height: 22px;
+    border: 3px solid grey;
+    border-radius: 5px;
+    background-color: rgb(236, 236, 236);
+    padding: 20px;
+}
+
+.board {
+    background-color: rgb(236, 236, 236);
+    padding-left: 10%;
+    padding-right: 10%;
+    padding-top: 2%;
+    padding-bottom: 2%;
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-top: 2%;
+    margin-bottom: 5%;
+    border: 3px solid grey;
+    border-radius: 5px;
+    background-color: rgb(236, 236, 236);
+    padding: 20px;
+}
+
+#player1 {
+    color: red;
+}
+
+.unstyledTable {
+    margin-left: auto;
+    margin-right: auto;
+    border: 3px solid rgb(168, 168, 168);
+    border-radius: 5px;
+    background-color: rgb(255, 255, 255);
+    margin-bottom: 2%;
+}
+
+.unstyledTable ,th , td{
+    padding: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    font-family: arial;
+}
+
+.card {
+    margin: 2%;
+    padding: 2%;
+    width: 96;
+}
+
+.card ,input ,button{
+    align-self: center;
+    padding: 10px;
+    margin: 1%;
+    width: 100px;
+}
+
+.card_option {
+
+}

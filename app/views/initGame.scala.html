@@ -1,97 +1,96 @@
 @(controller: dog.controller.ControllerComponent.ControllerTrait)
 
 @main("Dog") {
-    <center>
     <h1>Active Game</h1>
-    <form action=/>
-        <label>quit_game</label>
-        <button>Quit Game</button>
-    </form>
-    
-    <h2>Player List with Houses</h2>
-    <form action=/undo>
-        <label>undo</label>
-        <button>undo</button>
-    </form>
-    <form action=/redo>
-        <label>redo</label>
-        <button>redo</button>
-    </form>
-    <table class="unstyledTable">
-        <thead>
-        <tr>
-        <th>PlayerName</th>
-        <th>inHouse</th>
-        <th>Color</th>
-        <th>Goal</th>
-        </tr>
-        </thead>
-        <tbody>
-            @for(i <- 0 until controller.gameState.players._1.indices.size) {
-                <tr>
-                    <td>@controller.gameState.players._1(i).nameAndIdx._1</td>
-                    <td>@controller.gameState.players._1(i).inHouse.size</td>
-                    <td>@controller.gameState.players._1(i).color</td>
-                    <td>@controller.gameState.players._1(i).garage</td>
-                </tr>
-            }
-        </tbody>
-        </table>
-        
-    <table class="unstyledTable">
-        <thead>
-        <tr>
-            @for(i <- 0 until controller.gameState.board.size) {
-                <th> 
-                     @i
-                </th>
+    <div class="box_2">
+        <form action=/undo>
+            <button class="button_type_2">undo</button>
+        </form>
+        <form action=/redo>
+            <button class="button_type_3">redo</button>
+        </form>
+        <form action=/>
+            <button class="button_type_2"> Quit Game</button>
+        </form>
+    </div>
+    <div class="board">
+        <h2>Board</h2>
+        <table class="unstyledTable">
+            <thead>
+            <tr>
+            <th>PlayerName</th>
+            <th>inHouse</th>
+            <th>Color</th>
+            <th>Goal</th>
+            </tr>
+            </thead>
+            <tbody>
+                @for(i <- 0 until controller.gameState.players._1.indices.size) {
+                    <tr>
+                        <td>@controller.gameState.players._1(i).nameAndIdx._1</td>
+                        <td>@controller.gameState.players._1(i).inHouse.size</td>
+                        <td>@controller.gameState.players._1(i).color</td>
+                        <td>@controller.gameState.players._1(i).garage</td>
+                    </tr>
+                }
+            </tbody>
+            </table>
+            
+        <table class="unstyledTable">
+            <thead>
+            <tr>
+                @for(i <- 0 until controller.gameState.board.size) {
+                    <th> 
+                        @i
+                    </th>
 
-            }
-        </tr>
-        </thead>
-        <tbody>
-            @for(i <- 0 until controller.gameState.board.size) {
-                <td>[
-                    @for(j <- 0 until controller.gameState.players._1.indices.size) {       
-                        @if(controller.gameState.players._1(j).homePosition == i){
-                            @controller.gameState.players._1(j).color(0)H
-                        } else {
-                         
+                }
+            </tr>
+            </thead>
+            <tbody>
+                @for(i <- 0 until controller.gameState.board.size) {
+                    <td id="player"+i>[
+                        @for(j <- 0 until controller.gameState.players._1.indices.size) {       
+                            @if(controller.gameState.players._1(j).homePosition == i){
+                                @controller.gameState.players._1(j).color(0)H
+                            } else {
+                            
+                            }
+                        }
+                        @controller.gameState.board.cell(i).p match {
+                            case Some(p) => {_@controller.gameState.board.cell(i).getColor(0)@p.getPieceNum(i)}
+                            case None => {____}
+                        }
+                    ]
+                    </td>
+                }
+            </tbody>
+            </table>
+            <h2>CurrentPlayerCards: @controller.gameState.actualPlayer.nameAndIdx._1</h2>
+            @for(i <- 0 until controller.gameState.actualPlayer.cardList.size) {
+                    
+                <div class="card">
+                    @if(controller.gameState.actualPlayer.cardList(i).task.equals("swap")) {
+                        
+                        <form action=/selectSwap>
+                            <input name="cardNum" value="@i" style="display: none">
+                                <button> @controller.gameState.actualPlayer.cardList(i).symbol</button>
+                            </input>
+                            <input name="otherPlayer" value="otherPlayer">
+                            <input name="pieceNum1" value="pieceNum1">
+                            <input name="pieceNum2" value="pieceNum2">
+                        </form>
+                    } else {
+                        @for(j <- 0 until controller.gameState.actualPlayer.cardList(i).symbol.split("\\s+").size) {
+                        <form action=/selectCardAndPiece>
+                        <input name="cardNum" value="@i" style="display: none">
+                            <button name="cardOption" value="@j"> @controller.gameState.actualPlayer.cardList(i).symbol.split("\\s+")(j)</button>
+                        </input>
+                        <input name="pieceNum" value="0">
+                        </form>
                         }
                     }
-                    @controller.gameState.board.cell(i).p match {
-                        case Some(p) => {_@controller.gameState.board.cell(i).getColor(0)@p.getPieceNum(i)}
-                        case None => {____}
-                    }
-                ]
-                </td>
-            }
-        </tbody>
-        </table>
-
-        <h2>CurrentPlayerCards: @controller.gameState.actualPlayer.nameAndIdx._1</h2>
-        @for(i <- 0 until controller.gameState.actualPlayer.cardList.size) {
-                @if(controller.gameState.actualPlayer.cardList(i).task.equals("swap")) {
-                    
-                    <form action=/selectSwap>
-                        <input name="cardNum" value="@i" style="display: none">
-                            <button> @controller.gameState.actualPlayer.cardList(i).symbol</button>
-                        </input>
-                        <input name="otherPlayer" value="otherPlayer">
-                        <input name="pieceNum1" value="pieceNum1">
-                        <input name="pieceNum2" value="pieceNum2">
-                    </form>
-                } else {
-                    @for(j <- 0 until controller.gameState.actualPlayer.cardList(i).symbol.split("\\s+").size) {
-                    <form action=/selectCardAndPiece>
-                    <input name="cardNum" value="@i" style="display: none">
-                        <button name="cardOption" value="@j"> @controller.gameState.actualPlayer.cardList(i).symbol.split("\\s+")(j)</button>
-                    </input>
-                    <input name="pieceNum" value="0">
-                    </form>
-                    }
-                }
-        }
-   
-    </center>
+                </div>
+            }   
+    </div>
 }
