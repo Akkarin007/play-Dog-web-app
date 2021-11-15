@@ -25,8 +25,8 @@
                 <p class="lead mb-4">Have fun!</p>
             </div>
             <div class="overflow-hidden" style="max-height: 60vh;">
-                <div class="container px-5">
-                    <table class="table table-striped table-sm">
+                <div class="container px-5 board">
+                    <table class="table table-striped table-sm customTable">
                         <thead>
                             <tr>
                                 <th>PlayerName</th>
@@ -48,34 +48,79 @@
                 </div>
             </div>
         </div>
-
-
-        <table class="board ">
-            <thead>
-                <tr>
-                    @for(i <- 0 until controller.gameState.board.size) { <th>
-                        @i
-                        </th>
-    
-                        }
-                </tr>
-            </thead>
-            <tbody>
-                @for(i <- 0 until controller.gameState.board.size) { <td>[
-                    @for(j <- 0 until controller.gameState.players._1.indices.size) {
-                        @if(controller.gameState.players._1(j).homePosition==i){
-                        @controller.gameState.players._1(j).color(0)H } else { } } @controller.gameState.board.cell(i).p match { 
-                                case Some(p)=> {_@controller.gameState.board.cell(i).getColor(0)@p.getPieceNum(i)}
-                                case None => {____}
+    </div>
+            <table class="customTable">
+                <thead>
+                    <tr>
+                        @for(i <- 0 until controller.gameState.board.size) { 
+                            
+                            <th>
+                                
+                            <div class="cellHeader">
+                   
+                            </div>
+                            </th>
+        
                             }
-                        ]
+                    </tr>
+                </thead>
+                <tbody>
+                    @for(i <- 0 until controller.gameState.board.size) { 
+                        
+                        <td>
+                            <div >
+                        @for(j <- 0 until controller.gameState.players._1.indices.size) {
+                            @if(controller.gameState.players._1(j).homePosition==i){
+                                <button class="invisibleBtn"><img src="@routes.Assets.versioned("images/icons/field.png")"
+                                    class="img-fluid  shadow-lg " alt="Example image" loading="lazy"
+                                    width="50" ></button>} else { } } @controller.gameState.board.cell(i).p match { 
+                                    case Some(p)=> { 
+                                        @p.color match {
+                                            case "red" => {
+                                                <button class="invisibleBtn"><img src="@routes.Assets.versioned("images/icons/red.png")"
+                                            class="img-fluid  shadow-lg " alt="Example image" loading="lazy"
+                                            width="50" ></button>
+                                        }   case "blau" => {
+                                            <button class="invisibleBtn"><img src="@routes.Assets.versioned("images/icons/blau.png")"
+                                            class="img-fluid  shadow-lg " alt="Example image" loading="lazy"
+                                            width="50" >
+                                        </button>
+                                        }   case "yellow" => {
+                                            <button class="invisibleBtn"><img src="@routes.Assets.versioned("images/icons/yellow.png")"
+                                            class="img-fluid  shadow-lg " alt="Example image" loading="lazy"
+                                            width="50" >
+                                        </button>
+                                        }   case "white" => {
+                                            <button class="invisibleBtn"><img src="@routes.Assets.versioned("images/icons/white.png")"
+                                            class="img-fluid  shadow-lg " alt="Example image" loading="lazy"
+                                            width="50" >
+                                        </button>
+                                        }
+                                        case "green" => {
+                                            <button class="invisibleBtn"><img src="@routes.Assets.versioned("images/icons/green.png")"
+                                            class="img-fluid  shadow-lg " alt="Example image" loading="lazy"
+                                            width="50" >
+                                        </button>
+                                        }
+                                            
+                                    }}
+                                    case None => {
+                                        <button class="invisibleBtn"><img src="@routes.Assets.versioned("images/icons/field.png")"
+                                            class="img-fluid  shadow-lg " alt="Example image" loading="lazy"
+                                            width="50" ></button>
+                                    }
+                                }
+                            
+                                </div>  
+                            }
                         </td>
-                        }
-            </tbody>
-        </table>
+                </tbody>
+            </table>
 
 
 
+
+            <div class="container py-4">
         <div class="px-4 pt-5 my-5 text-center border-bottom">
             <h1 class="display-4 fw-bold">CurrentPlayerCards: @controller.gameState.actualPlayer.nameAndIdx._1</h1>
             <div class="col-lg-6 mx-auto">
@@ -136,4 +181,5 @@
         </div>  
 
     </div>
+</div>
 }

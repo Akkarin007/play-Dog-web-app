@@ -40,6 +40,15 @@
         background-color: rgb(236, 236, 236);
         padding: 20px;
     }
+
+    .customTable {
+        margin-left: auto;
+        margin-right: auto;
+        border: 3px solid rgb(168, 168, 168);
+        border-radius: 5px;
+        background-color: rgb(255, 255, 255);
+        margin-bottom: 2%;
+    }
     .crads img {
         
         
@@ -58,26 +67,35 @@
     .playCards {
     
     }
+
+    
     .playCards .col {
         width: 15%;
     }
+
+    .cellHeader {
+        padding-top: 25px;
+        width: auto;
+        text-align: center;
+    }
+
+    .customTable {
+        align-items: center;
+        border: none;
+    }
     
     .board {
-        background-color: rgb(236, 236, 236);
-        padding-left: 10%;
-        padding-right: 10%;
-        padding-top: 2%;
-        padding-bottom: 2%;
-        margin-left: 10%;
-        margin-right: 10%;
-        margin-top: 2%;
-        margin-bottom: 5%;
-        border: 3px solid grey;
-        border-radius: 5px;
-        background-color: rgb(236, 236, 236);
-        padding: 20px;
 
+    }
 
+    .invisibleBtn {
+            cursor: pointer;
+            border: 1px solid transparent;
+            background-color: transparent;
+            height: 50px;
+            width: 50px;
+            box-shadow: 0 6px 6px rgba(0, 0, 0, 0.6);
+            border-radius: 15em;
     }
     
     .cards {
