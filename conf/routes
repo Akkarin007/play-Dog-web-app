@@ -20,10 +20,10 @@ GET     /playerhands                controllers.HomeController.playerhands()
 GET     /selectCardWithOption              controllers.HomeController.selectCardWithOption(cardNum: Int, cardOption:Int)
 GET     /createPlayers/:name1/:name2/:name3/:name4/:amountPieces/:amountCards  controllers.HomeController.createPlayers(name1: String, name2: String, name3: String, name4: String, amountPieces: Int, amountCards: Int)
 
-GET     /selectSwap     controllers.HomeController.selectSwap(cardNum: Int, otherPlayer: Int, pieceNum1: Int, pieceNum2: Int)
+GET     /selectSwap/:cardNum/:otherPlayer/:pieceNum1/:pieceNum2    controllers.HomeController.selectSwap(cardNum: Int, otherPlayer: Int, pieceNum1: Int, pieceNum2: Int)
 
 GET     /selectCard    controllers.HomeController.selectCard(cardNum: Int)
 
-GET     /selectCardAndPiece   controllers.HomeController.selectCardAndPiece(cardNum: Int, cardOption: Int, pieceNum: Int) 
+GET     /selectCardAndPiece/:cardNum/:cardOption/:pieceNum   controllers.HomeController.selectCardAndPiece(cardNum: Int, cardOption: Int, pieceNum: Int) 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

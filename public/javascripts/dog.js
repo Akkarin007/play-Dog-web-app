@@ -1,40 +1,81 @@
-let size = 9
-let blocksize = 3
 
-class GameState {
-    
-    selectedState = [];
-
-}
-
-
-function initListener(gameState) {
+selectedState = [];
+function initListener() {
     document.querySelectorAll(".field").forEach((field) => {
         field.addEventListener('click', function () {
-                request(field.id, gameState, this);
+                request(field.id, this);
         })
+    })
+    document.querySelectorAll('button[name="card"]').forEach((field) => {
+   
+        field.addEventListener('click', function () {
+            if(selectedState.length > 0){
+                requestSelection(selectedState[0].piece, this);
+            } else{
+                requestSelection(0, this);
+            }
+        });
+    });
+    document.querySelectorAll('button[name="swap"]').forEach((field) => {
+   
+        field.addEventListener('click', function () {
+            if (selectedState.length == 2){
+                requestSwap(this);
+            } else {
+                alert('invalid move')
+            }
+        });
+    });
+}
+
+function refreshDom() {
+    selectedState = [];
+    initListener();
+}
+
+function requestSelection( pieceNum, element) {
+    fetch(`/selectCardAndPiece/${element.id}/${element.value}/${pieceNum}`, {
+        method: 'get',
+    }).then((resp) => {
+        resp.text().then((text) => {
+            document.body.innerHTML = text;
+            refreshDom()
+        });
     })
 }
 
-function request(fieldIdx, gameState, element) {
+function requestSwap(element) {
+    fetch(`/selectSwap/${element.id}/${selectedState[1].playerIdx}/${selectedState[0].piece}/${selectedState[1].piece}`, {
+        method: 'get',
+    }).then((resp) => {
+        if(resp.ok){
+            resp.text().then((text) => {
+                document.body.innerHTML = text;
+                refreshDom()
+            });
+        }
+    })
+}
+
+function request(fieldIdx, element) {
     fetch('/isOwnPiece/' + fieldIdx, {
         method: 'get',
     }).then((resp) => {
         resp.text().then((text) => {
             const array = text.split(" ");
-            selection(array, fieldIdx, gameState, element)
+            selection(array, fieldIdx, element)
         })
     })
 }
 
-function selection(state, fieldIdx, gameState, element){
-    const selectedState = gameState.selectedState;
+function selection(state, fieldIdx,  element){
+    selectedState;
 
     if (selectedState.length == 2) {
         selectedState.forEach((selectedEl) => {
             $(`#${selectedEl.fieldIdx}`).css("background-color", "transparent");
         })
-        gameState.selectedState = [];
+        selectedState = [];
     } else if (!selectedState.find(function (selection) { return selection.fieldIdx === fieldIdx })) {
         
         if(state[0] == "true" && selectedState.length === 0 || state[0] == "false" && selectedState.length === 1) {
@@ -58,9 +99,6 @@ function getStateObj(state, fieldIdx){
 
 $(document).ready(function () {
     console.log("Document is ready, filling grid")
-    const gameState = new GameState();
-
-    initListener(gameState);
-    request();
+    initListener();
 });
 
