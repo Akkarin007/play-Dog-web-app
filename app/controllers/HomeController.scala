@@ -43,7 +43,25 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
     gameController.initGame(playerNames, amountPieces, amountCards, sizeBoard)
     Ok(views.html.initGame(gameController))
   }
+  
+  def isOwnPiece(fieldIdx: String) = Action {
+    var result = false;
+    gameController.gameState.board.cell(fieldIdx.toInt).p match { 
+      case Some(p)=> { 
+          result = (p.nameAndIdx._1 == gameController.gameState.actualPlayer.nameAndIdx._1)
 
+          var pieceIdx = p.getPieceNum(fieldIdx.toInt);
+          if (result) {
+            Ok("true " + pieceIdx + " " + p.nameAndIdx._2)
+          } else {
+            Ok("false " + pieceIdx + " " + p.nameAndIdx._2)
+          }
+      }
+      case None => {
+          Ok("none")
+      }
+  }
+}
   def selectCardWithOption(cardNum: Int, cardOption: Int) = Action {
     gameController.manageRound(InputCardMaster.UpdateCardInput()
               .withCardNum((cardNum, cardOption))

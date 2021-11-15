@@ -67,7 +67,6 @@
     .playCards {
     
     }
-
     
     .playCards .col {
         width: 15%;
@@ -88,16 +87,28 @@
 
     }
 
-    .invisibleBtn {
+  
+    .field {
             cursor: pointer;
-            border: 1px solid transparent;
+            border: 0px solid transparent;
             background-color: transparent;
             height: 50px;
             width: 50px;
             box-shadow: 0 6px 6px rgba(0, 0, 0, 0.6);
             border-radius: 15em;
+            padding: 0;
     }
     
+
+    .field:hover {
+        cursor: pointer;
+        background-color: goldenrod;
+        height: 50px;
+        width: 50px;
+        box-shadow: 0 6px 6px rgba(0, 0, 0, 0.6);
+        border-radius: 15em;
+    }
+
     .cards {
         align-items: center;
         border-radius: 20px !important;

@@ -69,48 +69,43 @@
                         
                         <td>
                             <div >
-                        @for(j <- 0 until controller.gameState.players._1.indices.size) {
-                            @if(controller.gameState.players._1(j).homePosition==i){
-                                <button class="invisibleBtn"><img src="@routes.Assets.versioned("images/icons/field.png")"
-                                    class="img-fluid  shadow-lg " alt="Example image" loading="lazy"
-                                    width="50" ></button>} else { } } @controller.gameState.board.cell(i).p match { 
+            
+                                    @controller.gameState.board.cell(i).p match { 
                                     case Some(p)=> { 
                                         @p.color match {
                                             case "red" => {
-                                                <button class="invisibleBtn"><img src="@routes.Assets.versioned("images/icons/red.png")"
+                                                <button id="@i" class="field"><img src="@routes.Assets.versioned("images/icons/red.png")"
                                             class="img-fluid  shadow-lg " alt="Example image" loading="lazy"
-                                            width="50" ></button>
+                                            ></button>
                                         }   case "blau" => {
-                                            <button class="invisibleBtn"><img src="@routes.Assets.versioned("images/icons/blau.png")"
+                                            <button id="@i" class="field"><img src="@routes.Assets.versioned("images/icons/blau.png")"
                                             class="img-fluid  shadow-lg " alt="Example image" loading="lazy"
-                                            width="50" >
+                                            >
                                         </button>
                                         }   case "yellow" => {
-                                            <button class="invisibleBtn"><img src="@routes.Assets.versioned("images/icons/yellow.png")"
+                                            <button id="@i" class="field"><img src="@routes.Assets.versioned("images/icons/yellow.png")"
                                             class="img-fluid  shadow-lg " alt="Example image" loading="lazy"
-                                            width="50" >
+                                            >
                                         </button>
                                         }   case "white" => {
-                                            <button class="invisibleBtn"><img src="@routes.Assets.versioned("images/icons/white.png")"
+                                            <button id="@i" class="field"><img src="@routes.Assets.versioned("images/icons/white.png")"
                                             class="img-fluid  shadow-lg " alt="Example image" loading="lazy"
-                                            width="50" >
+                                            >
                                         </button>
                                         }
                                         case "green" => {
-                                            <button class="invisibleBtn"><img src="@routes.Assets.versioned("images/icons/green.png")"
-                                            class="img-fluid  shadow-lg " alt="Example image" loading="lazy"
-                                            width="50" >
+                                            <button id="@i" class="field"><img src="@routes.Assets.versioned("images/icons/green.png")"
+                                            class="img-fluid  shadow-lg " alt="Example image" loading="lazy">
                                         </button>
                                         }
                                             
                                     }}
                                     case None => {
-                                        <button class="invisibleBtn"><img src="@routes.Assets.versioned("images/icons/field.png")"
-                                            class="img-fluid  shadow-lg " alt="Example image" loading="lazy"
-                                            width="50" ></button>
+                                        <button id="@i" class="field"><img src="@routes.Assets.versioned("images/icons/field.png")"
+                                            class="img-fluid  shadow-lg" alt="Example image" loading="lazy"
+                                             ></button>
                                     }
                                 }
-                            
                                 </div>  
                             }
                         </td>
