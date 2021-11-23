@@ -5,7 +5,7 @@ import play.api._
 import play.api.mvc._
 import dog._
 import dog.controller.StateComponent.InputCardMaster
-import play.api.libs.json.{JsNumber, JsObject, Json}
+import play.api.libs.json.{JsNumber, JsObject, Json, JsValue}
 
 /**
  * This controller creates an `Action` to handle HTTP requests to the
@@ -48,21 +48,26 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
   
   def isOwnPiece(fieldIdx: String) = Action {
     var result = false;
+    var jsonResultString: String = "";
     gameController.gameState.board.cell(fieldIdx.toInt).p match { 
       case Some(p)=> { 
           result = (p.nameAndIdx._1 == gameController.gameState.actualPlayer.nameAndIdx._1)
 
           var pieceIdx = p.getPieceNum(fieldIdx.toInt);
           if (result) {
-            Ok("true " + pieceIdx + " " + p.nameAndIdx._2)
+            jsonResultString = "true " + pieceIdx + " " + p.nameAndIdx._2
           } else {
-            Ok("false " + pieceIdx + " " + p.nameAndIdx._2)
+            jsonResultString = "false " + pieceIdx + " " + p.nameAndIdx._2
           }
       }
       case None => {
-          Ok("none")
+          jsonResultString = "none"
       }
+   
   }
+     Ok(Json.obj(
+        "isOwnPiece" -> jsonResultString
+      ))
 }
   def selectCardWithOption(cardNum: Int, cardOption: Int) = Action {
     gameController.manageRound(InputCardMaster.UpdateCardInput()
@@ -93,15 +98,21 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
     Ok(views.html.initGame(gameController))
     }
   
-  def selectCardAndPiece(cardNum: Int, cardOption: Int, pieceNum: Int) = Action {
-    val fieldPos = gameController.gameState.actualPlayer.piece(pieceNum).pos
-            gameController.selectedField(fieldPos)
-            gameController.manageRound(InputCardMaster.UpdateCardInput()
-              .withCardNum((cardNum, cardOption))
-              .withSelectedCard(gameController.actualPlayedCard(cardNum))
-              .buildCardInput())
-    Ok(views.html.initGame(gameController))
+  def selectCardAndPiece: Action[JsValue] = Action(parse.json) {
+    setRequest: Request[JsValue] => {
+      val cardNum = (setRequest.body \ "cardNum").as[String]
+      val cardOption = (setRequest.body \ "cardOption").as[String]
+      val pieceNum = (setRequest.body \ "pieceNum").as[Int]
+      val fieldPos = gameController.gameState.actualPlayer.piece(pieceNum.toInt).pos
+      gameController.selectedField(fieldPos)
+      gameController.manageRound(InputCardMaster.UpdateCardInput()
+        .withCardNum((cardNum.toInt, cardOption.toInt))
+        .withSelectedCard(gameController.actualPlayedCard(cardNum.toInt))
+        .buildCardInput())
+      print("sadasdasdasdasdasd")
+      Ok(boardToJson)
     }
+  }
 
   def printBoard() = Action {
     Ok(printDog())
@@ -135,18 +146,18 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
     Ok("createNewBoard" + gameController.createPlayers(List(name1,name2,name3,name4), amountPieces, amountCards))
   }
 
-  def getJsonBoard = Action {
+  def getJsonBoard: Action[AnyContent] = Action {
     Ok(boardToJson)
   }
 
   def boardToJson: JsObject = {
     Json.obj(
       // board data
-      "boardSize" -> JsNumber(gameController.gameStateMaster.boardSize),
+      "boardSize" -> JsNumber(gameController.gameState.board.size),
 
       // player data
       "playerNumber" -> JsNumber(gameController.gameStateMaster.pieceAmount),
-      "currentPlayer" -> JsNumber(gameController.gameStateMaster.actualPlayerIdx),
+      "currentPlayer" -> JsNumber(gameController.gameState.actualPlayer.nameAndIdx._2),
       "players" -> Json.toJson(
         for {
           idx <- 0 until gameController.gameStateMaster.playerNames.size,
@@ -155,7 +166,7 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
             "player index" -> JsNumber(idx),
             "name" -> gameController.gameStateMaster.playerNames(idx),
             "color" -> gameController.gameStateMaster.colors(idx),
-            "playerHome" -> JsNumber(gameController.gameStateMaster.playerVector(idx).homePosition),
+            "homePosition" -> JsNumber(gameController.gameStateMaster.playerVector(idx).homePosition),
             "pieces" -> Json.toJson(
               for {
                 piece_idx <- 0 until gameController.gameStateMaster.pieceAmount,
@@ -177,14 +188,9 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
               }
             ),
             "house" -> Json.toJson(
-              for {
-                house_idx <- 0 until gameController.gameStateMaster.playerVector(idx).inHouse.length
-              } yield {
                 Json.obj(
-                  "house_idx" -> JsNumber(house_idx),
-                  "house_piece" -> JsNumber(gameController.gameStateMaster.playerVector(idx).inHouse(house_idx))
+                  "inHouse" -> JsNumber(gameController.gameStateMaster.playerVector(idx).inHouse.length)
                 )
-              }
             )
           )
         }

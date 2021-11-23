@@ -51,7 +51,7 @@ sizeBoard = 20
 
 function startGame(element) {
     $.ajax({
-        method: "Get",
+        method: "GET",
         url: "/newGame/" + amountPieces +"/" + amountCards + "/" + sizeBoard,
         dataType: "html",
 
@@ -67,15 +67,56 @@ function refreshDom() {
     initListener();
 }
 
-function requestSelection( pieceNum, element) {
-    $.ajax({
-        method: "GET",
-        url: `/selectCardAndPiece/${element.id}/${element.value}/${pieceNum}`,
-        dataType: "html",
+function updateDOM(player) {
+    player.players.forEach(ply => {
+        const color = ply.color;
+        ply.pieces.forEach(piece => {
+            const pos = piece.piece_pos;
+            console.log(piece.piece_pos)
+            // TODO alle die nicht aufm Spielfeld sind ignorieren. HomePos ist immer da. deshalb sind initial spieler aufm feld
+            $(`#${pos}`).html(getFieldHtml(color, pos))
+        })
+    })
+}
 
+function getFieldHtml(color, pos) {
+    switch(color) {
+        case 'red':
+            return `<img src="/assets/images/icons/red.png" class="img-fluid  shadow-lg" alt="Example image" loading="lazy">`
+          break;
+        case 'blau':
+            return `<img src="/assets/images/icons/blau.png" class="img-fluid  shadow-lg" alt="Example image" loading="lazy">`
+          break;
+        case 'yellow':
+            return `<img src="/assets/images/icons/yellow.png" class="img-fluid  shadow-lg" alt="Example image" loading="lazy">`
+        break;
+        case 'white':
+            return `<img src="/assets/images/icons/white.png" class="img-fluid  shadow-lg" alt="Example image" loading="lazy">`
+            break;
+        case 'green':
+            return `<img src="/assets/images/icons/green.png" class="img-fluid  shadow-lg" alt="Example image" loading="lazy">`
+        break;
+        default:
+          return `<img src="/assets/images/icons/field.png" class="img-fluid  shadow-lg" alt="Example image" loading="lazy">`
+      } 
+}
+
+function requestSelection( pieceNum, element) {
+ 
+    return $.ajax({
+        method: "POST",
+        url: "/selectCardAndPiece",
+        dataType: "json",
+        contentType: "application/json",
+        data: JSON.stringify({
+            "cardNum": element.id,
+            "cardOption": element.value,
+            "pieceNum": pieceNum
+        }),
         success: function (result) {
-            document.body.innerHTML = result;
-            refreshDom();
+            //document.body.innerHTML = result;
+            console.log(JSON.stringify(result))
+            updateDOM(result)
         }
     });
 }
@@ -98,10 +139,11 @@ function request(fieldIdx, element) {
     $.ajax({
         method: "GET",
         url: '/isOwnPiece/' + fieldIdx,
-        dataType: "text",
+        dataType: "json",
         
         success: function (result) {
-            const array = result.split(" ");
+            const array = result.isOwnPiece.split(" ");
+            console.log("sas", array);
             selection(array, fieldIdx, element)
         }
     });
@@ -154,6 +196,7 @@ class Players {
     }
 
     fill(json) {
+        console.log("players")
         this.numPlayers = json.playerNumber;
         this.currentPlayer = json.currentPlayer;
         this.players = [];
@@ -162,14 +205,16 @@ class Players {
             players[index] = new Player(player.playerIdx,
                 player.name,
                 player.color,
-                player.playerHome,
+                player.homePosition,
                 player.pieces,
                 player.garage,
                 player.house);
             index += 1;
         }
+        
     }
 }
+
 
 class Player {
     constructor(playerIdx, name, color, home, pieces, garage, house) {
@@ -184,27 +229,30 @@ class Player {
 }
 
 let board = new Board()
-let players = new Players()
 
-
-function loadJson() {
+function loadJsonAndUpdateDom() {
     $.ajax({
         method: "GET",
         url: "/json",
         dataType: "json",
 
         success: function (result) {
-            board = new Board();
-            players = new Players();
-            board.fill(result);
-            players.fill(result);
+            console.log(JSON.stringify(result))
+            
+            //board = new Board();
+            //players = new Players();
+            //board.fill(result);
+            //players.fill(result);
+
+            refreshDom();
         }
     });
 }
 
 $(document).ready(function () {
     console.log("Document is ready, filling grid")
-    loadJson();
+    loadJsonAndUpdateDom();
+
     initListener();
 });
 
