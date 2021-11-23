@@ -8,7 +8,7 @@ GET     /                           controllers.HomeController.index()
 
 GET     /isOwnPiece/:fieldIdx       controllers.HomeController.isOwnPiece(fieldIdx: String)         
 GET     /about                      controllers.HomeController.about
-GET     /newGame                    controllers.HomeController.newGame(amountPieces: Int, amountCards: Int, sizeBoard: Int)
+GET     /newGame/:amountPieces/:amountCards/:sizeBoard              controllers.HomeController.newGame(amountPieces: Int, amountCards: Int, sizeBoard: Int)
 GET     /initGame                   controllers.HomeController.initGame
 GET     /Board                      controllers.HomeController.printBoard()
 GET     /load                       controllers.HomeController.load()

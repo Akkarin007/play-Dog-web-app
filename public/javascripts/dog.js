@@ -27,6 +27,39 @@ function initListener() {
             }
         });
     });
+    document.querySelectorAll('button[name="startGame"]').forEach((field) => {
+        field.addEventListener('click', function () {
+            startGame();
+        });
+    });
+    document.querySelectorAll('input[class="form-control front"]').forEach((field) => {
+        field.addEventListener('input', function () {
+            if (this.name == "amountPieces") {
+                amountPieces = this.value
+            } else if (this.name == "amountCards") {
+                amountCards = this.value
+            } else if (this.name == "sizeBoard") {
+                sizeBoard = this.value
+            }
+        });
+    });
+}
+
+amountCards = 4
+amountPieces = 6
+sizeBoard = 20
+
+function startGame(element) {
+    $.ajax({
+        method: "Get",
+        url: "/newGame/" + amountPieces +"/" + amountCards + "/" + sizeBoard,
+        dataType: "html",
+
+        success: function (result) {
+            document.body.innerHTML = result;
+            refreshDom();
+        }
+    });
 }
 
 function refreshDom() {
@@ -35,39 +68,43 @@ function refreshDom() {
 }
 
 function requestSelection( pieceNum, element) {
-    $()
-    fetch(`/selectCardAndPiece/${element.id}/${element.value}/${pieceNum}`, {
-        method: 'get',
-    }).then((resp) => {
-        resp.text().then((text) => {
-            document.body.innerHTML = text;
-            refreshDom()
-        });
-    })
+    $.ajax({
+        method: "GET",
+        url: `/selectCardAndPiece/${element.id}/${element.value}/${pieceNum}`,
+        dataType: "html",
+
+        success: function (result) {
+            document.body.innerHTML = result;
+            refreshDom();
+        }
+    });
 }
 
 function requestSwap(element) {
-    fetch(`/selectSwap/${element.id}/${selectedState[1].playerIdx}/${selectedState[0].piece}/${selectedState[1].piece}`, {
-        method: 'get',
-    }).then((resp) => {
-        if(resp.ok){
-            resp.text().then((text) => {
-                document.body.innerHTML = text;
-                refreshDom()
-            });
+    $.ajax({
+        method: "GET",
+        url: `/selectSwap/${element.id}/${selectedState[1].playerIdx}/${selectedState[0].piece}/${selectedState[1].piece}`,
+        dataType: "html",
+
+        success: function (result) {
+            document.body.innerHTML = result;
+            refreshDom();
         }
-    })
+    });
+
 }
 
 function request(fieldIdx, element) {
-    fetch('/isOwnPiece/' + fieldIdx, {
-        method: 'get',
-    }).then((resp) => {
-        resp.text().then((text) => {
-            const array = text.split(" ");
+    $.ajax({
+        method: "GET",
+        url: '/isOwnPiece/' + fieldIdx,
+        dataType: "text",
+        
+        success: function (result) {
+            const array = result.split(" ");
             selection(array, fieldIdx, element)
-        })
-    })
+        }
+    });
 }
 
 function selection(state, fieldIdx,  element){
