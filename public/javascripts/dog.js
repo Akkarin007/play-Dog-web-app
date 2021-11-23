@@ -1,5 +1,6 @@
 
-selectedState = [];
+selectedState = []
+
 function initListener() {
     document.querySelectorAll(".field").forEach((field) => {
         field.addEventListener('click', function () {
@@ -34,6 +35,7 @@ function refreshDom() {
 }
 
 function requestSelection( pieceNum, element) {
+    $()
     fetch(`/selectCardAndPiece/${element.id}/${element.value}/${pieceNum}`, {
         method: 'get',
     }).then((resp) => {
@@ -97,8 +99,75 @@ function getStateObj(state, fieldIdx){
     }
 }
 
+class Board {
+    constructor() {
+        this.size = 0;
+    }
+
+    fill(json) {
+        this.size = json.boardSize
+    }
+}
+
+class Players {
+    constructor() {
+        this.numPlayers = 0;
+        this.players = [];
+        this.currentPlayer = 0;
+    }
+
+    fill(json) {
+        this.numPlayers = json.playerNumber;
+        this.currentPlayer = json.currentPlayer;
+        this.players = [];
+        let index = 0
+        for (var player in json) {
+            players[index] = new Player(player.playerIdx,
+                player.name,
+                player.color,
+                player.playerHome,
+                player.pieces,
+                player.garage,
+                player.house);
+            index += 1;
+        }
+    }
+}
+
+class Player {
+    constructor(playerIdx, name, color, home, pieces, garage, house) {
+        this.name = name;
+        this.playerIdx = playerIdx;
+        this.color = color;
+        this.home = home;
+        this.pieces = pieces;
+        this.garage = garage;
+        this.house = house;
+    }
+}
+
+let board = new Board()
+let players = new Players()
+
+
+function loadJson() {
+    $.ajax({
+        method: "GET",
+        url: "/json",
+        dataType: "json",
+
+        success: function (result) {
+            board = new Board();
+            players = new Players();
+            board.fill(result);
+            players.fill(result);
+        }
+    });
+}
+
 $(document).ready(function () {
     console.log("Document is ready, filling grid")
+    loadJson();
     initListener();
 });
 

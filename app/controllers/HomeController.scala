@@ -5,6 +5,8 @@ import play.api._
 import play.api.mvc._
 import dog._
 import dog.controller.StateComponent.InputCardMaster
+import play.api.libs.json.{JsNumber, JsObject, Json}
+
 /**
  * This controller creates an `Action` to handle HTTP requests to the
  * application's home page.
@@ -131,5 +133,62 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
 
   def createPlayers(name1: String, name2: String, name3: String, name4: String, amountPieces: Int, amountCards: Int) = Action {
     Ok("createNewBoard" + gameController.createPlayers(List(name1,name2,name3,name4), amountPieces, amountCards))
+  }
+
+  def getJsonBoard = Action {
+    Ok(boardToJson)
+  }
+
+  def boardToJson: JsObject = {
+    Json.obj(
+      // board data
+      "boardSize" -> JsNumber(gameController.gameStateMaster.boardSize),
+
+      // player data
+      "playerNumber" -> JsNumber(gameController.gameStateMaster.pieceAmount),
+      "currentPlayer" -> JsNumber(gameController.gameStateMaster.actualPlayerIdx),
+      "players" -> Json.toJson(
+        for {
+          idx <- 0 until gameController.gameStateMaster.playerNames.size,
+        } yield {
+          Json.obj(
+            "player index" -> JsNumber(idx),
+            "name" -> gameController.gameStateMaster.playerNames(idx),
+            "color" -> gameController.gameStateMaster.colors(idx),
+            "playerHome" -> JsNumber(gameController.gameStateMaster.playerVector(idx).homePosition),
+            "pieces" -> Json.toJson(
+              for {
+                piece_idx <- 0 until gameController.gameStateMaster.pieceAmount,
+              } yield {
+                Json.obj(
+                  "piece_idx" -> JsNumber(piece_idx),
+                  "piece_pos" -> JsNumber(gameController.gameStateMaster.playerVector(idx).piecePosition(piece_idx))
+                )
+              }
+            ),
+            "garage" -> Json.toJson(
+              for {
+                garage_idx <- 0 until gameController.gameStateMaster.playerVector(idx).garage.size
+              } yield {
+                Json.obj(
+                  "garage_idx" -> JsNumber(garage_idx),
+                  "garage_piece" -> JsNumber(gameController.gameStateMaster.playerVector(idx).garage.getPieceIndex(garage_idx))
+                )
+              }
+            ),
+            "house" -> Json.toJson(
+              for {
+                house_idx <- 0 until gameController.gameStateMaster.playerVector(idx).inHouse.length
+              } yield {
+                Json.obj(
+                  "house_idx" -> JsNumber(house_idx),
+                  "house_piece" -> JsNumber(gameController.gameStateMaster.playerVector(idx).inHouse(house_idx))
+                )
+              }
+            )
+          )
+        }
+      )
+    )
   }
 }
