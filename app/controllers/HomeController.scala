@@ -109,7 +109,6 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
         .withCardNum((cardNum.toInt, cardOption.toInt))
         .withSelectedCard(gameController.actualPlayedCard(cardNum.toInt))
         .buildCardInput())
-      print("sadasdasdasdasdasd")
       Ok(boardToJson)
     }
   }
@@ -188,9 +187,22 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
               }
             ),
             "house" -> Json.toJson(
+              for {
+                house_idx <- 0 until gameController.gameStateMaster.playerVector(idx).inHouse.length
+              } yield {
                 Json.obj(
-                  "inHouse" -> JsNumber(gameController.gameStateMaster.playerVector(idx).inHouse.length)
+                  "inHouse" -> JsNumber(gameController.gameStateMaster.playerVector(idx).inHouse(house_idx))
                 )
+              }
+            ),
+            "cards" -> Json.toJson(
+              for {
+                card_idx <- 0 until gameController.gameStateMaster.playerVector(idx).cardList.length
+              } yield {
+                Json.obj(
+                  "card_symbol" -> gameController.gameStateMaster.playerVector(idx).cardList(card_idx).symbol
+                )
+              }
             )
           )
         }

@@ -116,57 +116,49 @@
 
 
             <div class="container py-4">
-        <div class="px-4 pt-5 my-5 text-center border-bottom">
+            <div class="px-4 pt-5 my-5 text-center border-bottom">
             <h1 class="display-4 fw-bold">CurrentPlayerCards: @controller.gameState.actualPlayer.nameAndIdx._1</h1>
             <div class="col-lg-6 mx-auto">
                 <p class="lead mb-4">Choose Your Cards</p>
 
             </div>
+
             <div class="overflow" >
                 <div class="container px-5">
                     <div class="album py-5 bg-light">
                         <div class="container">
-                            <div class="row playCards row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
-                                @for(cardNum <- 0 until controller.gameState.actualPlayer.cardList.size) { <div class="col">
-                                    <div class="card shadow-sm cards">
-                                        <img src="@routes.Assets.versioned("images/cards/1 11 play.png")"
-                                            class="img-fluid  shadow-lg " alt="Example image" loading="lazy"
-                                            width="200" >
-                                        <div class="card-body">
-                                            <p class="card-text">@controller.gameState.actualPlayer.cardList(cardNum).symbol</p>
-                                            <div class="d-flex justify-content-between align-items-center">
-                
-                
-                                                @if(controller.gameState.actualPlayer.cardList(cardNum).task.equals("swap")) {
-                
-                                                    <center>
-                                                        <button class="btn btn-dark front" name="swap" id="@cardNum"> @controller.gameState.actualPlayer.cardList(cardNum).symbol</button>
-                                                    </center>
-                                                    </form>
-                                                } else {
-                                                    @for(cardOption <- 0 until
-                                                        controller.gameState.actualPlayer.cardList(cardNum).symbol.split("\\s+").size) {
-                                                        
-                                                            <center>
-         
-                                                                <button class="btn btn-dark front" name="card" id="@cardNum" value="@cardOption"> @controller.gameState.actualPlayer.cardList(cardNum).symbol.split("\\s+")(cardOption)</button>
-                                                            
-                                                            </center>
-                                                        }
-                
-                                                    }
-                                            </div>
-                                        </div>
-                                    </div>
+                            <div class="row playCards row-cols-1 row-cols-sm-2 row-cols-md-3 g-4" id="player_cards">
+
+
                             </div>
-                            }
                         </div>
-                    </div>
                     </div>
                 </div>
             </div>
         </div>  
-
     </div>
 </div>
+
+<template id=template_card>
+    <div class="card shadow-sm cards">
+        <img src="@routes.Assets.versioned("images/cards/1 11 play.png")"
+            class="img-fluid  shadow-lg " alt="Example image" loading="lazy"
+            width="200">
+        <div class="card-body">
+            <p class="card-text"></p>
+            <div class="d-flex justify-content-between align-items-center">
+                
+                
+
+            </div>
+        </div>
+    </div>
+</template>
+
+<template id="template_card_buttons">
+    <center>
+        <button class="btn btn-dark front" name="card"></button>
+    </center>
+</template>
+
 }
