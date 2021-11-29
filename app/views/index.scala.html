@@ -26,18 +26,16 @@
             <p>Change your game preferences here!</p>
           </div>
           <div class="modal-footer flex-column border-top-0 ">
-    
-            <div>
-                <label for="lastName" class="form-label front">AmountPieces</label>
-                <input type="text" class="form-control front" id="amountPieces" name="amountPieces" value="4" placeholder="" required="">
-                <label for="lastName" class="form-label front">amountCards</label>
-                <input type="text" class="form-control front" id="amountCards" name="amountCards" value="6" placeholder="" required="">
-                <label for="lastName" class="form-label front">sizeBoard</label>
-                <input type="text" class="form-control front" id="sizeBoard" name="sizeBoard" value="20" placeholder="" required="">
-                <br></br>
-              <button class="w-100 btn btn-primary btn-lg front", name="startGame">Start Game</button>
+            <form action=/newGame>
+              <label for="lastName" class="form-label front">AmountPieces</label>
+              <input type="text" class="form-control front" id="amountPieces" name="amountPieces" value="4" placeholder="" required="">
+              <label for="lastName" class="form-label front">amountCards</label>
+              <input type="text" class="form-control front" id="amountCards" name="amountCards" value="6" placeholder="" required="">
+              <label for="lastName" class="form-label front">sizeBoard</label>
+              <input type="text" class="form-control front" id="sizeBoard" name="sizeBoard" value="20" placeholder="" required="">
               <br></br>
-            </div>
+            <button class="w-100 btn btn-primary btn-lg front" type="submit">Start Game</button>
+            <br></br>
           </div>
         </div>
       </div>

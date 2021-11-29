@@ -8,7 +8,7 @@ GET     /                           controllers.HomeController.index()
 
 GET     /isOwnPiece/:fieldIdx       controllers.HomeController.isOwnPiece(fieldIdx: String)         
 GET     /about                      controllers.HomeController.about
-GET     /newGame/:amountPieces/:amountCards/:sizeBoard              controllers.HomeController.newGame(amountPieces: Int, amountCards: Int, sizeBoard: Int)
+GET     /newGame                    controllers.HomeController.newGame(amountPieces: Int, amountCards: Int, sizeBoard: Int)
 GET     /initGame                   controllers.HomeController.initGame
 GET     /Board                      controllers.HomeController.printBoard()
 GET     /load                       controllers.HomeController.load()
@@ -20,7 +20,7 @@ GET     /playerhands                controllers.HomeController.playerhands()
 GET     /selectCardWithOption              controllers.HomeController.selectCardWithOption(cardNum: Int, cardOption:Int)
 GET     /createPlayers/:name1/:name2/:name3/:name4/:amountPieces/:amountCards  controllers.HomeController.createPlayers(name1: String, name2: String, name3: String, name4: String, amountPieces: Int, amountCards: Int)
 
-GET     /selectSwap/:cardNum/:otherPlayer/:pieceNum1/:pieceNum2    controllers.HomeController.selectSwap(cardNum: Int, otherPlayer: Int, pieceNum1: Int, pieceNum2: Int)
+POST     /selectSwap    controllers.HomeController.selectSwap
 
 GET     /selectCard    controllers.HomeController.selectCard(cardNum: Int)
 

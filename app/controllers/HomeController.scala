@@ -77,18 +77,24 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
     Ok(views.html.initGame(gameController))
     }
 
-  def selectSwap(cardNum: Int, otherPlayer: Int, pieceNum1: Int, pieceNum2: Int) = Action {
-    val fieldPosOwn = gameController.gameState.actualPlayer.piece(pieceNum1).pos
-            val fieldPosOther = gameController.gameState.players._1(otherPlayer).piece(pieceNum2).pos
-            gameController.selectedField(fieldPosOwn)
-            gameController.selectedField(fieldPosOther)
-            gameController.manageRound(InputCardMaster.UpdateCardInput()
-              .withOtherPlayer(otherPlayer)
-              .withCardNum((cardNum, 0))
-              .withSelectedCard(gameController.actualPlayedCard(cardNum))
-              .buildCardInput())
-    Ok(views.html.initGame(gameController))
+  def selectSwap: Action[JsValue] = Action(parse.json) {
+    setRequest: Request[JsValue] => {
+      val cardNum = (setRequest.body \ "cardNum").as[String]
+      val otherPlayer = (setRequest.body \ "otherPlayer").as[Int]
+      val pieceNum1 = (setRequest.body \ "pieceNum1").as[Int]
+      val pieceNum2 = (setRequest.body \ "pieceNum2").as[Int]
+      val fieldPosOwn = gameController.gameState.actualPlayer.piece(pieceNum1).pos
+      val fieldPosOther = gameController.gameState.players._1(otherPlayer).piece(pieceNum2).pos
+              gameController.selectedField(fieldPosOwn)
+              gameController.selectedField(fieldPosOther)
+              gameController.manageRound(InputCardMaster.UpdateCardInput()
+                .withOtherPlayer(otherPlayer)
+                .withCardNum((cardNum.toInt, 0))
+                .withSelectedCard(gameController.actualPlayedCard(cardNum.toInt))
+                .buildCardInput())
+      Ok(boardToJson)
     }
+  }
     
   def selectCard(cardNum: Int) = Action {
     gameController.manageRound(InputCardMaster.UpdateCardInput()
@@ -155,52 +161,52 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
       "boardSize" -> JsNumber(gameController.gameState.board.size),
 
       // player data
-      "playerNumber" -> JsNumber(gameController.gameStateMaster.pieceAmount),
+      "playerNumber" -> JsNumber(gameController.gameState.players._1.size),
       "currentPlayer" -> JsNumber(gameController.gameState.actualPlayer.nameAndIdx._2),
       "players" -> Json.toJson(
         for {
-          idx <- 0 until gameController.gameStateMaster.playerNames.size,
+          idx <- 0 until gameController.gameState.players._1.size,
         } yield {
           Json.obj(
             "player index" -> JsNumber(idx),
-            "name" -> gameController.gameStateMaster.playerNames(idx),
-            "color" -> gameController.gameStateMaster.colors(idx),
-            "homePosition" -> JsNumber(gameController.gameStateMaster.playerVector(idx).homePosition),
+            "name" -> gameController.gameState.players._1(idx).nameAndIdx._1,
+            "color" -> gameController.gameState.players._1(idx).color,
+            "homePosition" -> JsNumber(gameController.gameState.players._1(idx).homePosition),
             "pieces" -> Json.toJson(
               for {
-                piece_idx <- 0 until gameController.gameStateMaster.pieceAmount,
+                piece_idx <- 0 until gameController.gameState.players._1(idx).piece.size,
               } yield {
                 Json.obj(
                   "piece_idx" -> JsNumber(piece_idx),
-                  "piece_pos" -> JsNumber(gameController.gameStateMaster.playerVector(idx).piecePosition(piece_idx))
+                  "piece_pos" -> JsNumber(gameController.gameState.players._1(idx).piecePosition(piece_idx))
                 )
               }
             ),
             "garage" -> Json.toJson(
               for {
-                garage_idx <- 0 until gameController.gameStateMaster.playerVector(idx).garage.size
+                garage_idx <- 0 until gameController.gameState.players._1(idx).garage.size
               } yield {
                 Json.obj(
                   "garage_idx" -> JsNumber(garage_idx),
-                  "garage_piece" -> JsNumber(gameController.gameStateMaster.playerVector(idx).garage.getPieceIndex(garage_idx))
+                  "garage_piece" -> JsNumber(gameController.gameState.players._1(idx).garage.getPieceIndex(garage_idx))
                 )
               }
             ),
             "house" -> Json.toJson(
               for {
-                house_idx <- 0 until gameController.gameStateMaster.playerVector(idx).inHouse.length
+                house_idx <- 0 until gameController.gameState.players._1(idx).inHouse.length
               } yield {
                 Json.obj(
-                  "inHouse" -> JsNumber(gameController.gameStateMaster.playerVector(idx).inHouse(house_idx))
+                  "inHouse" -> JsNumber(gameController.gameState.players._1(idx).inHouse(house_idx))
                 )
               }
             ),
             "cards" -> Json.toJson(
               for {
-                card_idx <- 0 until gameController.gameStateMaster.playerVector(idx).cardList.length
+                card_idx <- 0 until gameController.gameState.players._1(idx).cardList.length
               } yield {
                 Json.obj(
-                  "card_symbol" -> gameController.gameStateMaster.playerVector(idx).cardList(card_idx).symbol
+                  "card_symbol" -> gameController.gameState.players._1(idx).cardList(card_idx).symbol
                 )
               }
             )

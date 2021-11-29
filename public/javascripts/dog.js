@@ -3,25 +3,9 @@ selectedState = []
 function initBasicListener() {
     document.querySelectorAll(".field").forEach((field) => {
         field.addEventListener('click', function () {
-                request(field.id.replace("board", ""), this);
+            select(field.id.replace("board", ""), this);
         })
     })
-    document.querySelectorAll('button[name="startGame"]').forEach((field) => {
-        field.addEventListener('click', function () {
-            startGame();
-        });
-    });
-    document.querySelectorAll('input[class="form-control front"]').forEach((field) => {
-        field.addEventListener('input', function () {
-            if (this.name == "amountPieces") {
-                amountPieces = this.value
-            } else if (this.name == "amountCards") {
-                amountCards = this.value
-            } else if (this.name == "sizeBoard") {
-                sizeBoard = this.value
-            }
-        });
-    });
 }
 
 function initCardListeners() {
@@ -48,34 +32,18 @@ function initCardListeners() {
     });
 }
 
-amountCards = 4
-amountPieces = 6
-sizeBoard = 20
-
-function startGame(element) {
-    $.ajax({
-        method: "GET",
-        url: "/newGame/" + amountCards +"/" + amountPieces + "/" + sizeBoard,
-        dataType: "html",
-
-        success: function (result) {
-            document.body.innerHTML = result;
-            initBasicListener();
-            loadJsonAndUpdateDom();
-        }
-    });
+function resetSelection(){
+    selectedState.forEach((selectedEl) => {
+        $(`#board${selectedEl.fieldIdx}`).css("background-color", "transparent");
+    })
+    selectedState = [];
 }
 
 function initDom() {
-    selectedState = [];
-    initBasicListener();
     initCardListeners();
+    resetSelection();
 }
 
-function refreshDon() {
-    selectedState = [];
-    initCardListeners();
-}
 
 function getFieldHtml(color, pos) {
     switch(color) {
@@ -112,31 +80,36 @@ function requestSelection( pieceNum, element) {
         contentType: "application/json",
         data: data,
         success: function (result) {
-            //document.body.innerHTML = result;
-            console.log(JSON.stringify(result))
-            loadJsonAndUpdateDom()
+            loadJsonAndUpdateDom(result)
         }
     });
 }
 
 function requestSwap(element) {
+    var data = JSON.stringify({
+        "cardNum": element.id,
+        "otherPlayer": selectedState[1].playerIdx,
+        "pieceNum1": selectedState[0].piece,
+        "pieceNum2": selectedState[1].piece
+    });
     $.ajax({
-        method: "GET",
-        url: `/selectSwap/${element.id}/${selectedState[1].playerIdx}/${selectedState[0].piece}/${selectedState[1].piece}`,
-        dataType: "html",
+        method: "POST",
+        url: '/selectSwap',
+        dataType: "json",
+        contentType: "application/json",
+        data: data,
 
         success: function (result) {
-            document.body.innerHTML = result;
-            initDom();
+            loadJsonAndUpdateDom(result);
         }
     });
 
 }
 
-function request(fieldIdx, element) {
+function select(fieldIdx, element) {
     $.ajax({
         method: "GET",
-        url: '/isOwnPiece/' + fieldIdx.replace("board", ""),
+        url: '/isOwnPiece/' + fieldIdx,
         dataType: "json",
         
         success: function (result) {
@@ -148,13 +121,10 @@ function request(fieldIdx, element) {
 }
 
 function selection(state, fieldIdx,  element){
-    selectedState;
+
 
     if (selectedState.length == 2) {
-        selectedState.forEach((selectedEl) => {
-            $(`#${selectedEl.fieldIdx}`).css("background-color", "transparent");
-        })
-        selectedState = [];
+        resetSelection()
     } else if (!selectedState.find(function (selection) { return selection.fieldIdx === fieldIdx })) {
         
         if(state[0] == "true" && selectedState.length === 0 || state[0] == "false" && selectedState.length === 1) {
@@ -162,7 +132,7 @@ function selection(state, fieldIdx,  element){
             selectedState.push(stateObj);
             element.style.backgroundColor = 'goldenrod';
         } else {
-            selectedState = []
+            resetSelection();
             alert("invalid selection!")
         }
     }
@@ -270,11 +240,13 @@ function updateCurrenPlayerName(name) {
 }
 
 function updateBoard(board) {
+    resetSelection()
     clearBoardFigures(board.size);
     updatePlayerFigures(board);
     updateGarage(board);
     updateCurrenPlayerName(board.players[board.currentPlayer].name);
     updatePlayerCardsPanel(board.players[board.currentPlayer].cards);
+    
 }
 
 
@@ -287,7 +259,6 @@ class Board {
     }
 
     fill(json) {
-        console.log("players")
         this.size = json.boardSize
         this.numPlayers = json.playerNumber;
         this.currentPlayer = json.currentPlayer;
@@ -336,26 +307,27 @@ class Player {
     }
 }
 
-function loadJsonAndUpdateDom() {
+function loadJsonAndUpdateDom(result) {
+    board = new Board();
+    board.fill(result);
+    updateBoard(board);
+    initDom();
+}
+
+$(document).ready(function () {
+
+    console.log("Document is ready, Filling Board!")
+
     $.ajax({
         method: "GET",
         url: "/json",
         dataType: "json",
 
         success: function (result) {
-            console.log(JSON.stringify(result))
-            board = new Board();
-            board.fill(result);
-            console.log(board);
-            updateBoard(board);
-            refreshDon();
+            loadJsonAndUpdateDom(result)
+            initBasicListener();
         }
     });
-}
-
-$(document).ready(function () {
-    console.log("Document is ready, Filling Board!")
-    initDom();
-    loadJsonAndUpdateDom();
+    
 });
 
