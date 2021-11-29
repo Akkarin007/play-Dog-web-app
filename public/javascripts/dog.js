@@ -47,7 +47,7 @@ function initDom() {
 
 function requestSelection( pieceNum, element) {
     var data =JSON.stringify({
-        "type": "setCard",
+        "type": "request",
         "cardNum": element.id,
         "cardOption": element.value,
         "pieceNum": parseInt(pieceNum)

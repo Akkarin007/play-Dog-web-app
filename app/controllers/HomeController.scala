@@ -254,7 +254,7 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents)(i
           val pieceNum2 = (msgObject \ "pieceNum2").as[Int]
           swap(cardNum, otherPlayer, pieceNum1, pieceNum2)
         }
-        if(msgType == "setCard") {
+        if(msgType == "request") {
           val cardNum = (msgObject \ "cardNum").as[String]
           val cardOption = (msgObject \ "cardOption").as[String]
           val pieceNum = (msgObject \ "pieceNum").as[Int]
