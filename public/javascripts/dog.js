@@ -57,7 +57,6 @@ function requestSelection( pieceNum, element) {
         contentType: "application/json",
         data: data,
         success: function (result) {
-            loadJsonAndUpdateDom(result)
         }
     });
 }
@@ -77,7 +76,6 @@ function requestSwap(element) {
         data: data,
 
         success: function (result) {
-            loadJsonAndUpdateDom(result);
         }
     });
 
@@ -273,6 +271,34 @@ function loadJsonAndUpdateDom(result) {
     initDom();
 }
 
+
+function connectWebSocket() {
+    let websocket = new WebSocket("ws://localhost:9000/websocket")
+    websocket.setTimeout
+
+    websocket.onopen = function(event) {
+        console.log("Connected to Websocket");
+    }
+
+    websocket.onclose = function () {
+        console.log('Connection with Websocket Closed!');
+    };
+
+    websocket.onerror = function (error) {
+        console.log('Error in Websocket Occured: ' + error);
+    };
+
+    websocket.onmessage = function (e) {
+        if (typeof e.data === "string") {
+            console.log("BoardChanged! - Websocket Push receiverd!")
+            loadJsonAndUpdateDom(JSON.parse(e.data))
+        }
+
+
+    };
+}
+
+
 $(document).ready(function () {
 
     console.log("Document is ready, Filling Board!")
@@ -283,10 +309,10 @@ $(document).ready(function () {
         dataType: "json",
 
         success: function (result) {
-            loadJsonAndUpdateDom(result)
+            loadJsonAndUpdateDom(result);
             initBasicListener();
         }
     });
-    
+    connectWebSocket();    
 });
 

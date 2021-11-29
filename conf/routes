@@ -6,6 +6,7 @@
 # An example controller showing a sample home page
 GET     /                           controllers.HomeController.index()
 
+GET     /websocket                  controllers.HomeController.socket
 GET     /isOwnPiece/:fieldIdx       controllers.HomeController.isOwnPiece(fieldIdx: String)         
 GET     /about                      controllers.HomeController.about
 GET     /newGame                    controllers.HomeController.newGame(amountPieces: Int, amountCards: Int, sizeBoard: Int)

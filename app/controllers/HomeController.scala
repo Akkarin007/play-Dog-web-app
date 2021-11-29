@@ -5,14 +5,20 @@ import play.api._
 import play.api.mvc._
 import dog._
 import dog.controller.StateComponent.InputCardMaster
+import akka.actor.{Actor, ActorRef, ActorSystem, Props}
+import dog.controller.BoardChanged
+import akka.actor.ActorSystem
+import akka.stream.Materializer
 import play.api.libs.json.{JsNumber, JsObject, Json, JsValue}
 
+import play.api.libs.streams.ActorFlow
+import scala.swing.Reactor
 /**
  * This controller creates an `Action` to handle HTTP requests to the
  * application's home page.
  */
 @Singleton
-class HomeController @Inject()(val controllerComponents: ControllerComponents) extends BaseController {
+class HomeController @Inject()(val controllerComponents: ControllerComponents)(implicit system: ActorSystem, mat: Materializer) extends BaseController {
 
   var gameController = Dog.controller
 
@@ -151,6 +157,7 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
     Ok("createNewBoard" + gameController.createPlayers(List(name1,name2,name3,name4), amountPieces, amountCards))
   }
 
+
   def getJsonBoard: Action[AnyContent] = Action {
     Ok(boardToJson)
   }
@@ -215,4 +222,45 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
       )
     )
   }
+
+  def socket: WebSocket = WebSocket.accept[String, String] { _ =>
+    ActorFlow.actorRef { out =>
+      println("Connect received")
+      DogWebSocketActorFactory.create(out)
+    }
+  }
+
+  object DogWebSocketActorFactory {
+    def create(out: ActorRef): Props = {
+      Props(new DogWebSocketActor(out))
+    }
+  }
+
+  class DogWebSocketActor(out: ActorRef) extends Actor with Reactor {
+    listenTo(gameController)
+
+    def receive: Actor.Receive = {
+      case msg: String =>
+        
+        out ! (Json.obj(
+            "players" -> "",
+            "diceNumber" -> "gameController.getDicedNumber",
+            "gameState" -> "gameController.getGameState.state.toString",
+            "possibleCells" -> "gameController.getGameBoard.getPossibleCells",
+            "cells" -> " "
+          ).toString())
+        println("Sent Json to Client: " + msg)
+    }
+
+    reactions += {
+      case event: BoardChanged => sendJsonToClient()
+    }
+
+    def sendJsonToClient(): Unit = {
+      
+      println("Received event from Controller")
+      out ! boardToJson.toString()
+    }
+  }
 }
+
