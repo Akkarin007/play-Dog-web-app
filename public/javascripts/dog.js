@@ -1,31 +1,11 @@
 selectedState = []
 
-function initListener() {
+function initBasicListener() {
     document.querySelectorAll(".field").forEach((field) => {
         field.addEventListener('click', function () {
-                request(field.id, this);
+                request(field.id.replace("board", ""), this);
         })
     })
-    document.querySelectorAll('button[name="card"]').forEach((field) => {
-   
-        field.addEventListener('click', function () {
-            if(selectedState.length > 0){
-                requestSelection(selectedState[0].piece, this);
-            } else{
-                requestSelection(0, this);
-            }
-        });
-    });
-    document.querySelectorAll('button[name="swap"]').forEach((field) => {
-   
-        field.addEventListener('click', function () {
-            if (selectedState.length == 2){
-                requestSwap(this);
-            } else {
-                alert('invalid move')
-            }
-        });
-    });
     document.querySelectorAll('button[name="startGame"]').forEach((field) => {
         field.addEventListener('click', function () {
             startGame();
@@ -44,6 +24,30 @@ function initListener() {
     });
 }
 
+function initCardListeners() {
+    document.querySelectorAll('button[name="card"]').forEach((field) => {
+   
+        field.addEventListener('click', function () {
+            if(selectedState.length > 0){
+                requestSelection(selectedState[0].piece, this);
+            } else{
+                requestSelection(0, this);
+            }
+        });
+    });
+
+    document.querySelectorAll('button[name="swap"]').forEach((field) => {
+   
+        field.addEventListener('click', function () {
+            if (selectedState.length == 2){
+                requestSwap(this);
+            } else {
+                alert('invalid move')
+            }
+        });
+    });
+}
+
 amountCards = 4
 amountPieces = 6
 sizeBoard = 20
@@ -56,26 +60,21 @@ function startGame(element) {
 
         success: function (result) {
             document.body.innerHTML = result;
+            initBasicListener();
             loadJsonAndUpdateDom();
         }
     });
 }
 
-function refreshDom() {
+function initDom() {
     selectedState = [];
-    initListener();
+    initBasicListener();
+    initCardListeners();
 }
 
-function updateDOM(player) {
-    player.players.forEach(ply => {
-        const color = ply.color;
-        ply.pieces.forEach(piece => {
-            const pos = piece.piece_pos;
-            console.log(piece.piece_pos)
-            // TODO alle die nicht aufm Spielfeld sind ignorieren. HomePos ist immer da. deshalb sind initial spieler aufm feld
-            $(`#${pos}`).html(getFieldHtml(color, pos))
-        })
-    })
+function refreshDon() {
+    selectedState = [];
+    initCardListeners();
 }
 
 function getFieldHtml(color, pos) {
@@ -101,16 +100,17 @@ function getFieldHtml(color, pos) {
 }
 
 function requestSelection( pieceNum, element) {
+    var data =JSON.stringify({
+        "cardNum": element.id,
+        "cardOption": element.value,
+        "pieceNum": parseInt(pieceNum)
+    })
     return $.ajax({
         method: "POST",
         url: "/selectCardAndPiece",
         dataType: "json",
         contentType: "application/json",
-        data: JSON.stringify({
-            "cardNum": element.id,
-            "cardOption": element.value,
-            "pieceNum": pieceNum
-        }),
+        data: data,
         success: function (result) {
             //document.body.innerHTML = result;
             console.log(JSON.stringify(result))
@@ -127,7 +127,7 @@ function requestSwap(element) {
 
         success: function (result) {
             document.body.innerHTML = result;
-            refreshDom();
+            initDom();
         }
     });
 
@@ -136,7 +136,7 @@ function requestSwap(element) {
 function request(fieldIdx, element) {
     $.ajax({
         method: "GET",
-        url: '/isOwnPiece/' + fieldIdx,
+        url: '/isOwnPiece/' + fieldIdx.replace("board", ""),
         dataType: "json",
         
         success: function (result) {
@@ -162,6 +162,7 @@ function selection(state, fieldIdx,  element){
             selectedState.push(stateObj);
             element.style.backgroundColor = 'goldenrod';
         } else {
+            selectedState = []
             alert("invalid selection!")
         }
     }
@@ -170,13 +171,13 @@ function selection(state, fieldIdx,  element){
 function getStateObj(state, fieldIdx){
     return {
         fieldIdx: fieldIdx,
-        selectedPiece: state[1],
-        piece: state[1],
-        playerIdx: state[2],
+        selectedPiece: parseInt(state[1]),
+        piece: parseInt(state[1]),
+        playerIdx: parseInt(state[2]),
     }
 }
 
-function createPlayerCardsPanel(cards) {
+function updatePlayerCardsPanel(cards) {
     var template_card = document.querySelector('#template_card');
     var template_button = document.querySelector('#template_card_buttons');
 
@@ -217,19 +218,65 @@ function createPlayerCardsPanel(cards) {
     }
 }
 
-function updateBoard(board) {
+function updatePlayerFigures(board) {
+    for (player in board.players) {
+        for (piece in board.players[parseInt(player)].piece_pos) {
+            var piece_pos = board.players[parseInt(player)].piece_pos[parseInt(piece)]
+            var field = document.querySelector("#board" + piece_pos)
+            if (board.players[parseInt(player)].house.includes(parseInt(piece)) || board.players[parseInt(player)].garage.includes(parseInt(piece)) || field == null) {continue}
+                field = field.querySelector("img")
+                switch (board.players[parseInt(player)].color) {
+                    case "red":
+                        field.src = "/assets/images/icons/red.png";
+                        break;
+                    case "blau":
+                        field.src = "/assets/images/icons/blau.png";
+                        break;
+                    case "yellow":
+                        field.src = "/assets/images/icons/yellow.png";
+                        break;
+                    case "white":
+                        field.src = "/assets/images/icons/white.png";
+                        break;
+                    case "green":
+                        field.src = "/assets/images/icons/green.png";
+                        break;
+                    default:
+                        break;
+                }
+        }
+    }
+}
 
-    // TODO: remove old pieces on board
-
-    // TODO: add new pieces on Board
-
-    // TODO: replace new card output
-    const new_cards = createPlayerCardsPanel(board.players[board.currentPlayer].cards)
-    $(".playerCards").html(new_cards)
-    // TODO: replace playername
-
+function clearBoardFigures (size) {
+    for (var x = 0; x < size; x++) {
+        var field = document.querySelector("#board" + x)
+        if (field == null) {return}
+        field = field.querySelector("img")
+        field.src = "/assets/images/icons/field.png"
+    }
 
 }
+
+function updateGarage(board) {
+    //TODO add after remodel of field
+}
+
+function updateCurrenPlayerName(name) {
+    if (document.querySelector("#player_name") == null) {
+        return
+    }
+    document.querySelector("#player_name").textContent = "CurrentPlayerCards: " + name
+}
+
+function updateBoard(board) {
+    clearBoardFigures(board.size);
+    updatePlayerFigures(board);
+    updateGarage(board);
+    updateCurrenPlayerName(board.players[board.currentPlayer].name);
+    updatePlayerCardsPanel(board.players[board.currentPlayer].cards);
+}
+
 
 class Board {
     constructor() {
@@ -301,14 +348,14 @@ function loadJsonAndUpdateDom() {
             board.fill(result);
             console.log(board);
             updateBoard(board);
-            refreshDom();
+            refreshDon();
         }
     });
 }
 
 $(document).ready(function () {
     console.log("Document is ready, Filling Board!")
+    initDom();
     loadJsonAndUpdateDom();
-    initListener();
 });
 

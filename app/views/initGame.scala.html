@@ -49,75 +49,39 @@
             </div>
         </div>
     </div>
-            <table class="customTable">
-                <thead>
-                    <tr>
-                        @for(i <- 0 until controller.gameState.board.size) { 
-                            
-                            <th>
-                                
-                            <div class="cellHeader">
-                   
-                            </div>
-                            </th>
-        
-                            }
-                    </tr>
-                </thead>
-                <tbody>
-                    @for(i <- 0 until controller.gameState.board.size) { 
+    <table class="customTable">
+        <thead>
+            <tr>
+                @for(i <- 0 until controller.gameState.board.size) { 
+                    
+                    <th>
                         
-                        <td>
-                            <div >
+                    <div class="cellHeader">
             
-                                    @controller.gameState.board.cell(i).p match { 
-                                    case Some(p)=> { 
-                                        @p.color match {
-                                            case "red" => {
-                                                <button id="@i" class="field"><img src="@routes.Assets.versioned("images/icons/red.png")"
-                                            class="img-fluid  shadow-lg " alt="Example image" loading="lazy"
-                                            ></button>
-                                        }   case "blau" => {
-                                            <button id="@i" class="field"><img src="@routes.Assets.versioned("images/icons/blau.png")"
-                                            class="img-fluid  shadow-lg " alt="Example image" loading="lazy"
-                                            >
-                                        </button>
-                                        }   case "yellow" => {
-                                            <button id="@i" class="field"><img src="@routes.Assets.versioned("images/icons/yellow.png")"
-                                            class="img-fluid  shadow-lg " alt="Example image" loading="lazy"
-                                            >
-                                        </button>
-                                        }   case "white" => {
-                                            <button id="@i" class="field"><img src="@routes.Assets.versioned("images/icons/white.png")"
-                                            class="img-fluid  shadow-lg " alt="Example image" loading="lazy"
-                                            >
-                                        </button>
-                                        }
-                                        case "green" => {
-                                            <button id="@i" class="field"><img src="@routes.Assets.versioned("images/icons/green.png")"
-                                            class="img-fluid  shadow-lg " alt="Example image" loading="lazy">
-                                        </button>
-                                        }
-                                            
-                                    }}
-                                    case None => {
-                                        <button id="@i" class="field"><img src="@routes.Assets.versioned("images/icons/field.png")"
-                                            class="img-fluid  shadow-lg" alt="Example image" loading="lazy"
-                                             ></button>
-                                    }
-                                }
-                                </div>  
-                            }
-                        </td>
-                </tbody>
-            </table>
+                    </div>
+                    </th>
 
+                    }
+            </tr>
+        </thead>
+        <tbody>
+            @for(i <- 0 until controller.gameState.board.size) {         
+                <td>
+                    <div >
 
+                        <button id="board@i" class="field"><img src="@routes.Assets.versioned("images/icons/field.png")"
+                            class="img-fluid  shadow-lg" alt="Example image" loading="lazy"
+                                ></button>
 
+                    </div>                
+                </td>
+            }
+        </tbody>
+    </table>
 
-            <div class="container py-4">
-            <div class="px-4 pt-5 my-5 text-center border-bottom">
-            <h1 class="display-4 fw-bold">CurrentPlayerCards: @controller.gameState.actualPlayer.nameAndIdx._1</h1>
+    <div class="container py-4">
+        <div class="px-4 pt-5 my-5 text-center border-bottom">
+            <h1 class="display-4 fw-bold" id="player_name">CurrentPlayerCards: @controller.gameState.actualPlayer.nameAndIdx._1</h1>
             <div class="col-lg-6 mx-auto">
                 <p class="lead mb-4">Choose Your Cards</p>
 
