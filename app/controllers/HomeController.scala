@@ -89,7 +89,13 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents)(i
       val otherPlayer = (setRequest.body \ "otherPlayer").as[Int]
       val pieceNum1 = (setRequest.body \ "pieceNum1").as[Int]
       val pieceNum2 = (setRequest.body \ "pieceNum2").as[Int]
-      val fieldPosOwn = gameController.gameState.actualPlayer.piece(pieceNum1).pos
+      swap(cardNum, otherPlayer, pieceNum1, pieceNum2)
+      Ok(boardToJson)
+    }
+  }
+
+  def swap(cardNum: String, otherPlayer: Int, pieceNum1: Int, pieceNum2: Int): Unit = {
+    val fieldPosOwn = gameController.gameState.actualPlayer.piece(pieceNum1).pos
       val fieldPosOther = gameController.gameState.players._1(otherPlayer).piece(pieceNum2).pos
               gameController.selectedField(fieldPosOwn)
               gameController.selectedField(fieldPosOther)
@@ -98,8 +104,6 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents)(i
                 .withCardNum((cardNum.toInt, 0))
                 .withSelectedCard(gameController.actualPlayedCard(cardNum.toInt))
                 .buildCardInput())
-      Ok(boardToJson)
-    }
   }
     
   def selectCard(cardNum: Int) = Action {
@@ -241,14 +245,16 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents)(i
 
     def receive: Actor.Receive = {
       case msg: String =>
-        
-        out ! (Json.obj(
-            "players" -> "",
-            "diceNumber" -> "gameController.getDicedNumber",
-            "gameState" -> "gameController.getGameState.state.toString",
-            "possibleCells" -> "gameController.getGameBoard.getPossibleCells",
-            "cells" -> " "
-          ).toString())
+        val msgObject: JsValue = Json.parse(msg);
+        val msgType = (msgObject \ "type").as[String]
+        if(msgType == "swap") {
+          val cardNum = (msgObject \ "cardNum").as[String]
+          val otherPlayer = (msgObject \ "otherPlayer").as[Int]
+          val pieceNum1 = (msgObject \ "pieceNum1").as[Int]
+          val pieceNum2 = (msgObject \ "pieceNum2").as[Int]
+          swap(cardNum, otherPlayer, pieceNum1, pieceNum2)
+        }
+        out ! boardToJson.toString()
         println("Sent Json to Client: " + msg)
     }
 
