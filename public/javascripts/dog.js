@@ -1,4 +1,5 @@
 selectedState = []
+let websocket = new WebSocket("ws://localhost:9000/websocket")
 
 function initBasicListener() {
     document.querySelectorAll(".field").forEach((field) => {
@@ -46,38 +47,23 @@ function initDom() {
 
 function requestSelection( pieceNum, element) {
     var data =JSON.stringify({
+        "type": "setCard",
         "cardNum": element.id,
         "cardOption": element.value,
         "pieceNum": parseInt(pieceNum)
     })
-    return $.ajax({
-        method: "POST",
-        url: "/selectCardAndPiece",
-        dataType: "json",
-        contentType: "application/json",
-        data: data,
-        success: function (result) {
-        }
-    });
+    websocket.send(data);
 }
 
 function requestSwap(element) {
     var data = JSON.stringify({
+        "type": "swap",
         "cardNum": element.id,
         "otherPlayer": selectedState[1].playerIdx,
         "pieceNum1": selectedState[0].piece,
         "pieceNum2": selectedState[1].piece
     });
-    $.ajax({
-        method: "POST",
-        url: '/selectSwap',
-        dataType: "json",
-        contentType: "application/json",
-        data: data,
-
-        success: function (result) {
-        }
-    });
+    websocket.send(data);
 
 }
 
@@ -273,8 +259,6 @@ function loadJsonAndUpdateDom(result) {
 
 
 function connectWebSocket() {
-    let websocket = new WebSocket("ws://localhost:9000/websocket")
-    websocket.setTimeout
 
     websocket.onopen = function(event) {
         console.log("Connected to Websocket");

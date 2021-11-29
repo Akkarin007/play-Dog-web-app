@@ -229,7 +229,7 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents)(i
 
   def socket: WebSocket = WebSocket.accept[String, String] { _ =>
     ActorFlow.actorRef { out =>
-      println("Connect received")
+      println("Connection received.")
       DogWebSocketActorFactory.create(out)
     }
   }
@@ -254,8 +254,19 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents)(i
           val pieceNum2 = (msgObject \ "pieceNum2").as[Int]
           swap(cardNum, otherPlayer, pieceNum1, pieceNum2)
         }
+        if(msgType == "setCard") {
+          val cardNum = (msgObject \ "cardNum").as[String]
+          val cardOption = (msgObject \ "cardOption").as[String]
+          val pieceNum = (msgObject \ "pieceNum").as[Int]
+          val fieldPos = gameController.gameState.actualPlayer.piece(pieceNum.toInt).pos
+          gameController.selectedField(fieldPos)
+          gameController.manageRound(InputCardMaster.UpdateCardInput()
+            .withCardNum((cardNum.toInt, cardOption.toInt))
+            .withSelectedCard(gameController.actualPlayedCard(cardNum.toInt))
+            .buildCardInput())
+        }
         out ! boardToJson.toString()
-        println("Sent Json to Client: " + msg)
+        println("Received Json: " + msg + "trigger Event")
     }
 
     reactions += {
