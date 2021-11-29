@@ -3,7 +3,7 @@ selectedState = []
 function initBasicListener() {
     document.querySelectorAll(".field").forEach((field) => {
         field.addEventListener('click', function () {
-            select(field.id.replace("board", ""), this);
+            selectAjax(field.id.replace("board", ""), this);
         })
     })
 }
@@ -42,29 +42,6 @@ function resetSelection(){
 function initDom() {
     initCardListeners();
     resetSelection();
-}
-
-
-function getFieldHtml(color, pos) {
-    switch(color) {
-        case 'red':
-            return `<img src="/assets/images/icons/red.png" class="img-fluid  shadow-lg" alt="Example image" loading="lazy">`
-          break;
-        case 'blau':
-            return `<img src="/assets/images/icons/blau.png" class="img-fluid  shadow-lg" alt="Example image" loading="lazy">`
-          break;
-        case 'yellow':
-            return `<img src="/assets/images/icons/yellow.png" class="img-fluid  shadow-lg" alt="Example image" loading="lazy">`
-        break;
-        case 'white':
-            return `<img src="/assets/images/icons/white.png" class="img-fluid  shadow-lg" alt="Example image" loading="lazy">`
-            break;
-        case 'green':
-            return `<img src="/assets/images/icons/green.png" class="img-fluid  shadow-lg" alt="Example image" loading="lazy">`
-        break;
-        default:
-          return `<img src="/assets/images/icons/field.png" class="img-fluid  shadow-lg" alt="Example image" loading="lazy">`
-      } 
 }
 
 function requestSelection( pieceNum, element) {
@@ -106,7 +83,7 @@ function requestSwap(element) {
 
 }
 
-function select(fieldIdx, element) {
+function selectAjax(fieldIdx, element) {
     $.ajax({
         method: "GET",
         url: '/isOwnPiece/' + fieldIdx,
