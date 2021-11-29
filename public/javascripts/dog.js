@@ -1,4 +1,3 @@
-
 selectedState = []
 
 function initListener() {
@@ -52,12 +51,12 @@ sizeBoard = 20
 function startGame(element) {
     $.ajax({
         method: "GET",
-        url: "/newGame/" + amountPieces +"/" + amountCards + "/" + sizeBoard,
+        url: "/newGame/" + amountCards +"/" + amountPieces + "/" + sizeBoard,
         dataType: "html",
 
         success: function (result) {
             document.body.innerHTML = result;
-            refreshDom();
+            loadJsonAndUpdateDom();
         }
     });
 }
@@ -102,7 +101,6 @@ function getFieldHtml(color, pos) {
 }
 
 function requestSelection( pieceNum, element) {
- 
     return $.ajax({
         method: "POST",
         url: "/selectCardAndPiece",
@@ -116,7 +114,7 @@ function requestSelection( pieceNum, element) {
         success: function (result) {
             //document.body.innerHTML = result;
             console.log(JSON.stringify(result))
-            updateDOM(result)
+            loadJsonAndUpdateDom()
         }
     });
 }
@@ -178,18 +176,64 @@ function getStateObj(state, fieldIdx){
     }
 }
 
-class Board {
-    constructor() {
-        this.size = 0;
+function createPlayerCardsPanel(cards) {
+    var template_card = document.querySelector('#template_card');
+    var template_button = document.querySelector('#template_card_buttons');
+
+    if (template_card == null || template_button == null) {
+        return
     }
 
-    fill(json) {
-        this.size = json.boardSize
+    var target = document.querySelector("#player_cards");
+    target.innerHTML = "";
+
+    for (cardID in cards) {
+        var card = document.importNode(template_card.content, true);
+        // manipulate image
+        //var x = card.querySelector("src").nodeValue[0] = "";
+        
+        //manipulate card Body
+        card.querySelector(".card-text").innerHTML = cards[cardID];
+        var button_root = card.querySelector(".card-body").childNodes[3];
+        
+        const str_arr = cards[cardID].split(" ")
+        for (entry in str_arr) {
+            // manipulate Button
+            var button = document.importNode(template_button.content, true);
+            if (str_arr[entry] == "swapCard") {
+                button.querySelector("button").name = "swap";
+            } else {
+                button.querySelector("button").name = "card";
+            }
+            button.querySelector("button").id = cardID;
+            button.querySelector("button").value = entry;
+            button.querySelector("button").innerHTML = str_arr[entry];
+            // join Buttons + card
+            button_root.appendChild(button);
+        }
+        // move to table
+        var target = document.querySelector("#player_cards");
+        target.appendChild(card);
     }
 }
 
-class Players {
+function updateBoard(board) {
+
+    // TODO: remove old pieces on board
+
+    // TODO: add new pieces on Board
+
+    // TODO: replace new card output
+    const new_cards = createPlayerCardsPanel(board.players[board.currentPlayer].cards)
+    $(".playerCards").html(new_cards)
+    // TODO: replace playername
+
+
+}
+
+class Board {
     constructor() {
+        this.size = 0;
         this.numPlayers = 0;
         this.players = [];
         this.currentPlayer = 0;
@@ -197,38 +241,53 @@ class Players {
 
     fill(json) {
         console.log("players")
+        this.size = json.boardSize
         this.numPlayers = json.playerNumber;
         this.currentPlayer = json.currentPlayer;
         this.players = [];
-        let index = 0
-        for (var player in json) {
-            players[index] = new Player(player.playerIdx,
-                player.name,
-                player.color,
-                player.homePosition,
-                player.pieces,
-                player.garage,
-                player.house);
-            index += 1;
+        for (var player in json.players) {
+            var house = [];
+            var pieces = [];
+            var garage = [];
+            var cards = [];
+
+            for (var t_house in json.players[parseInt(player)].house) {
+                house.push(json.players[parseInt(player)].house[parseInt(t_house)].inHouse);
+            }
+            for (var t_pieces in json.players[parseInt(player)].pieces) {
+                pieces.push(json.players[parseInt(player)].pieces[parseInt(t_pieces)].piece_pos);
+            }
+            for (var t_garage in json.players[parseInt(player)].garage) {
+                garage.push(json.players[parseInt(player)].garage[parseInt(t_garage)].garage_piece);
+            }
+            for (var t_cards in json.players[parseInt(player)].cards) {
+                cards.push(json.players[parseInt(player)].cards[parseInt(t_cards)].card_symbol);
+            }
+            this.players.push(new Player(json.players[parseInt(player)].playerIdx,
+                json.players[parseInt(player)].name,
+                json.players[parseInt(player)].color,
+                json.players[parseInt(player)].homePosition,
+                pieces,
+                garage,
+                house,
+                cards));
         }
         
     }
 }
 
-
 class Player {
-    constructor(playerIdx, name, color, home, pieces, garage, house) {
+    constructor(playerIdx, name, color, home, pieces, garage, house, cards) {
         this.name = name;
         this.playerIdx = playerIdx;
         this.color = color;
         this.home = home;
-        this.pieces = pieces;
+        this.piece_pos = pieces;
         this.garage = garage;
         this.house = house;
+        this.cards = cards;
     }
 }
-
-let board = new Board()
 
 function loadJsonAndUpdateDom() {
     $.ajax({
@@ -238,21 +297,18 @@ function loadJsonAndUpdateDom() {
 
         success: function (result) {
             console.log(JSON.stringify(result))
-            
-            //board = new Board();
-            //players = new Players();
-            //board.fill(result);
-            //players.fill(result);
-
+            board = new Board();
+            board.fill(result);
+            console.log(board);
+            updateBoard(board);
             refreshDom();
         }
     });
 }
 
 $(document).ready(function () {
-    console.log("Document is ready, filling grid")
+    console.log("Document is ready, Filling Board!")
     loadJsonAndUpdateDom();
-
     initListener();
 });
 
