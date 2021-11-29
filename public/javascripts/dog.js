@@ -20,7 +20,7 @@ function initCardListeners() {
         });
     });
 
-    document.querySelectorAll('button[name="swap"]').forEach((field) => {
+    document.querySelectorAll('button[name="swapCard"]').forEach((field) => {
    
         field.addEventListener('click', function () {
             if (selectedState.length == 2){
@@ -125,44 +125,26 @@ function getStateObj(state, fieldIdx){
 }
 
 function updatePlayerCardsPanel(cards) {
-    var template_card = document.querySelector('#template_card');
-    var template_button = document.querySelector('#template_card_buttons');
-
-    if (template_card == null || template_button == null) {
-        return
-    }
-
-    var target = document.querySelector("#player_cards");
-    target.innerHTML = "";
-
+    let html = "";
     for (cardID in cards) {
-        var card = document.importNode(template_card.content, true);
-        // manipulate image
-        //var x = card.querySelector("src").nodeValue[0] = "";
-        
-        //manipulate card Body
-        card.querySelector(".card-text").innerHTML = cards[cardID];
-        var button_root = card.querySelector(".card-body").childNodes[3];
-        
+
+        html += `<div class="card shadow-sm cards">
+        <img src="/assets/images/cards/${cards[cardID]}.png" class="img-fluid shadow-lg " alt="Example image" loading="lazy" width="200">
+        <div class="card-body">`;
+        let innerHtml = "";
         const str_arr = cards[cardID].split(" ")
         for (entry in str_arr) {
-            // manipulate Button
-            var button = document.importNode(template_button.content, true);
-            if (str_arr[entry] == "swapCard") {
-                button.querySelector("button").name = "swap";
-            } else {
-                button.querySelector("button").name = "card";
+            let cardName = str_arr[entry];
+            if(cardName != "swapCard") {
+                cardName = "card";
             }
-            button.querySelector("button").id = cardID;
-            button.querySelector("button").value = entry;
-            button.querySelector("button").innerHTML = str_arr[entry];
-            // join Buttons + card
-            button_root.appendChild(button);
+            innerHtml += `<button class="btn btn-dark front" name="${cardName}" id="${cardID}" value="${entry}">${str_arr[entry]}</button>`
         }
-        // move to table
-        var target = document.querySelector("#player_cards");
-        target.appendChild(card);
+        html +=innerHtml;
+        html += `</div></div>`
     }
+    
+    $('.playCards').html(html);
 }
 
 function updatePlayerFigures(board) {
