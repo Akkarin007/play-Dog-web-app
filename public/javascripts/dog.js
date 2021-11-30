@@ -1,5 +1,7 @@
 selectedState = []
 
+var websocket = new WebSocket("ws://localhost:9000/websocket");
+
 function initBasicListener() {
     document.querySelectorAll(".field").forEach((field) => {
         field.addEventListener('click', function () {
@@ -13,9 +15,9 @@ function initCardListeners() {
    
         field.addEventListener('click', function () {
             if(selectedState.length > 0){
-                requestSelection(selectedState[0].piece, this);
+                selectCardAndPiece(selectedState[0].piece, this);
             } else{
-                requestSelection(0, this);
+                selectCardAndPiece(0, this);
             }
         });
     });
@@ -44,12 +46,24 @@ function initDom() {
     resetSelection();
 }
 
-function requestSelection( pieceNum, element) {
+function selectCardAndPiece( pieceNum, element) {
     var data =JSON.stringify({
         "cardNum": element.id,
         "cardOption": element.value,
         "pieceNum": parseInt(pieceNum)
     })
+    // TODO: use websocket.send(JSON.stringigy(...))
+    //var formData = {
+    //    "player_1": $("#player_1").val(),
+    //    "player_2": $("#player_2").val(),
+    //    "player_3": $("#player_3").val(),
+    //    "player_4": $("#player_4").val()
+    // }
+
+    // websocket.send(JSON.stringify(formData))
+    // location.href = "/newGame"
+    // https://github.com/alban26/de.htwg.wa.malefiz/blob/08-WebSockets/public/javascripts/malefiz.js
+
     return $.ajax({
         method: "POST",
         url: "/selectCardAndPiece",
@@ -63,21 +77,13 @@ function requestSelection( pieceNum, element) {
 
 function requestSwap(element) {
     var data = JSON.stringify({
+        "type": "swap",
         "cardNum": element.id,
         "otherPlayer": selectedState[1].playerIdx,
         "pieceNum1": selectedState[0].piece,
         "pieceNum2": selectedState[1].piece
     });
-    $.ajax({
-        method: "POST",
-        url: '/selectSwap',
-        dataType: "json",
-        contentType: "application/json",
-        data: data,
-
-        success: function (result) {
-        }
-    });
+    websocket.send(data)
 
 }
 
