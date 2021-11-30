@@ -3,7 +3,7 @@ var websocket;
 
 var websocket = new WebSocket("ws://localhost:9000/websocket");
 
-function initBasicListener() {
+function initFieldListener() {
     document.querySelectorAll(".field").forEach((field) => {
         field.addEventListener('click', function () {
             selectAjax(field.id.replace("board", ""), this);
@@ -295,8 +295,6 @@ function connectWebSocket() {
             console.log("BoardChanged! - Websocket Push receiverd!")
             loadJsonAndUpdateDom(JSON.parse(e.data))
         }
-
-
     };
 }
 
@@ -312,7 +310,7 @@ $(document).ready(function () {
 
         success: function (result) {
             loadJsonAndUpdateDom(result);
-            initBasicListener();
+            initFieldListener();
         }
     });
     connectWebSocket();    
