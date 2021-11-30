@@ -1,4 +1,5 @@
 selectedState = []
+var websocket;
 
 var websocket = new WebSocket("ws://localhost:9000/websocket");
 
@@ -48,31 +49,12 @@ function initDom() {
 
 function selectCardAndPiece( pieceNum, element) {
     var data =JSON.stringify({
+        "type": "request",
         "cardNum": element.id,
         "cardOption": element.value,
         "pieceNum": parseInt(pieceNum)
     })
-    // TODO: use websocket.send(JSON.stringigy(...))
-    //var formData = {
-    //    "player_1": $("#player_1").val(),
-    //    "player_2": $("#player_2").val(),
-    //    "player_3": $("#player_3").val(),
-    //    "player_4": $("#player_4").val()
-    // }
-
-    // websocket.send(JSON.stringify(formData))
-    // location.href = "/newGame"
-    // https://github.com/alban26/de.htwg.wa.malefiz/blob/08-WebSockets/public/javascripts/malefiz.js
-
-    return $.ajax({
-        method: "POST",
-        url: "/selectCardAndPiece",
-        dataType: "json",
-        contentType: "application/json",
-        data: data,
-        success: function (result) {
-        }
-    });
+    websocket.send(data);
 }
 
 function requestSwap(element) {
@@ -83,7 +65,7 @@ function requestSwap(element) {
         "pieceNum1": selectedState[0].piece,
         "pieceNum2": selectedState[1].piece
     });
-    websocket.send(data)
+    websocket.send(data);
 
 }
 
@@ -195,6 +177,20 @@ function updateGarage(board) {
     //TODO add after remodel of field
 }
 
+function updateStatsTable(board) {
+    var html = ''
+    
+    for (player in board.players) {
+        html += '<tr>'
+        html += '<td>' + board.players[player].name + '</td>'
+        html += '<td>' + board.players[player].house + '</td>'
+        html += '<td>' + board.players[player].color + '</td>'
+        html += '<td>' + board.players[player].garage + '</td>'
+        html += '</tr>'
+    }
+    $('#stats_table').html(html)
+}
+
 function updateCurrenPlayerName(name) {
     if (document.querySelector("#player_name") == null) {
         return
@@ -206,6 +202,7 @@ function updateBoard(board) {
     resetSelection()
     clearBoardFigures(board.size);
     updatePlayerFigures(board);
+    updateStatsTable(board);
     updateGarage(board);
     updateCurrenPlayerName(board.players[board.currentPlayer].name);
     updatePlayerCardsPanel(board.players[board.currentPlayer].cards);
@@ -279,9 +276,8 @@ function loadJsonAndUpdateDom(result) {
 
 
 function connectWebSocket() {
-    let websocket = new WebSocket("ws://localhost:9000/websocket")
+    websocket = new WebSocket("ws://localhost:9000/websocket");
     websocket.setTimeout
-
     websocket.onopen = function(event) {
         console.log("Connected to Websocket");
     }
