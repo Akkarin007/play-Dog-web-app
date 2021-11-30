@@ -1,5 +1,5 @@
 selectedState = []
-let websocket = new WebSocket("ws://localhost:9000/websocket")
+var websocket;
 
 function initBasicListener() {
     document.querySelectorAll(".field").forEach((field) => {
@@ -175,6 +175,20 @@ function updateGarage(board) {
     //TODO add after remodel of field
 }
 
+function updateStatsTable(board) {
+    var html = ''
+    
+    for (player in board.players) {
+        html += '<tr>'
+        html += '<td>' + board.players[player].name + '</td>'
+        html += '<td>' + board.players[player].house + '</td>'
+        html += '<td>' + board.players[player].color + '</td>'
+        html += '<td>' + board.players[player].garage + '</td>'
+        html += '</tr>'
+    }
+    $('#stats_table').html(html)
+}
+
 function updateCurrenPlayerName(name) {
     if (document.querySelector("#player_name") == null) {
         return
@@ -186,6 +200,7 @@ function updateBoard(board) {
     resetSelection()
     clearBoardFigures(board.size);
     updatePlayerFigures(board);
+    updateStatsTable(board);
     updateGarage(board);
     updateCurrenPlayerName(board.players[board.currentPlayer].name);
     updatePlayerCardsPanel(board.players[board.currentPlayer].cards);
@@ -259,7 +274,8 @@ function loadJsonAndUpdateDom(result) {
 
 
 function connectWebSocket() {
-
+    websocket = new WebSocket("ws://localhost:9000/websocket");
+    websocket.setTimeout
     websocket.onopen = function(event) {
         console.log("Connected to Websocket");
     }

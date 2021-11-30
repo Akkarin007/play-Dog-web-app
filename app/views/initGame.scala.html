@@ -35,7 +35,7 @@
                                 <th>Goal</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="stats_table">
                             @for(i <- 0 until controller.gameState.players._1.indices.size) { <tr>
                                 <td>@controller.gameState.players._1(i).nameAndIdx._1</td>
                                 <td>@controller.gameState.players._1(i).inHouse.size</td>
