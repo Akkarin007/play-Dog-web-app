@@ -293,6 +293,7 @@ function connectWebSocket() {
     websocket.onmessage = function (e) {
         if (typeof e.data === "string") {
             console.log("BoardChanged! - Websocket Push receiverd!")
+            console.log(JSON.stringify(JSON.parse(e.data)))
             loadJsonAndUpdateDom(JSON.parse(e.data))
         }
     };
