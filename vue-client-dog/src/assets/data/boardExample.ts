@@ -1,4 +1,4 @@
-{
+const board = {
     "boardSize": 20,
     "playerNumber": 4,
     "currentPlayer": 2,
@@ -267,3 +267,5 @@
         }
     ]
 }
+
+export default board;
