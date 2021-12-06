@@ -3,9 +3,15 @@ organization := "zeybek"
 
 version := "1.0-SNAPSHOT"
 
-lazy val root = (project in file(".")).enablePlugins(PlayScala)
-
 scalaVersion := "2.12.7"
+
+lazy val branch = "W02-play"
+lazy val dog = RootProject(uri("git://github.com/Akkarin007/Dog.git#%s".format(branch)))
+
+lazy val root = Project("play-dog", file("."))
+  .enablePlugins(PlayScala)
+  .aggregate(dog)
+  .dependsOn(dog)
 
 libraryDependencies += guice
 libraryDependencies += "org.scalatestplus.play" %% "scalatestplus-play" % "5.0.0" % Test
