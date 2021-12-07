@@ -4,28 +4,31 @@
       <v-col cols="12" sm="2">
         <v-sheet rounded="lg" min-height="268">
           <v-list-item two-line>
-          <v-list-item-content>
-            <v-list-item-title>CurrentPlayer: P{{board.currentPlayer}}</v-list-item-title>
-            <v-list-item-subtitle>{{currentPlayerHouse}} Pieces Left to Play!</v-list-item-subtitle>
-             <v-row cols="12" sm="8" class="ma-2">
-            <img v-for="img in inHouse" :key="img.id" 
-                    :src="img.image"
-                    loading="lazy"
-                    width="50"
-                    height="50"
-                  />
-                  </v-row>
-          </v-list-item-content>
-        </v-list-item>
+            <v-list-item-content>
+              <v-list-item-title
+                >CurrentPlayer: P{{ board.currentPlayer }}</v-list-item-title
+              >
+              <v-list-item-subtitle
+                >{{ currentPlayerHouse }} Pieces Left to
+                Play!</v-list-item-subtitle
+              >
+              <v-row cols="12" sm="8" class="ma-2">
+                <img
+                  v-for="img in inHouse"
+                  :key="img.id"
+                  :src="img.image"
+                  loading="lazy"
+                  width="50"
+                  height="50"
+                />
+              </v-row>
+            </v-list-item-content>
+          </v-list-item>
         </v-sheet>
       </v-col>
 
       <v-col cols="20" sm="8">
-        <v-sheet
-          min-height="100vh"
-          class="d-flex overflow-auto justify-center"
-          rounded="lg"
-        >
+        <v-sheet class="justify-center" rounded="lg" color="grey lighten-3">
           <v-col cols="2" sm="12">
             <div class="ma-2 d-flex overflow-auto justify-center">
               <h1>Welcome to Dog!</h1>
@@ -41,14 +44,23 @@
                     height="50"
                   />
                 </v-btn>
-              </div>
-            </v-row>
+              </div> </v-row
+            ><v-row cols="12" sm="8" class="ma-2 justify-center"
+              ><v-divider></v-divider
+            ></v-row>
+
+            <v-progress-linear value="15"></v-progress-linear>
+            <v-row cols="12" sm="8" class="ma-2 justify-center"
+              ><v-divider></v-divider
+            ></v-row>
             <div>
-              <div class="d-flex overflow-auto">
-                <div v-for="img in field" :key="img.pos">
-                  <card-component></card-component>
+              <v-sheet class="justify-center" rounded="lg">
+                <div class="d-flex overflow-auto">
+                  <div v-for="img in field" :key="img.pos">
+                    <card-component v-bind:image="img"></card-component>
+                  </div>
                 </div>
-              </div>
+              </v-sheet>
             </div>
           </v-col>
           <!--  -->
@@ -58,20 +70,21 @@
       <v-col cols="12" sm="2">
         <v-sheet rounded="lg" min-height="200">
           <v-list-item two-line>
-          <v-list-item-content>
-            <v-list-item-title>Players Garage </v-list-item-title>
-            <v-list-item-subtitle>...</v-list-item-subtitle>
-             <v-row cols="12" sm="8" class="ma-2">
-            <img v-for="img in garage" :key="img.id" 
-                    :src="img.image"
-                    loading="lazy"
-                    width="50"
-                    height="50"
-                  />
-                  </v-row>
-          </v-list-item-content>
-        </v-list-item>
-        
+            <v-list-item-content>
+              <v-list-item-title>Players Garage </v-list-item-title>
+              <v-list-item-subtitle>...</v-list-item-subtitle>
+              <v-row cols="12" sm="8" class="ma-2">
+                <img
+                  v-for="img in garage"
+                  :key="img.id"
+                  :src="img.image"
+                  loading="lazy"
+                  width="50"
+                  height="50"
+                />
+              </v-row>
+            </v-list-item-content>
+          </v-list-item>
         </v-sheet>
       </v-col>
     </v-row>
@@ -89,7 +102,7 @@ export default Vue.extend({
 
   data: () => ({
     board,
-    currentPlayerHouse: board.players[board.currentPlayer].house.length
+    currentPlayerHouse: board.players[board.currentPlayer].house.length,
   }),
   computed: {
     field() {
