@@ -20,17 +20,17 @@
         </v-sheet>
       </v-col>
 
-      <v-col cols="12" sm="8">
+      <v-col cols="20" sm="8">
         <v-sheet
           min-height="100vh"
           class="d-flex overflow-auto justify-center"
           rounded="lg"
         >
-          <v-col cols="12" sm="20">
+          <v-col cols="2" sm="10">
             <div class="ma-2 d-flex overflow-auto justify-center">
               <h1>Welcome to Dog!</h1>
             </div>
-            <v-row cols="12" sm="8" class="ma-2">
+            <v-row cols="12" sm="8" class="ma-2 justify-center">
               <div v-for="img in field" :key="img.pos">
                 <v-btn class="ma-2" fab small>
                   <img
@@ -56,7 +56,7 @@
       </v-col>
 
       <v-col cols="12" sm="2">
-        <v-sheet rounded="lg" min-height="268">
+        <v-sheet rounded="lg" min-height="200">
           <v-list-item two-line>
           <v-list-item-content>
             <v-list-item-title>Players Garage </v-list-item-title>
