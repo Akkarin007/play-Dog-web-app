@@ -35,7 +35,8 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents)(i
    * a path of `/`.
    */
   def index() = Action { implicit request: Request[AnyContent] =>
-    Ok(views.html.index())
+    // Ok(views.html.index())
+    Ok(views.html.initGame(gameController))
   }
 
   def about: Action[AnyContent] = Action {
@@ -264,6 +265,16 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents)(i
             .withCardNum((cardNum.toInt, cardOption.toInt))
             .withSelectedCard(gameController.actualPlayedCard(cardNum.toInt))
             .buildCardInput())
+        }
+        if(msgType == "startGame") {
+          val cardNum = (msgObject \ "cardNum").as[Int]
+          val pieceNum = (msgObject \ "pieceNum").as[Int]
+          val size = (msgObject \ "size").as[Int]
+          var playerNames = List("P1","P2","P3","P4")
+          gameController.initGame(playerNames, pieceNum, cardNum, size)
+        }
+        if(msgType == "endGame") {
+          gameController
         }
         out ! boardToJson.toString()
         println("Received Json: " + msg + "trigger Event")

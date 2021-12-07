@@ -299,6 +299,23 @@ function connectWebSocket() {
     };
 }
 
+function startGame(cardNum, pieceNum, boardSize) {
+    var data =JSON.stringify({
+        "type": "startGame",
+        "cardNum": parseInt(cardNum),
+        "pieceNum": parseInt(pieceNum),
+        "size": parseInt(boardSize)
+    })
+    console.log(data)
+    websocket.send(data);
+}
+
+function endGame() {
+    var data =JSON.stringify({
+        "type": "endGame",
+    })
+    websocket.send(data);
+}
 
 $(document).ready(function () {
 
