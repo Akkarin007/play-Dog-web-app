@@ -26,7 +26,7 @@
           class="d-flex overflow-auto justify-center"
           rounded="lg"
         >
-          <v-col cols="2" sm="10">
+          <v-col cols="2" sm="12">
             <div class="ma-2 d-flex overflow-auto justify-center">
               <h1>Welcome to Dog!</h1>
             </div>
