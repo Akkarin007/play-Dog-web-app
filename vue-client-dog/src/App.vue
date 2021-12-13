@@ -41,7 +41,14 @@
 </template>
 
 <script>
+import connectWebSocket from "./assets/data/websocket";
+
   export default {
+    
+    
+    beforeCreate() {
+      connectWebSocket()
+    },
     data: () => ({
       links: [
         { title:'Home', to: '/' },

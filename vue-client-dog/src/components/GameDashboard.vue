@@ -6,7 +6,7 @@
           <v-list-item two-line>
             <v-list-item-content>
               <v-list-item-title
-                >CurrentPlayer: P{{ board.currentPlayer }}</v-list-item-title
+                >CurrentPlayer: P{{ changed.currentPlayer }}</v-list-item-title
               >
               <v-list-item-subtitle
                 >{{ currentPlayerHouse }} Pieces Left to
@@ -14,7 +14,7 @@
               >
               <v-row cols="12" sm="8" class="ma-2">
                 <img
-                  v-for="img in inHouse"
+                  v-for="img in inHouseChanged"
                   :key="img.id"
                   :src="img.image"
                   loading="lazy"
@@ -34,7 +34,7 @@
               <h1>Welcome to Dog!</h1>
             </div>
             <v-row cols="12" sm="8" class="ma-2 justify-center">
-              <div v-for="img in field" :key="img.pos">
+              <div v-for="(img, index) in fieldChanged" :key="'card' + index">
                 <v-btn class="ma-2" fab small>
                   <img
                     :id="img.pos"
@@ -56,8 +56,8 @@
             <div>
               <v-sheet class="justify-center" rounded="lg">
                 <div class="d-flex overflow-auto">
-                  <div v-for="img in field" :key="img.pos">
-                    <card-component v-bind:image="img"></card-component>
+                  <div v-for="img in fieldChanged" :key="img.pos">
+                    <card-component></card-component>
                   </div>
                 </div>
               </v-sheet>
@@ -75,7 +75,7 @@
               <v-list-item-subtitle>...</v-list-item-subtitle>
               <v-row cols="12" sm="8" class="ma-2">
                 <img
-                  v-for="img in garage"
+                  v-for="img in garageChanged"
                   :key="img.id"
                   :src="img.image"
                   loading="lazy"
@@ -93,7 +93,12 @@
 
 <script lang="ts">
 import Vue from "vue";
-import board, { field, inhouse, garage } from "../assets/data/boardExample";
+import getBoard, {
+  numb,
+  fieldObs,
+  inHouseObs,
+  garageObs
+} from "../assets/data/board";
 import CardComponent from "./CardComponent.vue";
 
 export default Vue.extend({
@@ -101,18 +106,22 @@ export default Vue.extend({
   name: "GameDashboard",
 
   data: () => ({
-    board,
-    currentPlayerHouse: board.players[board.currentPlayer].house.length,
+    board: numb.board,
+    currentPlayerHouse:
+      numb.board.players[numb.board.currentPlayer].house.length,
   }),
   computed: {
-    field() {
-      return field();
+    changed() {
+      return numb.board;
     },
-    inHouse() {
-      return inhouse();
+    fieldChanged: () => {
+      return fieldObs.field;
     },
-    garage() {
-      return garage();
+    inHouseChanged: () => {
+      return inHouseObs.inHouse;
+    },
+    garageChanged: () => {
+      return garageObs.garage;
     },
   },
 });

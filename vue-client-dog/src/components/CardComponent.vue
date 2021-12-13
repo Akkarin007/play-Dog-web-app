@@ -29,15 +29,10 @@
 <script lang="ts">
 
 import Vue from "vue";
-import board,{field} from "../assets/data/boardExample";
 
 export default Vue.extend({
   name: "CardComponent",
-
   data: () => ({
-    image: "../assets/images/icons/field.png",
-    board,
-    field: field()
   }),
   computed: {
   
