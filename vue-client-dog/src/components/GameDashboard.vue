@@ -2,11 +2,11 @@
   <v-container>
     <v-row>
       <v-col cols="12" sm="2">
-        <v-sheet rounded="lg" min-height="268">
+        <v-sheet rounded="lg" min-height="200px">
           <v-list-item two-line>
             <v-list-item-content>
               <v-list-item-title
-                >CurrentPlayer: P{{ changed.currentPlayer }}</v-list-item-title
+                >CurrentPlayer: P{{ currentPlayer }}</v-list-item-title
               >
               <v-list-item-subtitle
                 >{{ currentPlayerHouse }} Pieces Left to
@@ -34,17 +34,10 @@
               <h1>Welcome to Dog!</h1>
             </div>
             <v-row cols="12" sm="8" class="ma-2 justify-center">
-              <div v-for="(img, index) in fieldChanged" :key="'card' + index">
-                <v-btn class="ma-2" fab small>
-                  <img
-                    :id="img.pos"
-                    :src="img.image"
-                    loading="lazy"
-                    width="50"
-                    height="50"
-                  />
-                </v-btn>
-              </div> </v-row
+              <div v-for="(field) in fieldChanged" :key="'field' + field.pos">
+                <field :fieldIndex="field.pos" :fieldImage="field.image" :color="field.color" :pieceIdx="field.pieceIdx" :playerIdx="field.playerIdx"></field>
+              </div> 
+              </v-row
             ><v-row cols="12" sm="8" class="ma-2 justify-center"
               ><v-divider></v-divider
             ></v-row>
@@ -56,8 +49,8 @@
             <div>
               <v-sheet class="justify-center" rounded="lg">
                 <div class="d-flex overflow-auto">
-                  <div v-for="img in fieldChanged" :key="img.pos">
-                    <card-component></card-component>
+                  <div v-for="(card, index) in cardsChanged" :key="card.pos">
+                    <card-component :cardImage="card.image" :cardIndex="index" :cardSymbol="card.symbol"></card-component>
                   </div>
                 </div>
               </v-sheet>
@@ -93,36 +86,41 @@
 
 <script lang="ts">
 import Vue from "vue";
-import getBoard, {
-  numb,
+import {
+  boardObs,
   fieldObs,
   inHouseObs,
-  garageObs
-} from "../assets/data/board";
+  garageObs,
+  cardObs
+} from "@/common/board";
 import CardComponent from "./CardComponent.vue";
+import Field from "./Field.vue";
 
 export default Vue.extend({
-  components: { CardComponent },
+  components: { CardComponent, Field},
   name: "GameDashboard",
 
   data: () => ({
-    board: numb.board,
+    board: boardObs.board,
     currentPlayerHouse:
-      numb.board.players[numb.board.currentPlayer].house.length,
+      boardObs.board.players[boardObs.board.currentPlayer].house.length,
   }),
   computed: {
-    changed() {
-      return numb.board;
+    currentPlayer() {
+      return boardObs.board.currentPlayer + 1;
     },
     fieldChanged: () => {
       return fieldObs.field;
+    },
+    cardsChanged: () => {
+      return cardObs.cards;
     },
     inHouseChanged: () => {
       return inHouseObs.inHouse;
     },
     garageChanged: () => {
       return garageObs.garage;
-    },
+    }
   },
 });
 </script>

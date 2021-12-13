@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import connectWebSocket from "./assets/data/websocket";
+import connectWebSocket from './common/websocket'
 
   export default {
     

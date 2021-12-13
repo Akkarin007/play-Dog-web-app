@@ -1,9 +1,6 @@
 import {loadJsonAndUpdateDom} from "./board";
 
-var websocket: WebSocket;
-
-var websocket: WebSocket = new WebSocket("ws://localhost:9000/websocket");
-
+let websocket = new WebSocket("ws://localhost:9000/websocket");
 
 
 export default function connectWebSocket() {
@@ -28,7 +25,12 @@ export default function connectWebSocket() {
             loadJsonAndUpdateDom(JSON.parse(e.data))
         }
     };
+    websocket = websocket;
     return websocket;
+}
+
+export function getWebSocket() {
+    return websocket
 }
 
 

@@ -1,19 +1,22 @@
-import boardInit from "./boardExample";
+
 import Vue from "vue";
+import boardInit from "../assets/data/boardExample";
 
 let board: any = boardInit;
-export const numb = Vue.observable({board});
-export const fieldObs = Vue.observable({field: {}})
-export const inHouseObs = Vue.observable({inHouse: {}})
-export const garageObs = Vue.observable({garage: {}})
+export const boardObs = Vue.observable({board});
+export const fieldObs = Vue.observable({field: {}});
+export const inHouseObs = Vue.observable({inHouse: {}});
+export const garageObs = Vue.observable({garage: {}});
+export const cardObs = Vue.observable({cards: {}});
 
-
+loadJsonAndUpdateDom(boardInit);
 
 export function loadJsonAndUpdateDom(result:any) {
-    numb.board = result;
+    boardObs.board = result;
     field(result);
     garage(result);
     inHouse(result);
+    cards(result);
 }
 
 export function getBoard() {
@@ -29,12 +32,12 @@ export function inHouse(board: any) {
     const amoutOfPieces = board.players[currentPlayer].pieces.length;
     let counter = 0;
     for (let i = 0; i < activeHouses; i++) {
-        const img = require(`../images/icons/${board.players[currentPlayer].color}.png`)
+        const img = require(`../assets/images/icons/${board.players[currentPlayer].color}.png`)
         houseArray.push({ image: img, id: `houseId${counter++}`})
     }
 
     for (let i = 0; i < amoutOfPieces - activeHouses; i++) {
-        const img = require(`../images/icons/field.png`)
+        const img = require(`../assets/images/icons/field.png`)
         houseArray.push({ image: img, id: `houseId${counter++}`})
         
     }
@@ -52,10 +55,10 @@ export function garage(board: any) {
     for (let i = 0; i < garageArray.length; i++) {
         const pos = garageArray[i].garage_piece;
         if(pos === -1) {
-            const img = require(`../images/icons/field.png`)
+            const img = require(`../assets/images/icons/field.png`)
             garage[i] = { image: img, id: `garageId${i}`}
         }else{
-            const img = require(`../images/icons/${board.players[currentPlayer].color}.png`)
+            const img = require(`../assets/images/icons/${board.players[currentPlayer].color}.png`)
             garage[pos] = { image: img, id: `garageId${i}`}
         }
     
@@ -80,23 +83,40 @@ export function field(board:any):any {
         return { color: player.color, pieces: pieces }
     })
 
-    let boardArray = new Array<object>(boardSize);
+    let fieldArray = new Array<object>(boardSize);
 
     for (let playerIdx = 0; playerIdx < board.playerNumber; playerIdx++) {
         pieceArray[playerIdx].pieces.map((piece: any) => {
-            const img = require(`../images/icons/${pieceArray[playerIdx].color}.png`)
-            boardArray[piece.piece_pos] = { image: img, pos: piece.piece_pos }
+            const color = pieceArray[playerIdx].color;
+            const img = require(`../assets/images/icons/${color}.png`)
+            fieldArray[piece.piece_pos] = { image: img, pos: piece.piece_pos, color: color, pieceIdx: piece.piece_idx, playerIdx: playerIdx }
         });
     }
 
     for (let i = 0; i < boardSize; i++) {
-        if (!boardArray[i]) {
-            const img = require(`../images/icons/field.png`)
-            boardArray[i] = ({ image: img, pos: i })
+        if (!fieldArray[i]) {
+            const img = require(`../assets/images/icons/field.png`)
+            fieldArray[i] = ({ image: img, pos: i, color: '', pieceIdx: -1, playerIdx: -1 })
         }
     }
-    fieldObs.field = boardArray;
-    return boardArray;
+    fieldObs.field = fieldArray;
+    return fieldArray;
+}
+
+
+export function cards(board:any):any {
+
+    const currentPlayer = board.currentPlayer;
+    let cardsArray:any = [];
+    const cardsLength = board.players[currentPlayer].cards.length;
+    for (let i = 0; i < cardsLength; i++) {
+        const symbol = board.players[currentPlayer].cards[i].card_symbol;
+        const img = require(`../assets/images/cards/${symbol}.png`)
+        cardsArray.push({ image: img, id: `cardsId${i}`, symbol: symbol})
+    }
+
+    cardObs.cards = cardsArray;
+    return cardsArray
 }
 
 export default getBoard;
