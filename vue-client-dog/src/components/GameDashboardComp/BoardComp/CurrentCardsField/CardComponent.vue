@@ -30,8 +30,8 @@
 
 <script lang="ts">
 import Vue from "vue";
-import ButtonNormal from "./ButtonNormal.vue";
-import ButtonSwap from "./ButtonSwap.vue";
+import ButtonNormal from "./CardComp/ButtonNormal.vue";
+import ButtonSwap from "./CardComp/ButtonSwap.vue";
 
 export default Vue.extend({
   components: { ButtonNormal, ButtonSwap },
