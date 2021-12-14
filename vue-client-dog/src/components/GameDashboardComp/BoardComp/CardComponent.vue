@@ -35,6 +35,7 @@ import ButtonSwap from "./ButtonSwap.vue";
 
 export default Vue.extend({
   components: { ButtonNormal, ButtonSwap },
+
   name: "CardComponent",
   props: {
     cardImage: String,

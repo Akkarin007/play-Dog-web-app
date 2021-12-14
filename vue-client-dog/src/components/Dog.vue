@@ -73,7 +73,6 @@ export default Vue.extend({
     joinGame() {
       getWebSocket().send(JSON.stringify({
         "type": "getBoard",
-
       }))
     }
   },
