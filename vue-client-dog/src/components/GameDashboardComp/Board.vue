@@ -1,7 +1,6 @@
 <template>
   <v-container>
     <v-sheet class="justify-center" rounded="lg" color="grey lighten-3">
-        <v-col cols="2" sm="12">
         <div class="ma-2 d-flex overflow-auto justify-center">
             <h1>Welcome to Dog!</h1>
         </div>
@@ -14,8 +13,6 @@
         ></v-row>
         
         <current-cards-field />
-
-        </v-col>
         <!--  -->
     </v-sheet>
   </v-container>
