@@ -1,7 +1,7 @@
 selectedState = []
 var websocket;
 
-var websocket = new WebSocket("ws://localhost:9000/websocket");
+var websocket = new WebSocket("wss://sheltered-depths-36109.herokuapp.com/websocket");
 
 function initFieldListener() {
     document.querySelectorAll(".field").forEach((field) => {
@@ -276,7 +276,7 @@ function loadJsonAndUpdateDom(result) {
 
 
 function connectWebSocket() {
-    websocket = new WebSocket("ws://localhost:9000/websocket");
+    websocket = new WebSocket("wss://sheltered-depths-36109.herokuapp.com/websocket");
     websocket.setTimeout
     websocket.onopen = function(event) {
         console.log("Connected to Websocket");
