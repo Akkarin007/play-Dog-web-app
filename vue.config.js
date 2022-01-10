@@ -1,5 +1,5 @@
 module.exports = {
-  publicPath: '/vue-pages/',
+  publicPath: '/play-Dog-web-app/',
   transpileDependencies: [
     'vuetify'
   ]
