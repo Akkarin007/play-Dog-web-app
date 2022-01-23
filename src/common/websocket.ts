@@ -1,10 +1,13 @@
 import {loadJsonAndUpdateDom} from "./board";
 
-let websocket = new WebSocket("ws://sheltered-depths-36109.herokuapp.com/websocket");
+let localhost = 'ws://localhost:9000/websocket'
+let prod_host = 'ws://sheltered-depths-36109.herokuapp.com/websocket'
+
+let websocket = new WebSocket(localhost);
 
 
 export default function connectWebSocket() {
-    websocket = new WebSocket("ws://sheltered-depths-36109.herokuapp.com/websocket");
+    websocket = new WebSocket(localhost);
 
     websocket.onopen = function(event:any) {
         console.log("Connected to Websocket");
