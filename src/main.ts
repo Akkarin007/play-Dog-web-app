@@ -34,9 +34,16 @@ Vue.prototype.$axios = axios;
 export const firebaseAuth = auth
 Vue.config.productionTip = false
 
-new Vue({
-  router,
-  store,
-  vuetify,
-  render: h => h(App)
-}).$mount('#app')
+let app: any;
+
+auth.onAuthStateChanged(auth.getAuth(),user => {
+  console.log(user);
+  if (!app) {
+    app = new Vue({
+      router,
+      store,
+      vuetify,
+      render: h => h(App)
+    }).$mount('#app')
+  }
+})
