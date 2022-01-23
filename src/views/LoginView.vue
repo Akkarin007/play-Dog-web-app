@@ -1,16 +1,16 @@
 <template>
-  <game-dashboard />
+  <login />
 </template>
 
 <script lang="ts">
-import GameDashboard from '@/components/GameDashboard.vue'
 import Vue from 'vue'
+import Login from '../components/Login.vue'
 
   export default Vue.extend({
-    name: 'Dashboard',
-   
+    name: 'LoginView',
+
     components: {
-      GameDashboard
+      Login
     },
   })
 </script>

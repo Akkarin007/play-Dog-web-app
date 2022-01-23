@@ -7,7 +7,7 @@ import Vue from 'vue'
 import Dog from '../components/Dog.vue'
 
   export default Vue.extend({
-    name: 'Home',
+    name: 'InitGame',
 
     components: {
       Dog

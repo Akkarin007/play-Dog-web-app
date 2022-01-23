@@ -51,7 +51,8 @@ import connectWebSocket from './common/websocket'
     },
     data: () => ({
       links: [
-        { title:'Home', to: '/' },
+        { title:'Login', to: '/login' },
+        { title:'initGame', to: '/InitGame' },
         { title: 'Game', to: '/dashboard' },
         { title:'About', to: '/about' }
       ],
