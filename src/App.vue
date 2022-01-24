@@ -7,9 +7,14 @@
           color="grey darken-1 shrink"
           size="28"
         ></v-avatar>
-        <v-toolbar-title class="text-uppercase grey--text">
-          {{ userEmail }}</v-toolbar-title
-        >
+        <div class="ma-2" style="width: 100px">
+          <v-toolbar-title
+            class="text-uppercase grey--text"
+            style="font-size: 12px; width: 100px"
+          >
+            {{ userEmail }}</v-toolbar-title
+          >
+        </div>
         <v-avatar
           :color="
             $vuetify.breakpoint.smAndDown ? 'grey darken-1' : 'transparent'
@@ -30,6 +35,7 @@
           @click="loginOrSignout()"
           small
           dark
+          style="width: 100px"
         >
           <span v-if="!loggedIn">login?</span>
           <span v-else> signout?</span>
@@ -55,7 +61,7 @@ export default {
   },
   data: () => ({
     loggedIn: false,
-    userEmail: "",
+    userEmail: "unknown user",
     error: "",
     links: [
       { title: "Login", to: "/login" },
@@ -68,7 +74,7 @@ export default {
     firebaseAuth.onAuthStateChanged(firebaseAuth.getAuth(), (user) => {
       this.loggedIn = !!user;
 
-      user ? (this.userEmail = user.email) : (this.userEmail = "");
+      user ? (this.userEmail = user.email) : (this.userEmail = "unknown user");
     });
     console.log("created! = ", this.loggedIn);
   },
@@ -82,7 +88,9 @@ export default {
         try {
           const user = await firebaseAuth.signOut(firebaseAuth.getAuth());
           console.log(user);
-          user ? (this.userEmail = user.email) : (this.userEmail = "");
+          user
+            ? (this.userEmail = user.email)
+            : (this.userEmail = "unknown user");
 
           this.$route.name != "Login"
             ? await this.$router.replace({ name: "Login" })
