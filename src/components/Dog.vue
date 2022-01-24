@@ -33,8 +33,9 @@
                   <v-btn class="justify-center" @click="startGame()" to="/dashboard" width="250" height="40" small dark> start new game</v-btn>
                 </v-card-actions>
                 <v-card-actions class="justify-center">
-                  <v-btn class="justify-center" @click="joinGame()" to="/dashboard" width="250" height="40" small dark> join game</v-btn>
+                  <lobby></lobby>
                 </v-card-actions>
+                
               </div>
               <!--  -->
             </div>
@@ -48,8 +49,10 @@
 <script lang="ts">
 import { getWebSocket } from "@/common/websocket";
 import Vue from "vue";
+import Lobby from "./Lobby.vue";
 
 export default Vue.extend({
+  components: { Lobby },
   name: "Dog",
 
   data: () => ({
