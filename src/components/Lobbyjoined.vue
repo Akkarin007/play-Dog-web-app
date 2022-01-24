@@ -28,7 +28,7 @@
 </template>
 
 <script lang="ts">
-import { setCurrentLobbyID } from "@/common/board";
+import { setCurrentLobbyID, setActivePlayer } from "@/common/board";
 import Vue from "vue";
 import { getWebSocket } from "../common/websocket";
 
@@ -65,6 +65,7 @@ export default Vue.extend({
     },
     startGame() {
       setCurrentLobbyID(this.getCurrentLobby.lobbyID);
+      setActivePlayer(this.userEmail);
       let data = JSON.stringify({
         type: "startGame",
         lobbyID: this.getCurrentLobby.lobbyID,

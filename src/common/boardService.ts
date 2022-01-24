@@ -10,7 +10,7 @@ export const selectionObs = Vue.observable({ selectedState });
 
 
 export function selectCardAndPiece(cardNum: number, cardOption: number, pieceNum: number) {
-    
+
     const lobbyID = getCurrentLobbyID()
     var data;
     if (selectedState.length > 0) {

@@ -82,6 +82,7 @@ import Vue from "vue";
 import Lobby from "./Lobby.vue";
 
 import { firebaseAuth } from "@/main";
+import { setCurrentLobbyID } from "@/common/board";
 export default Vue.extend({
   components: { Lobby },
   name: "Dog",
@@ -104,6 +105,7 @@ export default Vue.extend({
   methods: {
     createLobby() {
       if (this.userEmail != "unknown user") {
+        setCurrentLobbyID(this.lobbyID);
         getWebSocket().send(
           JSON.stringify({
             type: "createLobby",

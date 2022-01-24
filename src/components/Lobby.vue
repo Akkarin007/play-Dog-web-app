@@ -38,7 +38,7 @@ import Vue from "vue";
 import { firebaseAuth } from "@/main";
 
 import { getWebSocket } from "../common/websocket";
-import { lobbiesObs } from "../common/board";
+import { lobbiesObs, setCurrentLobbyID } from "../common/board";
 import Lobbyselection from "./Lobbyselection.vue";
 import Lobbyjoined from "./Lobbyjoined.vue";
 export default Vue.extend({
@@ -81,6 +81,16 @@ export default Vue.extend({
         lobbyPlayers: [{ playerName: "" }],
       },
     ];
+
+    let isLobby = undefined;
+    lobbiesObs.lobbies.forEach((lobby) => {
+      const joinedLobby = lobby.lobbyPlayers.forEach((player) => {
+        if (player.playerName === this.userEmail) {
+          isLobby = lobby;
+          setCurrentLobbyID(isLobby.lobbyID);
+        }
+      });
+    });
   },
   methods: {
     getLabel(lobby: any) {

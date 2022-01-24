@@ -2,14 +2,19 @@
   <v-app id="inspire" class="grey lighten-4">
     <v-app-bar app color="white" flat>
       <v-toolbar flat app>
-        <profile :loggedIn="loggedIn" :userEmail="userEmail" v-if="loggedIn"></profile>
-      
-        <v-avatar v-if="!loggedIn"
-              class="hidden-sm-and-down"
-              color="grey darken-1 shrink"
-              size="28"
-            ></v-avatar>
-        
+        <profile
+          :loggedIn="loggedIn"
+          :userEmail="userEmail"
+          v-if="loggedIn"
+        ></profile>
+
+        <v-avatar
+          v-if="!loggedIn"
+          class="hidden-sm-and-down"
+          color="grey darken-1 shrink"
+          size="28"
+        ></v-avatar>
+
         <div class="ma-2" style="width: 100px">
           <v-toolbar-title
             class="text-uppercase grey--text ma-2"
@@ -58,7 +63,7 @@
 import connectWebSocket from "./common/websocket";
 
 import { firebaseAuth } from "@/main";
-import Profile from './components/Profile.vue';
+import Profile from "./components/Profile.vue";
 export default {
   components: { Profile },
   beforeCreate() {
