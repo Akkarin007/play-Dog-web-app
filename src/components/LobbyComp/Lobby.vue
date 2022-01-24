@@ -57,13 +57,15 @@ export default Vue.extend({
     },
     getCurrentLobby() {
       let isLobby = undefined;
-      lobbiesObs.lobbies.forEach((lobby) => {
-        const joinedLobby = lobby.lobbyPlayers.forEach((player) => {
-          if (player.playerName === this.userEmail) {
-            isLobby = lobby;
-          }
+      if (lobbiesObs.lobbies) {
+        lobbiesObs.lobbies.forEach((lobby) => {
+          lobby.lobbyPlayers.forEach((player) => {
+            if (player.playerName === this.userEmail) {
+              isLobby = lobby;
+            }
+          });
         });
-      });
+      }
       return isLobby;
     },
   },
