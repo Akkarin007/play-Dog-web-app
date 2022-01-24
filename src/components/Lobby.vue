@@ -16,7 +16,7 @@
         >
       </template>
       <lobbyselection
-        :getCurrentLobby="getCurrentLobby"
+        v-if="getCurrentLobby == undefined"
         :userEmail="userEmail"
         :lobbiesChanged="lobbiesChanged"
         v-on:closeEvent="dialog = false"
@@ -81,16 +81,6 @@ export default Vue.extend({
         lobbyPlayers: [{ playerName: "" }],
       },
     ];
-
-    let isLobby = undefined;
-    lobbiesObs.lobbies.forEach((lobby) => {
-      const joinedLobby = lobby.lobbyPlayers.forEach((player) => {
-        if (player.playerName === this.userEmail) {
-          isLobby = lobby;
-          setCurrentLobbyID(isLobby.lobbyID);
-        }
-      });
-    });
   },
   methods: {
     getLabel(lobby: any) {

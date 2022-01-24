@@ -186,7 +186,7 @@ export default Vue.extend({
         );
         console.log(user);
         this.loggedIn = true;
-        this.$router.replace({ name: "/InitGame" });
+        this.$router.replace({ name: "InitGame" });
       } catch (err) {
         console.log(err);
         this.error = String(err);

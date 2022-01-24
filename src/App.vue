@@ -76,7 +76,7 @@ export default {
     links: [
       { title: "Login", to: "/login" },
       { title: "initGame", to: "/InitGame" },
-      { title: "Game", to: "/dashboard" },
+      { title: "Game", to: "/game" },
       { title: "About", to: "/about" },
     ],
   }),

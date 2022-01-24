@@ -20,7 +20,7 @@
       <v-btn color="dark darken-1" text @click="leaveLobby()">
         Leave Lobby
       </v-btn>
-      <v-btn class="ma-1" small dark @click="startGame()" to="/dashboard">
+      <v-btn class="ma-1" small dark @click="startGame()" >
         startGame
       </v-btn>
     </v-card-actions>
@@ -63,7 +63,7 @@ export default Vue.extend({
         this.$emit("closeEvent", false);
       }
     },
-    startGame() {
+    async startGame() {
       setCurrentLobbyID(this.getCurrentLobby.lobbyID);
       setActivePlayer(this.userEmail);
       let data = JSON.stringify({
@@ -75,6 +75,7 @@ export default Vue.extend({
       });
       getWebSocket().send(data);
       console.log(data);
+      await this.$router.replace({ name: "Game" })
       this.$emit("closeEvent", false);
     },
   },

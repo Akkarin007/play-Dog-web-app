@@ -1,6 +1,6 @@
 <template>
   
-      <v-card v-if="getCurrentLobby == undefined">
+      <v-card>
         <v-card-title>Select lobby</v-card-title>
         <v-divider></v-divider>
         <v-card-text style="height: 300px">
@@ -29,7 +29,7 @@ import { getWebSocket } from "../common/websocket";
 
 export default Vue.extend({
   name: "Lobby",
-  props: ['getCurrentLobby', 'lobbiesChanged','userEmail'],
+  props: ['lobbiesChanged','userEmail'],
   data: () => ({
     selectedLobby: { lobbyID: "nothing", lobbyInGame: 0, lobbyPlayers: [""] },
   }),

@@ -101,7 +101,6 @@ export default Vue.extend({
         ? (this.userEmail = user.email)
         : (this.userEmail = "unknown user");
     });
-    setCurrentLobbyID(this.lobbyID);
     getWebSocket().send(
           JSON.stringify({
             type: "getBoard",

@@ -30,13 +30,23 @@ export function setActivePlayer(name: string) {
 export function getActivePlayer() {
     return activePlayer;
 }
+
+export function reset(){
+    setCurrentLobbyID('')
+    boardObs.board = {}
+    fieldObs.field = {}
+    inHouseObs.inHouse = {}
+    garageObs.garage = {}
+    cardObs.cards = {}
+}
 export function loadJsonAndUpdateDom(result: any) {
 
-    console.log('loadJson -> ', JSON.stringify(result))
+    console.log('IDDDD', getCurrentLobbyID())
 
     if (result.lobbies) {
         setLobbies(result)
     } else if (result.lobbyID = getCurrentLobbyID()) {
+        console.log('loadJson -> ', JSON.stringify(result))
         boardObs.board = result;
         field(result);
         garage(result);
@@ -52,7 +62,7 @@ export function getBoard() {
 
 function setLobbies(lobby: any) {
     lobbiesObs.lobbies = lobby.lobbies
-    console.log('loadJson lobbies -> ', JSON.stringify(lobby.lobbies))
+    console.log('lobbies -> ', JSON.stringify(lobby.lobbies))
 }
 
 
@@ -91,22 +101,23 @@ export function garage(board: any) {
         const garageArray = board.players[playerIdx].garage;
 
         const amoutOfPieces = board.players[playerIdx].pieces.length;
-        let garage: any = new Array<object>(amoutOfPieces);
+        let garageAr: any = new Array<object>(amoutOfPieces);
         for (let i = 0; i < garageArray.length; i++) {
             const pos = garageArray[i].garage_piece;
             if (pos === -1) {
                 const img = require(`../assets/images/icons/field.png`)
                 console.log(img)
-                garage[i] = { image: img, id: `garageId${i}Player${playerIdx}` }
+                garageAr[i] = { image: img, id: `garageId${i}Player${playerIdx}` }
             } else {
                 const color = board.players[playerIdx].color;
                 const img = require(`../assets/images/icons/${color}.png`)
-                console.log('_>>>>>>>',`../assets/images/icons/${color}.png`)
-                garage[pos] = { image: img, id: `garageId${color}${i}Player${playerIdx}` }
+                const id = `garageId${color}${i}Player${playerIdx}`
+                console.log(id)
+                garageAr[pos] = { image: img, id: id }
             }
 
         }
-        allGarages.push({ name: board.players[playerIdx].name, garage: garage })
+        allGarages.push({ name: board.players[playerIdx].name, garage: garageAr })
     }
 
     garageObs.garage = allGarages;

@@ -30,7 +30,7 @@ import {
   garageObs,
   getActivePlayer,
   getCurrentLobbyID,
-  setCurrentLobbyID,
+  reset,
 } from "@/common/board";
 import { getWebSocket } from "@/common/websocket";
 
@@ -60,7 +60,7 @@ export default Vue.extend({
         getWebSocket().send(end);
         console.log(end);
         console.log(leave);
-        setCurrentLobbyID("");
+        reset();
         this.$router.replace({ name: "InitGame" });
       }
     },
