@@ -57,33 +57,39 @@ function setLobbies(lobby: any) {
 
 
 export function inHouse(board: any) {
-    const currentPlayer = board.currentPlayer;
-    let houseArray: any = [];
-    const activeHouses = board.players[currentPlayer].house.length;
-    const amoutOfPieces = board.players[currentPlayer].pieces.length;
-    let counter = 0;
-    for (let i = 0; i < activeHouses; i++) {
-        const img = require(`../assets/images/icons/${board.players[currentPlayer].color}.png`)
-        houseArray.push({ image: img, id: `houseId${counter++}` })
-    }
+    const playerCount = board.playerNumber;
+    const allHouses = []
 
-    for (let i = 0; i < amoutOfPieces - activeHouses; i++) {
-        const img = require(`../assets/images/icons/field.png`)
-        houseArray.push({ image: img, id: `houseId${counter++}` })
+    for (let playerIdx = 0; playerIdx < playerCount; playerIdx++) {
+        let houseArray: any = [];
+        const activeHouses = board.players[playerIdx].house.length;
+        const amoutOfPieces = board.players[playerIdx].pieces.length;
+        let counter = 0;
+        for (let i = 0; i < activeHouses; i++) {
+            const img = require(`../assets/images/icons/${board.players[playerIdx].color}.png`)
+            houseArray.push({ image: img, id: `houseId${counter++}` })
+        }
 
+        for (let i = 0; i < amoutOfPieces - activeHouses; i++) {
+            const img = require(`../assets/images/icons/field.png`)
+            houseArray.push({ image: img, id: `houseId${counter++}` })
+
+        }
+        allHouses.push({ name: `-> ${board.players[playerIdx].name}`, house: houseArray })
     }
-    inHouseObs.inHouse = houseArray;
-    return houseArray
+    inHouseObs.inHouse = allHouses
+    return allHouses
 }
 
 
 export function garage(board: any) {
     const allGarages = []
     const playerCount = board.playerNumber;
-    const currentPlayer = board.currentPlayer;
-    const garageArray = board.players[currentPlayer].garage;
+
+
     for (let playerIdx = 0; playerIdx < playerCount; playerIdx++) {
-        
+        const garageArray = board.players[playerIdx].garage;
+
         const amoutOfPieces = board.players[playerIdx].pieces.length;
         let garage: any = new Array<object>(amoutOfPieces);
         for (let i = 0; i < garageArray.length; i++) {
@@ -92,16 +98,16 @@ export function garage(board: any) {
                 const img = require(`../assets/images/icons/field.png`)
                 garage[i] = { image: img, id: `garageId${i}` }
             } else {
-                const img = require(`../assets/images/icons/${board.players[currentPlayer].color}.png`)
+                const img = require(`../assets/images/icons/${board.players[playerIdx].color}.png`)
                 garage[pos] = { image: img, id: `garageId${i}` }
             }
 
         }
-        allGarages.push({name: board.players[playerIdx].name, garage: garage})
+        allGarages.push({ name: board.players[playerIdx].name, garage: garage })
     }
-    
+
     garageObs.garage = allGarages;
-    return garage
+    return allGarages
 }
 
 export function field(board: any): any {
