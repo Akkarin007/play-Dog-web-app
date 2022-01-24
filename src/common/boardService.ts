@@ -1,4 +1,5 @@
 import Vue from "vue";
+import { getCurrentLobbyID } from "./board";
 import { getWebSocket } from "./websocket";
 
 
@@ -9,10 +10,13 @@ export const selectionObs = Vue.observable({ selectedState });
 
 
 export function selectCardAndPiece(cardNum: number, cardOption: number, pieceNum: number) {
+    
+    const lobbyID = getCurrentLobbyID()
     var data;
     if (selectedState.length > 0) {
         data = JSON.stringify({
             "type": "request",
+            "lobbyID": lobbyID,
             "cardNum": cardNum.toString(),
             "cardOption": cardOption.toString(),
             "pieceNum": selectedState[0].piece
@@ -20,6 +24,7 @@ export function selectCardAndPiece(cardNum: number, cardOption: number, pieceNum
     } else {
         data = JSON.stringify({
             "type": "request",
+            "lobbyID": lobbyID,
             "cardNum": cardNum.toString(),
             "cardOption": cardOption.toString(),
             "pieceNum": 0
@@ -62,9 +67,11 @@ function getStateObj(state: any, fieldIdx: any) {
 }
 
 export function swapCard(cardNum: number) {
+    const lobbyID = getCurrentLobbyID()
     if (selectionObs.selectedState.length == 2) {
         var data = JSON.stringify({
             "type": "swap",
+            "lobbyID": lobbyID,
             "cardNum": cardNum.toString(),
             "otherPlayer": selectionObs.selectedState[1].playerIdx,
             "pieceNum1": selectionObs.selectedState[0].piece,

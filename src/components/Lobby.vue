@@ -12,7 +12,7 @@
           dark
           @click="getLobbies()"
         >
-          join game</v-btn
+          join lobby</v-btn
         >
       </template>
       <lobbyselection
@@ -22,6 +22,9 @@
         v-on:closeEvent="dialog = false"
       ></lobbyselection>
       <lobbyjoined
+        :boardSize="boardSize"
+        :pieceAmount="pieceAmount"
+        :cardAmount="cardAmount"
         :getCurrentLobby="getCurrentLobby"
         :userEmail="userEmail"
         v-on:closeEvent="dialog = false"
@@ -41,6 +44,7 @@ import Lobbyjoined from "./Lobbyjoined.vue";
 export default Vue.extend({
   components: { Lobbyselection, Lobbyjoined },
   name: "Lobby",
+  props: ["boardSize", "pieceAmount", "cardAmount", "lobbyID"],
   data: () => ({
     selectedLobby: { lobbyID: "nothing", lobbyInGame: 0, lobbyPlayers: [""] },
     dialog: false,

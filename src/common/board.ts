@@ -12,13 +12,22 @@ export const cardObs = Vue.observable({cards: {}});
 export const lobbiesObs = Vue.observable({lobbies: [{lobbyPlayers: [{playerName:''}], lobbyID: '', lobbySize: 0,lobbyInGame: false}]});
 loadJsonAndUpdateDom(boardInit);
 
+let currentLobbyID = "default"
+
+export function setCurrentLobbyID(id: string) {
+    currentLobbyID = id;
+}
+
+export function getCurrentLobbyID() {
+    return currentLobbyID;
+}
 export function loadJsonAndUpdateDom(result:any) {
     
     console.log('loadJson -> ',JSON.stringify(result))
    
     if (result.lobbies) {
         setLobbies(result)
-    } else {
+    } else if(result.lobbyID = currentLobbyID) {
         boardObs.board = result;
         field(result);
         garage(result);

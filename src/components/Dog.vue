@@ -8,6 +8,22 @@
               <div class=".justify-start">
                 <v-card-actions class="justify-center" max-width="250">
                   <v-text-field
+                    v-model="lobbyID"
+                    label="lobbyID"
+                    outlined
+                  ></v-text-field>
+                </v-card-actions>
+                <v-card-actions class="justify-center" max-width="250">
+                  <v-text-field
+                    class="mt-n6"
+                    v-model="lobbySize"
+                    label="lobbySize"
+                    outlined
+                  ></v-text-field>
+                </v-card-actions>
+                <v-card-actions class="justify-center" max-width="250">
+                  <v-text-field
+                    class="mt-n6"
                     v-model="boardSize"
                     label="boardSize"
                     outlined
@@ -29,13 +45,27 @@
                     outlined
                   ></v-text-field>
                 </v-card-actions>
+
                 <v-card-actions class="justify-center">
-                  <v-btn class="justify-center" @click="startGame()" to="/dashboard" width="250" height="40" small dark> start new game</v-btn>
+                  <v-btn
+                    class="justify-center"
+                    @click="createLobby()"
+                    width="250"
+                    height="40"
+                    small
+                    dark
+                  >
+                    create Lobby</v-btn
+                  >
                 </v-card-actions>
                 <v-card-actions class="justify-center">
-                  <lobby></lobby>
+                  <lobby
+                    :lobbyID="lobbyID"
+                    :boardSize="boardSize"
+                    :pieceAmount="pieceAmount"
+                    :cardAmount="cardAmount"
+                  ></lobby>
                 </v-card-actions>
-                
               </div>
               <!--  -->
             </div>
@@ -51,6 +81,7 @@ import { getWebSocket } from "@/common/websocket";
 import Vue from "vue";
 import Lobby from "./Lobby.vue";
 
+import { firebaseAuth } from "@/main";
 export default Vue.extend({
   components: { Lobby },
   name: "Dog",
@@ -58,26 +89,31 @@ export default Vue.extend({
   data: () => ({
     boardSize: 20,
     pieceAmount: 4,
-    cardAmount: 6
+    cardAmount: 6,
+    lobbyID: "default",
+    lobbySize: 4,
+    userEmail: "unknown user",
   }),
+  created() {
+    firebaseAuth.onAuthStateChanged(firebaseAuth.getAuth(), (user) => {
+      user?.email
+        ? (this.userEmail = user.email)
+        : (this.userEmail = "unknown user");
+    });
+  },
   methods: {
-    startGame() {
-      const size = this.boardSize;
-      const pieceAmount = this.pieceAmount;
-      const cardAmount = this.cardAmount;
-      console.log(size, pieceAmount, cardAmount)
-      getWebSocket().send(JSON.stringify({
-        "type": "startGame",
-        "cardNum": cardAmount,
-        "pieceNum": pieceAmount,
-        "size": size
-      }))
+    createLobby() {
+      if (this.userEmail != "unknown user") {
+        getWebSocket().send(
+          JSON.stringify({
+            type: "createLobby",
+            lobbyID: this.lobbyID,
+            playerName: this.userEmail,
+            lobbySize: this.lobbySize,
+          })
+        );
+      }
     },
-    joinGame() {
-      getWebSocket().send(JSON.stringify({
-        "type": "getBoard",
-      }))
-    }
   },
 });
 </script>
