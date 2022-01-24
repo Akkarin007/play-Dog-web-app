@@ -7,10 +7,11 @@ target
 /.project
 /.settings
 /RUNNING_PID
+/dist
 # Mac
 .DS_Store
 /null
-/node_modules
+node_modules
 /.bloop
 /.metals
 # Eclipse
