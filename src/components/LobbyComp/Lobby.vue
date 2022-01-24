@@ -37,8 +37,8 @@
 import Vue from "vue";
 import { firebaseAuth } from "@/main";
 
-import { getWebSocket } from "../common/websocket";
-import { lobbiesObs, setCurrentLobbyID } from "../common/board";
+import { getWebSocket } from "../../common/websocket";
+import { lobbiesObs, setCurrentLobbyID } from "../../common/board";
 import Lobbyselection from "./Lobbyselection.vue";
 import Lobbyjoined from "./Lobbyjoined.vue";
 export default Vue.extend({

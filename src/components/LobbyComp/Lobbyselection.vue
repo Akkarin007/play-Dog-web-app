@@ -25,7 +25,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { getWebSocket } from "../common/websocket";
+import { getWebSocket } from "../../common/websocket";
 
 export default Vue.extend({
   name: "Lobby",

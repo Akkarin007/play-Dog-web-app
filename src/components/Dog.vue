@@ -79,7 +79,7 @@
 <script lang="ts">
 import { getWebSocket } from "@/common/websocket";
 import Vue from "vue";
-import Lobby from "./Lobby.vue";
+import Lobby from "../components/LobbyComp/Lobby.vue";
 
 import { firebaseAuth } from "@/main";
 import { setCurrentLobbyID } from "@/common/board";

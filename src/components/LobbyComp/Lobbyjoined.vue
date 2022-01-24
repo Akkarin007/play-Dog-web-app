@@ -30,7 +30,7 @@
 <script lang="ts">
 import { setCurrentLobbyID, setActivePlayer } from "@/common/board";
 import Vue from "vue";
-import { getWebSocket } from "../common/websocket";
+import { getWebSocket } from "../../common/websocket";
 
 export default Vue.extend({
   name: "Lobbyjoined",
