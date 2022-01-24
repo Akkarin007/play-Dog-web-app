@@ -1,46 +1,31 @@
 <template>
   <v-row justify="center">
-    <v-dialog
-      v-model="dialog"
-      scrollable
-      max-width="300px"
-    >
+    <v-dialog v-model="dialog" scrollable max-width="300px">
       <template v-slot:activator="{ on, attrs }">
-        
-        <v-btn class="justify-center" v-bind="attrs"
-          v-on="on" width="250" height="40" small dark> join game</v-btn>
+        <v-btn
+          class="justify-center"
+          v-bind="attrs"
+          v-on="on"
+          width="250"
+          height="40"
+          small
+          dark
+          @click="getLobbies()"
+        >
+          join game</v-btn
+        >
       </template>
-      <v-card>
-        <v-card-title>Select lobby</v-card-title>
-        <v-divider></v-divider>
-        <v-card-text style="height: 300px;">
-          <v-radio-group v-for="lobby in lobbies" :key="lobby.name"
-            v-model="dialogm1"
-            column
-          >
-            <v-radio
-              :label="lobby.name"
-              :value="lobby"
-            ></v-radio>
-          </v-radio-group>
-        </v-card-text>
-        <v-divider></v-divider>
-        <v-card-actions>
-          <v-btn
-            color="dark darken-1"
-            text
-            @click="dialog = false"
-          >
-            Close
-          </v-btn>
-          <v-btn
-             small dark
-            @click="selectLobby()"
-          >
-            select
-          </v-btn>
-        </v-card-actions>
-      </v-card>
+      <lobbyselection
+        :getCurrentLobby="getCurrentLobby"
+        :userEmail="userEmail"
+        :lobbiesChanged="lobbiesChanged"
+        v-on:closeEvent="dialog = false"
+      ></lobbyselection>
+      <lobbyjoined
+        :getCurrentLobby="getCurrentLobby"
+        :userEmail="userEmail"
+        v-on:closeEvent="dialog = false"
+      ></lobbyjoined>
     </v-dialog>
   </v-row>
 </template>
@@ -49,21 +34,63 @@
 import Vue from "vue";
 import { firebaseAuth } from "@/main";
 
+import { getWebSocket } from "../common/websocket";
+import { lobbiesObs } from "../common/board";
+import Lobbyselection from "./Lobbyselection.vue";
+import Lobbyjoined from "./Lobbyjoined.vue";
 export default Vue.extend({
+  components: { Lobbyselection, Lobbyjoined },
   name: "Lobby",
-
   data: () => ({
-    dialogm1: {name: "nothing", value: 0},
+    selectedLobby: { lobbyID: "nothing", lobbyInGame: 0, lobbyPlayers: [""] },
     dialog: false,
-    lobbies: [{name: "test", value: 30},{name: "test1", value: 3}]
+    lobbies: lobbiesObs.lobbies,
+    userEmail: "unknown user",
   }),
+  computed: {
+    lobbiesChanged: () => {
+      return lobbiesObs.lobbies;
+    },
+    getCurrentLobby() {
+      let isLobby = undefined;
+      lobbiesObs.lobbies.forEach((lobby) => {
+        const joinedLobby = lobby.lobbyPlayers.forEach((player) => {
+          if (player.playerName === this.userEmail) {
+            isLobby = lobby;
+          }
+        });
+      });
+      return isLobby;
+    },
+  },
   created() {
-    
+    firebaseAuth.onAuthStateChanged(firebaseAuth.getAuth(), (user) => {
+      user?.email
+        ? (this.userEmail = user.email)
+        : (this.userEmail = "unknown user");
+    });
+    this.lobbies = [
+      {
+        lobbyID: "nothing",
+        lobbySize: 0,
+        lobbyInGame: false,
+        lobbyPlayers: [{ playerName: "" }],
+      },
+    ];
   },
   methods: {
-    selectLobby() {
-        console.log(this.dialogm1.name)
-    }
+    getLabel(lobby: any) {
+      return (
+        lobby.lobbyID + " " + lobby.lobbyPlayers.length + "/" + lobby.lobbySize
+      );
+    },
+    getLobbies() {
+      getWebSocket().send(
+        JSON.stringify({
+          type: "getLobbies",
+        })
+      );
+    },
   },
 });
 </script>

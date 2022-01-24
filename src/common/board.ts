@@ -9,19 +9,32 @@ export const inHouseObs = Vue.observable({inHouse: {}});
 export const garageObs = Vue.observable({garage: {}});
 export const cardObs = Vue.observable({cards: {}});
 
+export const lobbiesObs = Vue.observable({lobbies: [{lobbyPlayers: [{playerName:''}], lobbyID: '', lobbySize: 0,lobbyInGame: false}]});
 loadJsonAndUpdateDom(boardInit);
 
 export function loadJsonAndUpdateDom(result:any) {
-    boardObs.board = result;
-    field(result);
-    garage(result);
-    inHouse(result);
-    cards(result);
+    
+    console.log('loadJson -> ',JSON.stringify(result))
+   
+    if (result.lobbies) {
+        setLobbies(result)
+    } else {
+        boardObs.board = result;
+        field(result);
+        garage(result);
+        inHouse(result);
+        cards(result);
+    }
 }
 
 export function getBoard() {
     
     return board;
+}
+
+function setLobbies(lobby: any) {
+    lobbiesObs.lobbies = lobby.lobbies
+    console.log('loadJson lobbies -> ',JSON.stringify(lobby.lobbies))
 }
 
 
