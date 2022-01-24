@@ -69,9 +69,9 @@ export default Vue.extend({
       let data = JSON.stringify({
         type: "startGame",
         lobbyID: this.getCurrentLobby.lobbyID,
-        cardNum: this.cardAmount,
-        pieceNum: this.pieceAmount,
-        size: this.boardSize,
+        cardNum: Number(this.cardAmount),
+        pieceNum: Number(this.pieceAmount),
+        size: Number(this.boardSize),
       });
       getWebSocket().send(data);
       console.log(data);

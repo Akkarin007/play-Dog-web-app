@@ -101,6 +101,11 @@ export default Vue.extend({
         ? (this.userEmail = user.email)
         : (this.userEmail = "unknown user");
     });
+    setCurrentLobbyID(this.lobbyID);
+    getWebSocket().send(
+          JSON.stringify({
+            type: "getBoard",
+          }))
   },
   methods: {
     createLobby() {
@@ -111,7 +116,7 @@ export default Vue.extend({
             type: "createLobby",
             lobbyID: this.lobbyID,
             playerName: this.userEmail,
-            lobbySize: this.lobbySize,
+            lobbySize: Number(this.lobbySize),
           })
         );
       }

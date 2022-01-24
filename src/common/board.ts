@@ -36,7 +36,7 @@ export function loadJsonAndUpdateDom(result: any) {
 
     if (result.lobbies) {
         setLobbies(result)
-    } else if (result.lobbyID = currentLobbyID) {
+    } else if (result.lobbyID = getCurrentLobbyID()) {
         boardObs.board = result;
         field(result);
         garage(result);
@@ -108,6 +108,21 @@ export function garage(board: any) {
 
     garageObs.garage = allGarages;
     return allGarages
+}
+
+export function colorizedHouses(fieldIdx: number): string{
+    
+    const playerCount = boardObs.board.playerNumber;
+
+
+    for (let playerIdx = 0; playerIdx < playerCount; playerIdx++) {
+        const homePosition = boardObs.board.players[playerIdx].homePosition;
+        if(fieldIdx === homePosition) {
+            const color = boardObs.board.players[playerIdx].color
+            return String(color)
+        }
+    }
+    return 'transparent'
 }
 
 export function field(board: any): any {

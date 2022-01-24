@@ -1,19 +1,20 @@
 <template>
-      <v-btn class="ma-2" @click="selectPiece()" fab small> 
+<div >
+      <v-btn class="ma-2"  @click="selectPiece()" fab small > 
                   <img
                     :id="'field' + fieldIndex"
                     :src="fieldImage"
                     loading="lazy"
                     width="50"
                     height="50"
-                    :style="{backgroundColor: selected}"
+                    :style="{backgroundColor: selected, 'border-radius': '2em'}"
                   />
-                </v-btn>
+                </v-btn></div>
 </template>
 
 <script lang="ts">
 
-import { boardObs } from "@/common/board";
+import { boardObs, colorizedHouses } from "@/common/board";
 import { selection, selectionObs } from "@/common/boardService";
 import Vue from "vue";
 
@@ -27,9 +28,9 @@ export default Vue.extend({
     playerIdx: Number
   },
   data: () => ({
+    style: 'transparent'
   }),
   computed: {
-    
     currentPlayer() {
       return boardObs.board.currentPlayer;
     },
@@ -40,7 +41,8 @@ export default Vue.extend({
           color = 'white';
         }
       });
-      return color;
+      const test = colorizedHouses(this.fieldIndex)
+      return test;
     },
   },
   methods: {
@@ -50,7 +52,7 @@ export default Vue.extend({
 
         selection([isOwnPiece, this.pieceIdx, this.playerIdx], this.fieldIndex)
       }
-    }
+    },
   }
 });
 
