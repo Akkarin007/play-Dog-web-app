@@ -4,19 +4,20 @@
       <v-list-item two-line>
         <v-list-item-content>
           <v-list-item-title>Players Garage </v-list-item-title>
-          <v-list-item-subtitle>...</v-list-item-subtitle>
-          <v-row cols="12" sm="8" class="ma-2">
+          <v-row v-for="garage in garageChanged" :key="garage.name" cols="12" sm="8" class="ma-2">
+          <v-list-item-subtitle >{{garage.name}}</v-list-item-subtitle>
             <img
-              v-for="img in garageChanged"
+              v-for="img in garage.garage"
               :key="img.id"
               :src="img.image"
               loading="lazy"
               width="50"
               height="50"
-            /><v-btn class="ma-3 justify-center" small dark @click="endGame()">
+            />
+          </v-row>
+          <v-btn class="ma-3 justify-center" small dark @click="endGame()">
               end game
             </v-btn>
-          </v-row>
         </v-list-item-content>
       </v-list-item>
     </v-sheet>
@@ -48,6 +49,7 @@ export default Vue.extend({
       if (lobbyId) {
         let end = JSON.stringify({
           type: "endGame",
+          lobbyID: lobbyId,
         });
         let leave = JSON.stringify({
           type: "leaveLobby",

@@ -78,24 +78,29 @@ export function inHouse(board: any) {
 
 
 export function garage(board: any) {
+    const allGarages = []
+    const playerCount = board.playerNumber;
     const currentPlayer = board.currentPlayer;
-    const amoutOfPieces = board.players[currentPlayer].pieces.length;
-    let garage: any = new Array<object>(amoutOfPieces);
     const garageArray = board.players[currentPlayer].garage;
+    for (let playerIdx = 0; playerIdx < playerCount; playerIdx++) {
+        
+        const amoutOfPieces = board.players[playerIdx].pieces.length;
+        let garage: any = new Array<object>(amoutOfPieces);
+        for (let i = 0; i < garageArray.length; i++) {
+            const pos = garageArray[i].garage_piece;
+            if (pos === -1) {
+                const img = require(`../assets/images/icons/field.png`)
+                garage[i] = { image: img, id: `garageId${i}` }
+            } else {
+                const img = require(`../assets/images/icons/${board.players[currentPlayer].color}.png`)
+                garage[pos] = { image: img, id: `garageId${i}` }
+            }
 
-    for (let i = 0; i < garageArray.length; i++) {
-        const pos = garageArray[i].garage_piece;
-        if (pos === -1) {
-            const img = require(`../assets/images/icons/field.png`)
-            garage[i] = { image: img, id: `garageId${i}` }
-        } else {
-            const img = require(`../assets/images/icons/${board.players[currentPlayer].color}.png`)
-            garage[pos] = { image: img, id: `garageId${i}` }
         }
-
+        allGarages.push({name: board.players[playerIdx].name, garage: garage})
     }
-
-    garageObs.garage = garage;
+    
+    garageObs.garage = allGarages;
     return garage
 }
 
@@ -136,7 +141,9 @@ export function field(board: any): any {
 
 export function isYourTurn() {
     const userIdx = getUser()
-    return userIdx === boardObs.board.currentPlayer
+    const isTurn = userIdx === boardObs.board.currentPlayer
+    console.log(isTurn)
+    return isTurn
 }
 
 export function getUser() {
