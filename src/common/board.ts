@@ -96,10 +96,13 @@ export function garage(board: any) {
             const pos = garageArray[i].garage_piece;
             if (pos === -1) {
                 const img = require(`../assets/images/icons/field.png`)
-                garage[i] = { image: img, id: `garageId${i}` }
+                console.log(img)
+                garage[i] = { image: img, id: `garageId${i}Player${playerIdx}` }
             } else {
-                const img = require(`../assets/images/icons/${board.players[playerIdx].color}.png`)
-                garage[pos] = { image: img, id: `garageId${i}` }
+                const color = board.players[playerIdx].color;
+                const img = require(`../assets/images/icons/${color}.png`)
+                console.log('_>>>>>>>',`../assets/images/icons/${color}.png`)
+                garage[pos] = { image: img, id: `garageId${color}${i}Player${playerIdx}` }
             }
 
         }
@@ -110,14 +113,14 @@ export function garage(board: any) {
     return allGarages
 }
 
-export function colorizedHouses(fieldIdx: number): string{
-    
+export function colorizedHouses(fieldIdx: number): string {
+
     const playerCount = boardObs.board.playerNumber;
 
 
     for (let playerIdx = 0; playerIdx < playerCount; playerIdx++) {
         const homePosition = boardObs.board.players[playerIdx].homePosition;
-        if(fieldIdx === homePosition) {
+        if (fieldIdx === homePosition) {
             const color = boardObs.board.players[playerIdx].color
             return String(color)
         }

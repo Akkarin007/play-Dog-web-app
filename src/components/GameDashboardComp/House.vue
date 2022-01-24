@@ -41,10 +41,12 @@ export default Vue.extend({
 
   data: () => ({
     board: boardObs.board,
-    currentPlayerHouse:
-      boardObs.board.players[boardObs.board.currentPlayer].house.length,
+      
   }),
   computed: {
+    currentPlayerHouse: () => {
+      return boardObs.board.players[boardObs.board.currentPlayer].house.length;
+    },
     currentPlayer() {
       return boardObs.board.currentPlayer + 1;
     },
