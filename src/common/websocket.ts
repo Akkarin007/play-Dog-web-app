@@ -1,7 +1,7 @@
 import {loadJsonAndUpdateDom} from "./board";
 
 let localhost = 'ws://localhost:9000/websocket'
-let prod_host = 'wss://sheltered-depths-36109.herokuapp.com/websocket'
+let prod_host = 'wss://evening-cove-34964.herokuapp.com/websocket'
 
 let websocket = new WebSocket(prod_host);
 
