@@ -8,6 +8,11 @@
     "deploy": "sh deploy.sh"
   },
   "dependencies": {
+<<<<<<< HEAD
+=======
+    "axios": "^0.25.0",
+    "firebase": "^9.6.4",
+>>>>>>> fca34e9f7adacc4518daad9c8abe803baea06ccb
     "register-service-worker": "^1.7.1",
     "vue": "^2.6.11",
     "vue-class-component": "^7.2.3",
