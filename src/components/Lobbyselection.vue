@@ -25,17 +25,13 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { firebaseAuth } from "@/main";
-
 import { getWebSocket } from "../common/websocket";
-import { lobbiesObs } from "../common/board";
+
 export default Vue.extend({
   name: "Lobby",
   props: ['getCurrentLobby', 'lobbiesChanged','userEmail'],
   data: () => ({
     selectedLobby: { lobbyID: "nothing", lobbyInGame: 0, lobbyPlayers: [""] },
-    dialog: false,
-    lobbies: lobbiesObs.lobbies,
   }),
   methods: {
     close() {
