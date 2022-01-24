@@ -10,7 +10,7 @@ target
 # Mac
 .DS_Store
 /null
-node_modules
+/node_modules
 /.bloop
 /.metals
 # Eclipse

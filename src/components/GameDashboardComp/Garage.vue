@@ -1,26 +1,4 @@
 <template>
-<<<<<<< HEAD
-    <v-container>
-        <v-sheet rounded="lg" min-height="200">
-          <v-list-item two-line>
-            <v-list-item-content>
-              <v-list-item-title>Players Garage </v-list-item-title>
-              <v-list-item-subtitle>...</v-list-item-subtitle>
-              <v-row cols="12" sm="8" class="ma-2">
-                <img
-                  v-for="img in garageChanged"
-                  :key="img.id"
-                  :src="img.image"
-                  loading="lazy"
-                  width="50"
-                  height="50"
-                />
-              </v-row>
-            </v-list-item-content>
-          </v-list-item>
-        </v-sheet>
-    </v-container>
-=======
   <v-container>
     <v-sheet rounded="lg" min-height="200">
       <v-list-item two-line>
@@ -44,23 +22,17 @@
       </v-list-item>
     </v-sheet>
   </v-container>
->>>>>>> fca34e9f7adacc4518daad9c8abe803baea06ccb
 </template>
 
 <script lang="ts">
 import Vue from "vue";
 import {
   garageObs,
-<<<<<<< HEAD
-} from "@/common/board";
-
-=======
   getActivePlayer,
   getCurrentLobbyID,
   reset,
 } from "@/common/board";
 import { getWebSocket } from "@/common/websocket";
->>>>>>> fca34e9f7adacc4518daad9c8abe803baea06ccb
 
 export default Vue.extend({
   name: "Garage",
@@ -68,9 +40,6 @@ export default Vue.extend({
   computed: {
     garageChanged: () => {
       return garageObs.garage;
-<<<<<<< HEAD
-    }
-=======
     },
   },
   methods: {
@@ -95,7 +64,6 @@ export default Vue.extend({
         this.$router.replace({ name: "InitGame" });
       }
     },
->>>>>>> fca34e9f7adacc4518daad9c8abe803baea06ccb
   },
 });
 </script>

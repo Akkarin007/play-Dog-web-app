@@ -5,16 +5,6 @@ import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify'
 
-<<<<<<< HEAD
-Vue.config.productionTip = false
-
-new Vue({
-  router,
-  store,
-  vuetify,
-  render: h => h(App)
-}).$mount('#app')
-=======
 import axios from 'axios'
 import * as firebase from 'firebase/app'
 import * as auth from 'firebase/auth'
@@ -57,4 +47,3 @@ auth.onAuthStateChanged(auth.getAuth(),user => {
     }).$mount('#app')
   }
 })
->>>>>>> fca34e9f7adacc4518daad9c8abe803baea06ccb

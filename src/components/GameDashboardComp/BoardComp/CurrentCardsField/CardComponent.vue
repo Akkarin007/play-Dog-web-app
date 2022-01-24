@@ -15,20 +15,14 @@
             :btnIndex="index"
             :cardNumIndex="cardIndex"
             :btnSymbol="symbol"
-<<<<<<< HEAD
-=======
             :disabled="isYourTurn"
->>>>>>> fca34e9f7adacc4518daad9c8abe803baea06ccb
           ></button-normal>
           <button-swap
             v-if="symbol === 'swapCard'"
             class="ma-1"
             :cardNumIndex="cardIndex"
             :btnSymbol="symbol"
-<<<<<<< HEAD
-=======
             :disabled="isYourTurn"
->>>>>>> fca34e9f7adacc4518daad9c8abe803baea06ccb
           ></button-swap>
         </div>
       </div>
@@ -37,10 +31,7 @@
 </template>
 
 <script lang="ts">
-<<<<<<< HEAD
-=======
 import { isYourTurn } from "@/common/board";
->>>>>>> fca34e9f7adacc4518daad9c8abe803baea06ccb
 import Vue from "vue";
 import ButtonNormal from "./CardComp/ButtonNormal.vue";
 import ButtonSwap from "./CardComp/ButtonSwap.vue";
@@ -55,14 +46,11 @@ export default Vue.extend({
     cardSymbol: String,
   },
   data: () => ({}),
-<<<<<<< HEAD
-=======
   computed: {
     isYourTurn: () => {
       return !isYourTurn();
     },
   },
->>>>>>> fca34e9f7adacc4518daad9c8abe803baea06ccb
   methods: {
     splitSymbol() {
       return this.cardSymbol.split(" ");

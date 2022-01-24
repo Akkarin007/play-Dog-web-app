@@ -5,13 +5,7 @@
         <field :fieldIndex="field.pos" :fieldImage="field.image" :color="field.color" :pieceIdx="field.pieceIdx" :playerIdx="field.playerIdx"></field>
         </div> 
         </v-row
-<<<<<<< HEAD
-    ><v-row cols="12" sm="8" class="ma-2 justify-center"
-        ><v-divider></v-divider
-    ></v-row>
-=======
     >
->>>>>>> fca34e9f7adacc4518daad9c8abe803baea06ccb
 
     <!--  -->
   </v-container>

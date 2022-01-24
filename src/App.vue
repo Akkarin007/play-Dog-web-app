@@ -1,36 +1,4 @@
 <template>
-<<<<<<< HEAD
-  <v-app id="inspire">
-    <v-app-bar
-      app
-      color="white"
-      flat
-    >
-      <v-avatar
-        :color="$vuetify.breakpoint.smAndDown ? 'grey darken-1' : 'transparent'"
-        size="32"
-      ></v-avatar>
-
-      <v-tabs
-        centered
-        class="ml-n9"
-        color="grey darken-1"
-      >
-        <v-tab
-          v-for="link in links"
-          :key="link.title"
-          :to="link.to"
-        >
-          {{ link.title }}
-        </v-tab>
-      </v-tabs>
-
-      <v-avatar
-        class="hidden-sm-and-down"
-        color="grey darken-1 shrink"
-        size="32"
-      ></v-avatar>
-=======
   <v-app id="inspire" class="grey lighten-4">
     <v-app-bar app color="white" flat>
       <v-toolbar flat app>
@@ -82,41 +50,16 @@
           <v-icon v-if="loggedIn" right>mdi-exit-to-app</v-icon>
         </v-btn>
       </v-toolbar>
->>>>>>> fca34e9f7adacc4518daad9c8abe803baea06ccb
     </v-app-bar>
 
     <v-main class="grey lighten-3">
       <router-view></router-view>
-<<<<<<< HEAD
-      <v-container>
-        
-      </v-container>
-=======
       <v-container> </v-container>
->>>>>>> fca34e9f7adacc4518daad9c8abe803baea06ccb
     </v-main>
   </v-app>
 </template>
 
 <script>
-<<<<<<< HEAD
-import connectWebSocket from './common/websocket'
-
-  export default {
-    
-    
-    beforeCreate() {
-      connectWebSocket()
-    },
-    data: () => ({
-      links: [
-        { title:'Home', to: '/' },
-        { title: 'Game', to: '/dashboard' },
-        { title:'About', to: '/about' }
-      ],
-    }),
-  }
-=======
 import connectWebSocket from "./common/websocket";
 
 import { firebaseAuth } from "@/main";
@@ -170,5 +113,4 @@ export default {
     },
   },
 };
->>>>>>> fca34e9f7adacc4518daad9c8abe803baea06ccb
 </script>

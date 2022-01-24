@@ -3,48 +3,6 @@ import Vue from "vue";
 import boardInit from "../assets/data/boardExample";
 
 let board: any = boardInit;
-<<<<<<< HEAD
-export const boardObs = Vue.observable({board});
-export const fieldObs = Vue.observable({field: {}});
-export const inHouseObs = Vue.observable({inHouse: {}});
-export const garageObs = Vue.observable({garage: {}});
-export const cardObs = Vue.observable({cards: {}});
-
-loadJsonAndUpdateDom(boardInit);
-
-export function loadJsonAndUpdateDom(result:any) {
-    boardObs.board = result;
-    field(result);
-    garage(result);
-    inHouse(result);
-    cards(result);
-}
-
-export function getBoard() {
-    
-    return board;
-}
-
-
-export function inHouse(board: any) {
-    const currentPlayer = board.currentPlayer;
-    let houseArray:any = [];
-    const activeHouses = board.players[currentPlayer].house.length;
-    const amoutOfPieces = board.players[currentPlayer].pieces.length;
-    let counter = 0;
-    for (let i = 0; i < activeHouses; i++) {
-        const img = require(`../assets/images/icons/${board.players[currentPlayer].color}.png`)
-        houseArray.push({ image: img, id: `houseId${counter++}`})
-    }
-
-    for (let i = 0; i < amoutOfPieces - activeHouses; i++) {
-        const img = require(`../assets/images/icons/field.png`)
-        houseArray.push({ image: img, id: `houseId${counter++}`})
-        
-    }
-    inHouseObs.inHouse = houseArray;
-    return houseArray
-=======
 export const boardObs = Vue.observable({ board });
 export const fieldObs = Vue.observable({ field: {} });
 export const inHouseObs = Vue.observable({ inHouse: {} });
@@ -131,35 +89,10 @@ export function inHouse(board: any) {
     }
     inHouseObs.inHouse = allHouses
     return allHouses
->>>>>>> fca34e9f7adacc4518daad9c8abe803baea06ccb
 }
 
 
 export function garage(board: any) {
-<<<<<<< HEAD
-    const currentPlayer = board.currentPlayer;
-    const amoutOfPieces = board.players[currentPlayer].pieces.length;
-    let garage:any = new Array<object>(amoutOfPieces);
-    const garageArray = board.players[currentPlayer].garage;
-
-    for (let i = 0; i < garageArray.length; i++) {
-        const pos = garageArray[i].garage_piece;
-        if(pos === -1) {
-            const img = require(`../assets/images/icons/field.png`)
-            garage[i] = { image: img, id: `garageId${i}`}
-        }else{
-            const img = require(`../assets/images/icons/${board.players[currentPlayer].color}.png`)
-            garage[pos] = { image: img, id: `garageId${i}`}
-        }
-    
-    }
-        
-    garageObs.garage = garage;
-    return garage
-}
-
-export function field(board:any):any {
-=======
     const allGarages = []
     const playerCount = board.playerNumber;
 
@@ -207,17 +140,12 @@ export function colorizedHouses(fieldIdx: number): string {
 }
 
 export function field(board: any): any {
->>>>>>> fca34e9f7adacc4518daad9c8abe803baea06ccb
     const boardSize = board.boardSize;
     const pieceArray = board.players.map((player: any) => {
         const pieces = player.pieces.filter((piece: any) => {
             let bool = true;
             player.house.forEach((house: any) => {
-<<<<<<< HEAD
-                if(piece.piece_idx === house.inHouse){
-=======
                 if (piece.piece_idx === house.inHouse) {
->>>>>>> fca34e9f7adacc4518daad9c8abe803baea06ccb
                     bool = false;
                 }
             })
@@ -246,13 +174,6 @@ export function field(board: any): any {
     return fieldArray;
 }
 
-<<<<<<< HEAD
-
-export function cards(board:any):any {
-
-    const currentPlayer = board.currentPlayer;
-    let cardsArray:any = [];
-=======
 export function isYourTurn() {
     const userIdx = getUser()
     const isTurn = userIdx === boardObs.board.currentPlayer
@@ -276,16 +197,11 @@ export function cards(board: any): any {
 
     let currentPlayer = getUser()
     let cardsArray: any = [];
->>>>>>> fca34e9f7adacc4518daad9c8abe803baea06ccb
     const cardsLength = board.players[currentPlayer].cards.length;
     for (let i = 0; i < cardsLength; i++) {
         const symbol = board.players[currentPlayer].cards[i].card_symbol;
         const img = require(`../assets/images/cards/${symbol}.png`)
-<<<<<<< HEAD
-        cardsArray.push({ image: img, id: `cardsId${i}`, symbol: symbol})
-=======
         cardsArray.push({ image: img, id: `cardsId${i}`, symbol: symbol })
->>>>>>> fca34e9f7adacc4518daad9c8abe803baea06ccb
     }
 
     cardObs.cards = cardsArray;
