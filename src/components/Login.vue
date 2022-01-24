@@ -41,6 +41,7 @@
                     class="mt-n6"
                     v-model="password"
                     label="password"
+                    type="password"
                     outlined
                   ></v-text-field>
                 </v-card-actions>

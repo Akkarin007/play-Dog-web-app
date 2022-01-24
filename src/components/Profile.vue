@@ -1,58 +1,73 @@
 <template>
-  <v-sheet
-    height="400"
-    class="overflow-hidden"
-    style="position: relative;"
-  >
-    <v-container class="fill-height">
-      <v-row
-        align="center"
-        justify="center"
-      >
-        <v-btn
-          color="pink"
-          dark
-          @click.stop="drawer = !drawer"
-        >
-          Toggle
-        </v-btn>
-      </v-row>
-    </v-container>
+  <v-row justify="center">
+    <v-dialog v-model="dialog" persistent max-width="600px">
+      <template v-slot:activator="{ on, attrs }">
+        <v-avatar
+          class="hidden-sm-and-down"
+          color="grey darken-1 shrink"
+          size="28"
+          v-bind="attrs"
+          v-on="on"
+        ></v-avatar>
+      </template>
+      <v-card>
+        <v-card-title>
+          <span class="text-h5">User Profile</span>
+        </v-card-title>
+        <v-card-text>
+          <span>change email?</span>
+          <v-container>
+            <v-row>
+              <v-col cols="12">
+                <v-text-field :label="userEmail" required></v-text-field>
+              </v-col>
 
-    <v-navigation-drawer
-      v-model="drawer"
-      absolute
-      temporary
-    >
-      <v-list-item>
-        <v-list-item-avatar>
-          <v-img src="https://randomuser.me/api/portraits/men/78.jpg"></v-img>
-        </v-list-item-avatar>
+              <v-col cols="12"> </v-col>
 
-        <v-list-item-content>
-          <v-list-item-title>John Leider</v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
+              change password?
+              <v-col cols="12">
+                <v-text-field
+                  label="Password*"
+                  type="password"
+                  v-model="newPassword"
+                  required
+                ></v-text-field>
+              </v-col>
 
-      <v-divider></v-divider>
-
-      <v-list dense>
-        <v-list-item
-          v-for="item in items"
-          :key="item.title"
-          link
-        >
-          <v-list-item-icon>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-item-icon>
-
-          <v-list-item-content>
-            <v-list-item-title>{{ item.title }}</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer>
-  </v-sheet>
+              <v-col cols="12" sm="6"> </v-col>
+            </v-row>
+          </v-container>
+          <small v-if="error == false">*indicates required field</small>
+          <small v-if="error" style="color: red"
+            >*indicates required field</small
+          >
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="lowercase dark darken-1"
+            small
+            dark
+            v-model="newEmail"
+            @click="reauthenticateChangeEmail()"
+          >
+            change Email
+          </v-btn>
+          <v-btn
+            color="lowercase dark darken-1"
+            small
+            dark
+            @click="reauthenticateChangePassword()"
+          >
+            change password
+          </v-btn>
+          <v-btn color="dark darken-1" text @click="dialog = false">
+            Close
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </v-row>
 </template>
 
 <script lang="ts">
@@ -61,25 +76,49 @@ import { firebaseAuth } from "@/main";
 
 export default Vue.extend({
   name: "Profile",
-
+  props: ["loggedIn", "userEmail"],
   data: () => ({
-    email: "",
-    password: "",
-    error: "",
-    loggedIn: false,
-    drawer: null,
-        items: [
-          { title: 'Home', icon: 'mdi-view-dashboard' },
-          { title: 'About', icon: 'mdi-forum' },
-        ],
+    dialog: false,
+    newPassword: "",
+    newEmail: "",
+    error: false,
   }),
-  created() {
-    firebaseAuth.onAuthStateChanged(firebaseAuth.getAuth(), (user) => {
-      this.loggedIn = !!user;
-    });
-    console.log("created! = ", this.loggedIn);
-  },
   methods: {
-  }
+    async reauthenticateChangeEmail() {
+      const user = firebaseAuth.getAuth().currentUser;
+      if (user && this.userEmail && this.newPassword) {
+        const credential = firebaseAuth.EmailAuthProvider.credential(
+          this.userEmail,
+          this.newPassword
+        );
+        await firebaseAuth.reauthenticateWithCredential(user, credential);
+        await firebaseAuth.updateEmail(user, this.newEmail);
+        this.error = false;
+        this.dialog = false;
+      } else {
+        this.error = true;
+      }
+    },
+    async reauthenticateChangePassword() {
+      let user = await firebaseAuth.getAuth().currentUser;
+      if (user && this.newPassword != "") {
+        await firebaseAuth
+          .updatePassword(user, this.newPassword)
+          .then(() => {})
+          .catch((error) => {
+            console.log(error);
+          });
+        const credential = await firebaseAuth.EmailAuthProvider.credential(
+          this.userEmail,
+          this.newPassword
+        );
+        await firebaseAuth.reauthenticateWithCredential(user, credential);
+        this.error = false;
+        this.dialog = false;
+      } else {
+        this.error = true;
+      }
+    },
+  },
 });
 </script>
