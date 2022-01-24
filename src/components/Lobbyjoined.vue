@@ -1,7 +1,7 @@
 <template>
   
       <v-card v-if="getCurrentLobby != null">
-        <v-card-title>Select lobby</v-card-title>
+        <v-card-title>Joined Lobby: {{getLabel(getCurrentLobby)}}</v-card-title>
         <v-divider></v-divider>
         <v-card-text style="height: 300px">
           <v-list-item
@@ -30,19 +30,21 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { firebaseAuth } from "@/main";
-
 import { getWebSocket } from "../common/websocket";
-import { lobbiesObs } from "../common/board";
+
 export default Vue.extend({
   name: "Lobbyjoined",
   props: ['getCurrentLobby','userEmail'],
   data: () => ({
-    dialog: false,
   }),
   methods: {
     close() {
       this.$emit('closeEvent', false)
+    }, 
+    getLabel(lobby: any) {
+      return (
+        lobby.lobbyID + " " + lobby.lobbyPlayers.length + "/" + lobby.lobbySize
+      );
     },
     leaveLobby() {
       const lobbyId = this.getCurrentLobby.lobbyID
