@@ -3,11 +3,11 @@ import {loadJsonAndUpdateDom} from "./board";
 let localhost = 'ws://localhost:9000/websocket'
 let prod_host = 'wss://evening-cove-34964.herokuapp.com/websocket'
 
-let websocket = new WebSocket(prod_host);
+let websocket = new WebSocket(localhost);
 
 
 export default function connectWebSocket() {
-    websocket = new WebSocket(prod_host);
+    websocket = new WebSocket(localhost);
 
     websocket.onopen = function(event:any) {
         console.log("Connected to Websocket");
